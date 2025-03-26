@@ -85,7 +85,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
       
       if (foundUser) {
-        const { password, ...userWithoutPassword } = foundUser;
+        // Create a user object without the password
+        const userWithoutPassword: User = {
+          id: foundUser.id,
+          name: foundUser.name,
+          email: foundUser.email,
+          role: foundUser.role,
+          balance: foundUser.balance
+        };
+        
+        // Add optional properties if they exist
+        if ('agency' in foundUser) {
+          userWithoutPassword.agency = foundUser.agency;
+        }
+        
+        if ('country' in foundUser) {
+          userWithoutPassword.country = foundUser.country;
+        }
+        
         setUser(userWithoutPassword);
         localStorage.setItem('chamWingsUser', JSON.stringify(userWithoutPassword));
         toast.success('Welcome back!');
@@ -117,20 +134,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Create new user (in a real app, this would be handled by the backend)
-      const newUser = {
+      const newUser: User = {
         id: `${MOCK_USERS.length + 1}`,
         email: userData.email,
         name: userData.name,
-        role: 'agent' as const,
+        role: 'agent',
         agency: userData.agency,
         country: userData.country,
         balance: 0
       };
 
       // In a real app, we would save this to the backend
-      const { password, ...userWithoutPassword } = newUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('chamWingsUser', JSON.stringify(userWithoutPassword));
+      setUser(newUser);
+      localStorage.setItem('chamWingsUser', JSON.stringify(newUser));
       toast.success('Account created successfully!');
     } catch (error) {
       if (error instanceof Error) {
