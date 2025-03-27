@@ -8,46 +8,44 @@ interface CarIconProps {
   color?: string;
 }
 
-export function CarIcon({ position = [0, 0, 0], color = "#00559A" }: CarIconProps) {
+export function CarIcon({ position = [0, 0, 0], color = "#C69C3F" }: CarIconProps) {
   const group = useRef<THREE.Group>(null);
+  const cubeRef = useRef<THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>>(null);
   
   useFrame((state) => {
     if (group.current) {
+      // Primary animation - floating and gentle rotation
       group.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.3;
       group.current.position.y = Math.sin(state.clock.getElapsedTime()) * 0.1 + position[1];
+      
+      // Add subtle "breathing" scaling effect
+      const breathScale = 1 + Math.sin(state.clock.getElapsedTime() * 1.5) * 0.03;
+      group.current.scale.set(breathScale, breathScale, breathScale);
+    }
+    
+    // Cube rotation
+    if (cubeRef.current) {
+      cubeRef.current.rotation.x += 0.01;
+      cubeRef.current.rotation.y += 0.01;
+      
+      if (cubeRef.current.material) {
+        // Subtle shine effect
+        cubeRef.current.material.metalness = 0.8 + Math.sin(state.clock.getElapsedTime()) * 0.1;
+      }
     }
   });
 
   return (
     <group ref={group} position={position}>
-      {/* Car body */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[0.8, 0.2, 0.4]} />
-        <meshStandardMaterial color={color} metalness={0.6} roughness={0.2} />
-      </mesh>
-      
-      {/* Car top */}
-      <mesh position={[0, 0.2, 0]}>
-        <boxGeometry args={[0.5, 0.2, 0.4]} />
-        <meshStandardMaterial color={color} metalness={0.6} roughness={0.2} />
-      </mesh>
-      
-      {/* Wheels */}
-      <mesh position={[0.25, -0.12, 0.2]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
-        <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
-      </mesh>
-      <mesh position={[0.25, -0.12, -0.2]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
-        <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
-      </mesh>
-      <mesh position={[-0.25, -0.12, 0.2]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
-        <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
-      </mesh>
-      <mesh position={[-0.25, -0.12, -0.2]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
-        <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
+      {/* Simple gold cube to match the image */}
+      <mesh ref={cubeRef} position={[0, 0, 0]}>
+        <boxGeometry args={[0.5, 0.5, 0.5]} />
+        <meshStandardMaterial 
+          color={color} 
+          metalness={0.9} 
+          roughness={0.1}
+          envMapIntensity={1.5}
+        />
       </mesh>
     </group>
   );

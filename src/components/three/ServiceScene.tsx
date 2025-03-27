@@ -7,9 +7,10 @@ import { InterlineIcon } from './icons/InterlineIcon';
 import { CreditCardIcon } from './icons/CreditCardIcon';
 import { HotelIcon } from './icons/HotelIcon';
 import { PassportIcon } from './icons/PassportIcon';
+import { APIIcon } from './icons/APIIcon';
 import { FloatingPrimitive } from './icons/FloatingPrimitive';
 
-type IconType = "cube" | "sphere" | "torus" | "airplane" | "car" | "interline" | "creditcard" | "hotel" | "passport";
+type IconType = "cube" | "sphere" | "torus" | "airplane" | "car" | "interline" | "creditcard" | "hotel" | "passport" | "api";
 
 interface ServiceSceneProps {
   color?: string;
@@ -17,6 +18,11 @@ interface ServiceSceneProps {
 }
 
 export default function ServiceScene({ color = "#00559A", icon = "cube" }: ServiceSceneProps) {
+  // Determine colors based on icon type
+  let iconColor = color;
+  if (icon === "car") iconColor = "#C69C3F"; // Golden color for car
+  if (icon === "api") iconColor = "#00559A"; // Blue for API
+  
   return (
     <div className="w-full h-full" style={{ height: '120px' }}>
       <Canvas dpr={[1, 2]}>
@@ -46,7 +52,7 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
           size={0.4} 
           speed={0.3} 
           opacity={0.2} 
-          color={color} 
+          color={iconColor} 
         />
         
         <Float 
@@ -57,14 +63,15 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
         >
           {/* Render the appropriate icon based on the icon prop */}
           {(icon === "cube" || icon === "sphere" || icon === "torus") && (
-            <FloatingPrimitive position={[0, 0, 0]} color={color} primitive={icon} />
+            <FloatingPrimitive position={[0, 0, 0]} color={iconColor} primitive={icon} />
           )}
-          {icon === "airplane" && <AirplaneIcon position={[0, 0, 0]} color={color} />}
-          {icon === "car" && <CarIcon position={[0, 0, 0]} color={color} />}
-          {icon === "interline" && <InterlineIcon position={[0, 0, 0]} color={color} />}
-          {icon === "creditcard" && <CreditCardIcon position={[0, 0, 0]} color={color} />}
-          {icon === "hotel" && <HotelIcon position={[0, 0, 0]} color={color} />}
-          {icon === "passport" && <PassportIcon position={[0, 0, 0]} color={color} />}
+          {icon === "airplane" && <AirplaneIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "car" && <CarIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "interline" && <InterlineIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "creditcard" && <CreditCardIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "hotel" && <HotelIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "passport" && <PassportIcon position={[0, 0, 0]} color={iconColor} />}
+          {icon === "api" && <APIIcon position={[0, 0, 0]} color={iconColor} />}
         </Float>
         
         <Environment preset="city" />
