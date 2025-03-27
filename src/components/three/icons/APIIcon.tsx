@@ -78,17 +78,18 @@ export function APIIcon({ position = [0, 0, 0], color = "#00559A" }: APIIconProp
         const endX = Math.cos(theta) * endRadius;
         const endZ = Math.sin(theta) * endRadius;
         
-        // Create a custom geometry for each connection line
+        // Calculate the line length and angle
+        const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endZ - startZ, 2));
+        const angle = Math.atan2(endZ - startZ, endX - startX);
+        
         return (
           <group key={`line-${i}`}>
-            <mesh position={[(startX + endX) / 2, 0, (startZ + endZ) / 2]}>
+            <mesh 
+              position={[(startX + endX) / 2, 0, (startZ + endZ) / 2]}
+              rotation={[Math.PI / 2, angle, 0]}
+            >
               <cylinderGeometry 
-                args={[
-                  0.02, 0.02, 
-                  Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endZ - startZ, 2)),
-                  8
-                ]} 
-                rotation={[Math.PI / 2, Math.atan2(endZ - startZ, endX - startX), 0]}
+                args={[0.02, 0.02, lineLength, 8]} 
               />
               <meshStandardMaterial color="#C69C3F" metalness={0.7} roughness={0.3} />
             </mesh>
