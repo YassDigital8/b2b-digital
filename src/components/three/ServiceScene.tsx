@@ -5,9 +5,11 @@ import { AirplaneIcon } from './icons/AirplaneIcon';
 import { CarIcon } from './icons/CarIcon';
 import { InterlineIcon } from './icons/InterlineIcon';
 import { CreditCardIcon } from './icons/CreditCardIcon';
+import { HotelIcon } from './icons/HotelIcon';
+import { PassportIcon } from './icons/PassportIcon';
 import { FloatingPrimitive } from './icons/FloatingPrimitive';
 
-type IconType = "cube" | "sphere" | "torus" | "airplane" | "car" | "interline" | "creditcard";
+type IconType = "cube" | "sphere" | "torus" | "airplane" | "car" | "interline" | "creditcard" | "hotel" | "passport";
 
 interface ServiceSceneProps {
   color?: string;
@@ -37,6 +39,8 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
           {icon === "car" && <CarIcon position={[0, 0, 0]} color={color} />}
           {icon === "interline" && <InterlineIcon position={[0, 0, 0]} color={color} />}
           {icon === "creditcard" && <CreditCardIcon position={[0, 0, 0]} color={color} />}
+          {icon === "hotel" && <HotelIcon position={[0, 0, 0]} color={color} />}
+          {icon === "passport" && <PassportIcon position={[0, 0, 0]} color={color} />}
         </Float>
         <Environment preset="city" />
       </Canvas>
