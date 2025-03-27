@@ -10,7 +10,7 @@ interface PassportIconProps {
 
 export function PassportIcon({ position = [0, 0, 0], color = "#00559A" }: PassportIconProps) {
   const group = useRef<THREE.Group>(null);
-  const emblemRef = useRef<THREE.Mesh>(null);
+  const emblemRef = useRef<THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>>(null);
   const textLinesRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
@@ -24,7 +24,7 @@ export function PassportIcon({ position = [0, 0, 0], color = "#00559A" }: Passpo
     }
     
     // Emblem shimmer effect
-    if (emblemRef.current) {
+    if (emblemRef.current && emblemRef.current.material) {
       emblemRef.current.rotation.y += 0.01;
       
       // Pulsing gold effect
@@ -39,12 +39,14 @@ export function PassportIcon({ position = [0, 0, 0], color = "#00559A" }: Passpo
     // Text lines animation
     if (textLinesRef.current) {
       textLinesRef.current.children.forEach((line, i) => {
-        const mesh = line as THREE.Mesh;
+        const mesh = line as THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
         // Staggered sliding animation
         mesh.position.x = Math.sin(state.clock.getElapsedTime() * 0.5 + i * 0.2) * 0.05;
         
         // Brightness pulsing
-        mesh.material.emissiveIntensity = 0.2 + Math.sin(state.clock.getElapsedTime() * 0.8 + i * 0.3) * 0.2;
+        if (mesh.material && mesh.material.emissiveIntensity !== undefined) {
+          mesh.material.emissiveIntensity = 0.2 + Math.sin(state.clock.getElapsedTime() * 0.8 + i * 0.3) * 0.2;
+        }
       });
     }
   });

@@ -10,7 +10,7 @@ interface HotelIconProps {
 
 export function HotelIcon({ position = [0, 0, 0], color = "#00559A" }: HotelIconProps) {
   const group = useRef<THREE.Group>(null);
-  const doorRef = useRef<THREE.Mesh>(null);
+  const doorRef = useRef<THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>>(null);
   const windowsRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
@@ -25,7 +25,7 @@ export function HotelIcon({ position = [0, 0, 0], color = "#00559A" }: HotelIcon
     }
     
     // Door subtle pulsing effect
-    if (doorRef.current) {
+    if (doorRef.current && doorRef.current.material) {
       doorRef.current.material.color.setRGB(
         0.2 + Math.sin(state.clock.getElapsedTime() * 2) * 0.05,
         0.2 + Math.sin(state.clock.getElapsedTime() * 2) * 0.05,
@@ -36,12 +36,14 @@ export function HotelIcon({ position = [0, 0, 0], color = "#00559A" }: HotelIcon
     // Windows shimmering light effect
     if (windowsRef.current) {
       windowsRef.current.children.forEach((window, i) => {
-        const mesh = window as THREE.Mesh;
-        mesh.material.emissive.setRGB(
-          0.1 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1,
-          0.3 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1,
-          0.5 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1
-        );
+        const mesh = window as THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
+        if (mesh.material && mesh.material.emissive) {
+          mesh.material.emissive.setRGB(
+            0.1 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1,
+            0.3 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1,
+            0.5 + Math.sin(state.clock.getElapsedTime() * 1.5 + i) * 0.1
+          );
+        }
       });
     }
   });
