@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import HeroScene from '@/components/three/HeroScene';
 
 const Hero = () => {
   return (
@@ -25,7 +26,6 @@ const Hero = () => {
             animate={{ 
               scale: [0, 1.2, 1],
               opacity: [0, 0.3, 0.2],
-              z: Math.random() * 10 - 20
             }}
             transition={{ 
               duration: 8,
@@ -110,71 +110,14 @@ const Hero = () => {
             </motion.div>
           </motion.div>
           
-          {/* 3D elements container - right side */}
+          {/* 3D Scene - Replace the previous pseudo-3D with actual 3D */}
           <motion.div 
-            className="hidden md:flex justify-center items-center"
-            initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
-            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            className="hidden md:block h-[500px] w-full"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8, duration: 0.8, type: "spring" }}
           >
-            <div className="relative w-full max-w-md aspect-square">
-              {/* 3D floating elements */}
-              <motion.div 
-                className="absolute glass-effect rounded-2xl w-64 h-64 bg-gradient-to-br from-white/10 to-white/5"
-                animate={{ 
-                  rotateY: [0, 10, 0],
-                  rotateX: [0, 15, 0],
-                  z: [0, 30, 0],
-                }}
-                transition={{ 
-                  duration: 8, 
-                  repeat: Infinity,
-                  repeatType: "mirror"
-                }}
-                style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
-              >
-                <div className="absolute inset-0 rounded-2xl border border-white/20 backdrop-blur-md" />
-                <div className="absolute top-6 left-6 w-12 h-12 rounded-full bg-chamGold/30" />
-                <div className="absolute bottom-6 right-6 w-16 h-16 rounded-lg bg-chamBlue/30" />
-              </motion.div>
-              
-              <motion.div 
-                className="absolute top-20 right-10 glass-effect rounded-2xl w-48 h-48 bg-gradient-to-br from-chamBlue/10 to-chamBlue/5"
-                animate={{ 
-                  rotateY: [0, -15, 0],
-                  rotateX: [0, -10, 0],
-                  z: [0, 20, 0],
-                }}
-                transition={{ 
-                  duration: 6, 
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  delay: 1
-                }}
-                style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
-              >
-                <div className="absolute inset-0 rounded-2xl border border-white/20 backdrop-blur-md" />
-                <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-chamGold/20" />
-              </motion.div>
-              
-              <motion.div 
-                className="absolute bottom-10 left-20 glass-effect rounded-full w-32 h-32 bg-gradient-to-br from-chamGold/10 to-chamGold/5"
-                animate={{ 
-                  y: [0, -15, 0],
-                  rotateZ: [0, 10, 0],
-                  z: [0, 10, 0],
-                }}
-                transition={{ 
-                  duration: 7, 
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  delay: 2
-                }}
-                style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
-              >
-                <div className="absolute inset-0 rounded-full border border-white/20 backdrop-blur-md" />
-              </motion.div>
-            </div>
+            <HeroScene />
           </motion.div>
         </div>
       </div>
