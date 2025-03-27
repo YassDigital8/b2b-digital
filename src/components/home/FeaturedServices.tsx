@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { MapPin, Plane, CreditCard, Car } from 'lucide-react';
+import ServiceScene from '@/components/three/ServiceScene';
 
 const services = [
   {
@@ -12,7 +13,9 @@ const services = [
     description: 'Book Ya Marhaba transportation services across Syrian cities, or arrange free limousine services for Business Class passengers in the UAE.',
     icon: Car,
     link: '/transportation',
-    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3'
+    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3',
+    scene3dIcon: 'car',
+    iconColor: '#00559A'
   },
   {
     id: 'top-up',
@@ -20,7 +23,9 @@ const services = [
     description: 'Easily top up your Cham Wings account through multiple channels including eCash, Haram, and Fouad payment methods.',
     icon: CreditCard,
     link: '/top-up',
-    image: 'https://images.unsplash.com/photo-1589758438368-0ad531db3366?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3'
+    image: 'https://images.unsplash.com/photo-1589758438368-0ad531db3366?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3',
+    scene3dIcon: 'creditcard',
+    iconColor: '#C69C3F'
   },
   {
     id: 'interline',
@@ -28,7 +33,9 @@ const services = [
     description: 'Book interline tickets for Jazeera Airways, Air Arabia, and FlyDubai using your Cham Wings account.',
     icon: Plane,
     link: '/interline',
-    image: 'https://images.unsplash.com/photo-1610642472639-1b2b1e04a026?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3'
+    image: 'https://images.unsplash.com/photo-1610642472639-1b2b1e04a026?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3',
+    scene3dIcon: 'interline',
+    iconColor: '#00559A'
   },
 ];
 
@@ -121,6 +128,11 @@ const FeaturedServices = () => {
                     <CardTitle className="text-xl text-chamDarkBlue">{service.title}</CardTitle>
                     <CardDescription className="text-gray-600">{service.description}</CardDescription>
                   </CardHeader>
+                  <div className="px-6 pb-2">
+                    <div className="bg-chamGray rounded-lg overflow-hidden">
+                      <ServiceScene icon={service.scene3dIcon as any} color={service.iconColor} />
+                    </div>
+                  </div>
                   <CardFooter className="mt-auto">
                     <Link to={service.link} className="w-full">
                       <Button 
