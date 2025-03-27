@@ -30,7 +30,9 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
     <div className="flex items-center gap-2">
       <Link to="/login">
         <Button variant="outline" size="sm" className={
-          scrolled ? 'border-chamBlue text-chamBlue hover:bg-chamBlue/10' : 'border-white text-white hover:bg-white/10'
+          scrolled 
+            ? 'border-chamBlue text-chamBlue hover:bg-chamBlue/10' 
+            : 'border-white hover:bg-white/10'
         }>
           Sign In
         </Button>
