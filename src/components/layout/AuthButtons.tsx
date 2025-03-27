@@ -1,7 +1,6 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 
 interface AuthButtonsProps {
   scrolled?: boolean;
@@ -19,14 +18,8 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
           </Button>
         </Link>
         <Link to="/signup" onClick={onButtonClick}>
-          <Button className="w-full bg-chamGold hover:bg-chamGold/90 relative overflow-hidden group">
-            <span className="relative z-10">Sign Up</span>
-            <motion.span 
-              className="absolute inset-0 bg-gradient-to-r from-chamGold to-yellow-400 opacity-0 group-hover:opacity-100"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.4 }}
-            />
+          <Button className="w-full bg-chamGold hover:bg-chamGold/90">
+            Sign Up
           </Button>
         </Link>
       </div>
@@ -39,20 +32,14 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
         <Button variant="outline" size="sm" className={
           scrolled 
             ? 'border-chamBlue text-chamBlue hover:bg-chamBlue/10' 
-            : 'border-white hover:bg-white/10 backdrop-blur-sm'
+            : 'border-white hover:bg-white/10'
         }>
           Sign In
         </Button>
       </Link>
       <Link to="/signup">
-        <Button size="sm" className="bg-chamGold hover:bg-chamGold/90 text-white relative overflow-hidden group">
-          <span className="relative z-10">Sign Up</span>
-          <motion.span 
-            className="absolute inset-0 bg-gradient-to-r from-chamGold to-yellow-400 opacity-0 group-hover:opacity-100"
-            initial={{ x: '-100%' }}
-            whileHover={{ x: 0 }}
-            transition={{ duration: 0.4 }}
-          />
+        <Button size="sm" className="bg-chamGold hover:bg-chamGold/90 text-white">
+          Sign Up
         </Button>
       </Link>
     </div>
