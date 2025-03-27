@@ -64,20 +64,20 @@ function CarIcon({ position = [0, 0, 0], color = "#00559A" }) {
       </mesh>
       
       {/* Wheels */}
-      <mesh position={[0.25, -0.12, 0.2]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[0.25, -0.12, 0.2]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
         <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
       </mesh>
-      <mesh position={[0.25, -0.12, -0.2]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[0.25, -0.12, -0.2]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
         <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
       </mesh>
-      <mesh position={[-0.25, -0.12, 0.2]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[-0.25, -0.12, 0.2]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
         <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
       </mesh>
-      <mesh position={[-0.25, -0.12, -0.2]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[-0.25, -0.12, -0.2]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
         <meshStandardMaterial color="#333" metalness={0.5} roughness={0.5} />
       </mesh>
     </group>
