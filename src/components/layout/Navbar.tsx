@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut, Info, Settings, HelpCircle, PhoneCall, Plug } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,9 +43,11 @@ const Navbar = () => {
   
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Transportation', path: '/transportation' },
-    { name: 'Top Up', path: '/top-up' },
-    { name: 'Interline Booking', path: '/interline' },
+    { name: 'About Us', path: '/about', icon: Info },
+    { name: 'Services', path: '/services', icon: Settings },
+    { name: 'Support', path: '/support', icon: HelpCircle },
+    { name: 'Contact Us', path: '/contact', icon: PhoneCall },
+    { name: 'API Integration', path: '/api', icon: Plug },
   ];
   
   return (
@@ -69,10 +71,11 @@ const Navbar = () => {
               <li key={link.path}>
                 <Link 
                   to={link.path}
-                  className={`font-medium transition-colors duration-300 hover:text-chamGold ${
+                  className={`font-medium transition-colors duration-300 hover:text-chamGold flex items-center gap-1 ${
                     scrolled ? 'text-chamDarkBlue' : 'text-white'
                   } ${location.pathname === link.path ? 'text-chamGold' : ''}`}
                 >
+                  {link.icon && <link.icon size={16} />}
                   {link.name}
                 </Link>
               </li>
@@ -157,13 +160,14 @@ const Navbar = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className={`block py-2 font-medium ${
+                      className={`flex items-center gap-2 py-2 font-medium ${
                         location.pathname === link.path
                           ? 'text-chamGold'
                           : 'text-chamDarkBlue'
                       }`}
                       onClick={closeMenu}
                     >
+                      {link.icon && <link.icon size={18} />}
                       {link.name}
                     </Link>
                   </li>
