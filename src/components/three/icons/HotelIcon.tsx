@@ -27,8 +27,8 @@ export function HotelIcon({ position = [0, 0, 0], color = "#00559A" }: HotelIcon
       </mesh>
       
       {/* Roof */}
-      <mesh position={[0, 0.45, 0]}>
-        <coneGeometry args={[0.5, 0.4, 4]} rotation={[0, Math.PI / 4, 0]} />
+      <mesh position={[0, 0.45, 0]} rotation={[0, Math.PI / 4, 0]}>
+        <coneGeometry args={[0.5, 0.4, 4]} />
         <meshStandardMaterial color="#C69C3F" metalness={0.5} roughness={0.2} />
       </mesh>
       
