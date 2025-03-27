@@ -57,7 +57,7 @@ const Hero = () => {
               </Button>
             </Link>
             <Link to="/login">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-white hover:bg-white/10">
                 Sign In
               </Button>
             </Link>
