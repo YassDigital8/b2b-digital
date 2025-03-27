@@ -47,8 +47,9 @@
   position: absolute;
   top: 100%;
   left: 0;
-  animation-duration: 250ms;
+  animation-duration: 200ms;
   animation-timing-function: ease;
+  margin-top: 8px;
 }
 
 .NavigationMenuContent[data-state='open'] {
@@ -62,7 +63,7 @@
 @keyframes slideDownAndFade {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -77,6 +78,6 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
