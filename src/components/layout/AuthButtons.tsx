@@ -13,7 +13,7 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
     return (
       <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2">
         <Link to="/login" onClick={onButtonClick}>
-          <Button variant="outline" className="w-full border-chamBlue text-chamBlue">
+          <Button variant="outline" className="w-full border-black text-black">
             Sign In
           </Button>
         </Link>
@@ -31,7 +31,7 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
       <Link to="/login">
         <Button variant="outline" size="sm" className={
           scrolled 
-            ? 'border-chamBlue text-chamBlue hover:bg-chamBlue/10' 
+            ? 'border-black text-black hover:bg-black/10' 
             : 'border-white text-white hover:bg-white/10'
         }>
           Sign In
