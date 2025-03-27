@@ -9,7 +9,7 @@ interface NavLinksProps {
   onLinkClick?: () => void;
 }
 
-export { NavLink };
+export type { NavLink };
 
 export const NavLinks = ({ scrolled, isMobile = false, onLinkClick }: NavLinksProps) => {
   if (isMobile) {
