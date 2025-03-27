@@ -1,6 +1,6 @@
 
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Environment, Float } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Environment, Float, Sparkles } from '@react-three/drei';
 import { AirplaneIcon } from './icons/AirplaneIcon';
 import { CarIcon } from './icons/CarIcon';
 import { InterlineIcon } from './icons/InterlineIcon';
@@ -23,6 +23,14 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
         <PerspectiveCamera makeDefault position={[0, 0, 3]} fov={45} />
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
+        <spotLight 
+          position={[0, 5, 0]} 
+          intensity={0.5} 
+          angle={0.6} 
+          penumbra={0.5} 
+          castShadow 
+        />
+        
         <OrbitControls 
           enableZoom={false} 
           enablePan={false} 
@@ -30,7 +38,23 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
           autoRotate 
           autoRotateSpeed={3}
         />
-        <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+        
+        {/* Background particles */}
+        <Sparkles 
+          count={20} 
+          scale={3} 
+          size={0.4} 
+          speed={0.3} 
+          opacity={0.2} 
+          color={color} 
+        />
+        
+        <Float 
+          speed={1.5} 
+          rotationIntensity={0.2} 
+          floatIntensity={0.5}
+          floatingRange={[-0.1, 0.1]}
+        >
           {/* Render the appropriate icon based on the icon prop */}
           {(icon === "cube" || icon === "sphere" || icon === "torus") && (
             <FloatingPrimitive position={[0, 0, 0]} color={color} primitive={icon} />
@@ -42,6 +66,7 @@ export default function ServiceScene({ color = "#00559A", icon = "cube" }: Servi
           {icon === "hotel" && <HotelIcon position={[0, 0, 0]} color={color} />}
           {icon === "passport" && <PassportIcon position={[0, 0, 0]} color={color} />}
         </Float>
+        
         <Environment preset="city" />
       </Canvas>
     </div>
