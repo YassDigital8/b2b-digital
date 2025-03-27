@@ -32,7 +32,7 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
         <Button variant="outline" size="sm" className={
           scrolled 
             ? 'border-chamBlue text-chamBlue hover:bg-chamBlue/10' 
-            : 'border-white hover:bg-white/10'
+            : 'border-white text-white hover:bg-white/10'
         }>
           Sign In
         </Button>
