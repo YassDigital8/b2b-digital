@@ -20,7 +20,7 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
 
   return (
     <NavigationMenu className="hidden lg:flex">
-      <NavigationMenuList className="gap-3">
+      <NavigationMenuList className="gap-6">
         {navLinks.map((link) => {
           // Handle dropdown service menu
           if (link.isDropdown && link.dropdownItems) {
@@ -68,9 +68,10 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
             <NavigationMenuItem key={link.path}>
               <Link 
                 to={link.path}
-                className={`font-medium transition-colors duration-300 hover:text-chamGold flex items-center gap-1 px-2 py-1.5 ${
+                className={`font-medium transition-colors duration-300 hover:text-chamGold flex items-center gap-2 px-2 py-1.5 ${
                   scrolled ? 'text-chamDarkBlue' : 'text-white'
                 } ${location.pathname === link.path ? 'text-chamGold' : ''}`}
+                onClick={onLinkClick}
               >
                 {link.icon && <link.icon size={16} />}
                 {link.name}

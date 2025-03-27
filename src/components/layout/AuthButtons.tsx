@@ -27,7 +27,7 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
   }
 
   return (
-    <div className="flex items-center gap-2 ml-2">
+    <div className="flex items-center gap-4">
       <Link to="/login">
         <Button variant="outline" size="sm" className={
           scrolled 

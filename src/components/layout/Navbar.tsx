@@ -43,7 +43,7 @@ const Navbar = () => {
         <NavLogo scrolled={scrolled} />
         
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center">
+        <div className="hidden lg:flex items-center space-x-6">
           <NavLinks scrolled={scrolled} />
           
           {isAuthenticated ? (
