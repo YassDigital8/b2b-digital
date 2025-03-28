@@ -146,7 +146,7 @@ const AuthModal = ({
             <form onSubmit={handleSignUp}>
               <CardContent className="space-y-4 pt-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Travel Agency Name</Label>
                   <Input id="name" placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} className={errors.name ? "border-red-500" : ""} />
                   {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
@@ -160,7 +160,7 @@ const AuthModal = ({
                   
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="agency">Travel Agency Name</Label>
+                  <Label htmlFor="agency">AccelAero username</Label>
                   <Input id="agency" placeholder="Your agency name" value={agency} onChange={e => setAgency(e.target.value)} className={errors.agency ? "border-red-500" : ""} />
                   {errors.agency && <p className="text-red-500 text-sm">{errors.agency}</p>}
                 </div>
