@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 type Language = 'en' | 'ar';
 
@@ -7,6 +7,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  dir: 'ltr' | 'rtl';
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -77,14 +78,28 @@ export const translations = {
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+  const dir = language === 'ar' ? 'rtl' : 'ltr';
 
   // Translation function
   const t = (key: string): string => {
     return translations[key as keyof typeof translations]?.[language] || key;
   };
 
+  // Set dir attribute on document
+  useEffect(() => {
+    document.documentElement.dir = dir;
+    document.documentElement.lang = language;
+    
+    // Add RTL class for Tailwind
+    if (language === 'ar') {
+      document.documentElement.classList.add('rtl');
+    } else {
+      document.documentElement.classList.remove('rtl');
+    }
+  }, [language, dir]);
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, dir }}>
       {children}
     </LanguageContext.Provider>
   );

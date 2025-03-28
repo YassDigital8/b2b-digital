@@ -1,10 +1,14 @@
 
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Globe, MapPin, Phone, Mail } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Footer = () => {
+  const { dir, language } = useLanguage();
+  const isRTL = dir === 'rtl';
+  
   return (
-    <footer className="bg-chamDarkBlue text-white pt-16 pb-8">
+    <footer className="bg-chamDarkBlue text-white pt-16 pb-8" dir={dir}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div className="space-y-4">
@@ -14,11 +18,14 @@ const Footer = () => {
                 alt="Cham Wings Logo" 
                 className="h-10 w-auto"
               />
-              <span className="text-xl font-bold text-white">Travel Hub</span>
+              <span className="text-xl font-bold text-white">
+                {isRTL ? 'مركز السفر' : 'Travel Hub'}
+              </span>
             </div>
             <p className="text-gray-300 mt-4">
-              A premium B2B platform for Cham Wings travel agents to enhance travel experiences
-              and manage bookings seamlessly.
+              {isRTL 
+                ? 'منصة متميزة للشركات لوكلاء السفر أجنحة الشام لتعزيز تجارب السفر وإدارة الحجوزات بسلاسة.'
+                : 'A premium B2B platform for Cham Wings travel agents to enhance travel experiences and manage bookings seamlessly.'}
             </p>
             <div className="flex gap-4 mt-6">
               <a href="#" className="text-white hover:text-chamGold transition-colors" aria-label="Facebook">
@@ -37,70 +44,71 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
+            <h3 className="text-lg font-semibold mb-4">{isRTL ? 'الخدمات' : 'Services'}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/transportation" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Transportation
+                  {isRTL ? 'المواصلات' : 'Transportation'}
                 </Link>
               </li>
               <li>
                 <Link to="/top-up" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Account Top Up
+                  {isRTL ? 'شحن الحساب' : 'Account Top Up'}
                 </Link>
               </li>
               <li>
                 <Link to="/interline" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Interline Booking
+                  {isRTL ? 'حجز الخطوط المشتركة' : 'Interline Booking'}
                 </Link>
               </li>
               <li>
                 <Link to="#" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Business Class Benefits
+                  {isRTL ? 'مزايا درجة رجال الأعمال' : 'Business Class Benefits'}
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">{isRTL ? 'روابط سريعة' : 'Quick Links'}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Home
+                  {isRTL ? 'الرئيسية' : 'Home'}
                 </Link>
               </li>
               <li>
                 <Link to="/login" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Login
+                  {isRTL ? 'تسجيل الدخول' : 'Login'}
                 </Link>
               </li>
               <li>
                 <Link to="/signup" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Register
+                  {isRTL ? 'إنشاء حساب' : 'Register'}
                 </Link>
               </li>
               <li>
                 <Link to="/dashboard" className="text-gray-300 hover:text-chamGold transition-colors">
-                  Dashboard
+                  {isRTL ? 'لوحة التحكم' : 'Dashboard'}
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <h3 className="text-lg font-semibold mb-4">{isRTL ? 'اتصل بنا' : 'Contact'}</h3>
             <ul className="space-y-4">
               <li className="flex gap-3 items-start">
                 <MapPin size={20} className="text-chamGold shrink-0 mt-1" />
                 <span className="text-gray-300">
-                  Cham Wings Airlines Headquarters,<br />
-                  Damascus, Syria
+                  {isRTL 
+                    ? 'مقر شركة أجنحة الشام للطيران،\nدمشق، سوريا'
+                    : 'Cham Wings Airlines Headquarters,\nDamascus, Syria'}
                 </span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone size={20} className="text-chamGold shrink-0" />
-                <span className="text-gray-300">+963 11 2335030</span>
+                <span className="text-gray-300" dir="ltr">+963 11 2335030</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Mail size={20} className="text-chamGold shrink-0" />
@@ -112,7 +120,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-800 pt-8 mt-8 text-center">
           <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Cham Wings Airlines Travel Hub. All rights reserved.
+            &copy; {new Date().getFullYear()} {isRTL ? 'مركز سفر أجنحة الشام للطيران. جميع الحقوق محفوظة.' : 'Cham Wings Airlines Travel Hub. All rights reserved.'}
           </p>
         </div>
       </div>

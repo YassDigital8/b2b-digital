@@ -2,9 +2,13 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Hero = () => {
+  const { language, t, dir } = useLanguage();
+  const isRTL = dir === 'rtl';
+  
   return (
     <section className="relative min-h-screen bg-hero-pattern bg-cover bg-center flex items-center">
       <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/80 to-chamDarkBlue/40 backdrop-blur-sm"></div>
@@ -14,7 +18,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto md:mx-0"
+          className={`max-w-3xl ${isRTL ? 'mr-0 ml-auto text-right' : 'mx-0 md:mx-0'}`}
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -22,7 +26,9 @@ const Hero = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="inline-block px-4 py-1 mb-6 bg-chamGold/20 backdrop-blur-sm border border-chamGold/30 rounded-full"
           >
-            <span className="text-white font-medium text-sm">Cham Wings Travel Hub for B2B Partners</span>
+            <span className="text-white font-medium text-sm">
+              {isRTL ? 'مركز سفر أجنحة الشام للشركاء' : 'Cham Wings Travel Hub for B2B Partners'}
+            </span>
           </motion.div>
           
           <motion.h1
@@ -31,7 +37,7 @@ const Hero = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight"
           >
-            Enhance Travel Experiences with Cham Wings
+            {isRTL ? 'تحسين تجارب السفر مع أجنحة الشام' : 'Enhance Travel Experiences with Cham Wings'}
           </motion.h1>
           
           <motion.p
@@ -40,8 +46,9 @@ const Hero = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-lg text-gray-200 mb-8 max-w-2xl"
           >
-            A premium B2B platform for travel agents to manage bookings, arrange transportation, 
-            top up accounts, and provide exceptional services to travelers.
+            {isRTL 
+              ? 'منصة متميزة للشركات لوكلاء السفر لإدارة الحجوزات وترتيب وسائل النقل وشحن الحسابات وتقديم خدمات استثنائية للمسافرين.' 
+              : 'A premium B2B platform for travel agents to manage bookings, arrange transportation, top up accounts, and provide exceptional services to travelers.'}
           </motion.p>
           
           <motion.div
@@ -52,13 +59,13 @@ const Hero = () => {
           >
             <Link to="/signup">
               <Button size="lg" className="bg-chamGold hover:bg-chamGold/90 text-white">
-                Get Started
-                <ChevronRight className="ml-2 h-4 w-4" />
+                {isRTL ? 'ابدأ الآن' : 'Get Started'}
+                {isRTL ? <ChevronLeft className="mr-2 h-4 w-4" /> : <ChevronRight className="ml-2 h-4 w-4" />}
               </Button>
             </Link>
             <Link to="/login">
               <Button size="lg" variant="outline" className="border-white hover:bg-white/10">
-                Sign In
+                {isRTL ? 'تسجيل الدخول' : 'Sign In'}
               </Button>
             </Link>
           </motion.div>
