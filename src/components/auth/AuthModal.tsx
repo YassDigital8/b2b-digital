@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
@@ -8,12 +8,28 @@ import { SignUpForm } from './forms/SignUpForm';
 
 interface AuthModalProps {
   defaultTab?: string;
+  onTabChange?: (tab: string) => void;
 }
 
 const AuthModal = ({
-  defaultTab = 'login'
+  defaultTab = 'login',
+  onTabChange
 }: AuthModalProps) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (onTabChange) {
+      onTabChange(value);
+    }
+  };
+
+  // Initialize with default tab
+  useEffect(() => {
+    if (defaultTab !== activeTab) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab]);
 
   return (
     <motion.div 
@@ -42,7 +58,7 @@ const AuthModal = ({
             }
           </CardDescription>
         </CardHeader>
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="px-6">
             <TabsList className="grid w-full grid-cols-2 mb-4">
               <TabsTrigger value="login">Sign In</TabsTrigger>
