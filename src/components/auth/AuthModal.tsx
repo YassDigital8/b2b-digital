@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,11 +46,9 @@ const AuthModal = ({
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Login form state
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-  // Sign Up form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [agency, setAgency] = useState('');
@@ -59,7 +56,6 @@ const AuthModal = ({
   const [phoneCode, setPhoneCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // Form validation state
   const [errors, setErrors] = useState<Record<string, string>>({});
   const {
     login,
@@ -109,7 +105,7 @@ const AuthModal = ({
       await signUp({
         name,
         email,
-        password: '', // Password will be generated automatically
+        password: '',
         agency,
         country,
         phone: `${phoneCode}${phoneNumber}`
@@ -122,7 +118,6 @@ const AuthModal = ({
     }
   };
 
-  // Update phone code when country changes
   const handleCountryChange = (value: string) => {
     setCountry(value);
     const countryData = COUNTRY_CODES.find(c => c.country === value);
@@ -212,7 +207,7 @@ const AuthModal = ({
                     <SelectTrigger id="country" className={errors.country ? "border-red-500" : ""}>
                       <SelectValue placeholder="Select your country" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent enableSearch={true}>
                       {COUNTRIES.map(c => <SelectItem key={c} value={c}>
                           {c}
                         </SelectItem>)}
@@ -228,9 +223,9 @@ const AuthModal = ({
                         <SelectTrigger id="phone-code" className={errors.phoneCode ? "border-red-500" : ""}>
                           <SelectValue placeholder="Code" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent enableSearch={true}>
                           {COUNTRY_CODES.map(c => <SelectItem key={c.code} value={c.code}>
-                            {c.code}
+                            {c.code} - {c.country}
                           </SelectItem>)}
                         </SelectContent>
                       </Select>
