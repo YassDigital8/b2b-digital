@@ -29,24 +29,22 @@ const SignUp = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center pt-24 pb-20 bg-gradient-to-br from-white via-chamGray to-white">
+      <main className="flex-grow flex items-center justify-center py-20 bg-gradient-to-b from-chamGray to-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               className="max-w-md"
             >
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-chamBlue mb-6 leading-tight">
-                Join Cham Wings <span className="text-chamGold">Travel Hub</span>
-              </h1>
-              <p className="text-gray-600 mb-8 text-lg">
+              <h1 className="text-3xl md:text-4xl font-bold text-chamDarkBlue mb-4">Join Cham Wings Travel Hub</h1>
+              <p className="text-gray-600 mb-8">
                 Create your travel agent account to access our exclusive B2B services.
-                Already have an account? <Link to="/login" className="text-chamBlue hover:text-chamGold transition-colors font-medium underline underline-offset-4">Sign in</Link>.
+                Already have an account? <Link to="/login" className="text-chamBlue hover:text-chamGold">Sign in</Link>.
               </p>
               
-              <div className="space-y-4 bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+              <div className="space-y-3">
                 {benefits.map((benefit, index) => (
                   <motion.div
                     key={index}
@@ -62,17 +60,7 @@ const SignUp = () => {
               </div>
             </motion.div>
             
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="w-full max-w-md"
-            >
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-white to-chamBlue/10 rounded-xl blur-lg"></div>
-                <AuthModal defaultTab="register" />
-              </div>
-            </motion.div>
+            <AuthModal defaultTab="register" />
           </div>
         </div>
       </main>
