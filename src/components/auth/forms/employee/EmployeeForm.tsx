@@ -43,20 +43,6 @@ export const EmployeeForm = ({
       
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor={`employee-${index}-name`}>Employee Name</Label>
-          <Input
-            id={`employee-${index}-name`}
-            value={employee.name}
-            onChange={(e) => onUpdate(index, 'name', e.target.value)}
-            placeholder="Full Name"
-            className={errors[`employee-${index}-name`] ? "border-red-500" : ""}
-          />
-          {errors[`employee-${index}-name`] && (
-            <p className="text-red-500 text-sm">{errors[`employee-${index}-name`]}</p>
-          )}
-        </div>
-        
-        <div className="space-y-2">
           <Label htmlFor={`employee-${index}-email`}>Employee Email</Label>
           <Input
             id={`employee-${index}-email`}

@@ -48,7 +48,6 @@ export const COUNTRY_CODES = [
 ];
 
 export interface EmployeeData {
-  name: string;
   email: string;
   role: string;
   phoneCode: string;
@@ -64,7 +63,6 @@ export const EMPLOYEE_ROLES = [
 ];
 
 export const EMPTY_EMPLOYEE: EmployeeData = {
-  name: '',
   email: '',
   role: 'agent',
   phoneCode: '',
