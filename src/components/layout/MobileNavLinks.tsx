@@ -1,7 +1,6 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { navLinks } from './navData';
-import { useLanguage } from '@/context/LanguageContext';
 
 interface MobileNavLinksProps {
   onLinkClick?: () => void;
@@ -9,7 +8,6 @@ interface MobileNavLinksProps {
 
 export const MobileNavLinks = ({ onLinkClick }: MobileNavLinksProps) => {
   const location = useLocation();
-  const { t } = useLanguage();
 
   return (
     <ul className="flex flex-col gap-4">
@@ -20,7 +18,7 @@ export const MobileNavLinks = ({ onLinkClick }: MobileNavLinksProps) => {
             <li key={link.path} className="mb-2">
               <div className="font-medium text-chamDarkBlue mb-2 flex items-center gap-2">
                 {link.icon && <link.icon size={18} />}
-                {t(link.translationKey)}
+                {link.name}
               </div>
               <ul className="pl-6 space-y-2">
                 {link.dropdownItems.map((item) => (
@@ -31,7 +29,7 @@ export const MobileNavLinks = ({ onLinkClick }: MobileNavLinksProps) => {
                       onClick={onLinkClick}
                     >
                       {item.icon && <item.icon size={16} />}
-                      {t(item.translationKey)}
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -53,7 +51,7 @@ export const MobileNavLinks = ({ onLinkClick }: MobileNavLinksProps) => {
               onClick={onLinkClick}
             >
               {link.icon && <link.icon size={18} />}
-              {t(link.translationKey)}
+              {link.name}
             </Link>
           </li>
         );

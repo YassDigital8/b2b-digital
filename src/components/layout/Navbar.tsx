@@ -9,15 +9,12 @@ import { NavLinks } from './NavLinks';
 import { UserMenu } from './UserMenu';
 import { AuthButtons } from './AuthButtons';
 import { MobileMenu } from './MobileMenu';
-import { LanguageSwitcher } from './LanguageSwitcher';
-import { useLanguage } from '@/context/LanguageContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
   const location = useLocation();
-  const { language, dir } = useLanguage();
   
   const closeMenu = () => setIsOpen(false);
   
@@ -41,15 +38,13 @@ const Navbar = () => {
   }, [location]);
   
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`} dir={dir}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
       <nav className="container mx-auto px-4 flex justify-between items-center">
         <NavLogo scrolled={scrolled} />
         
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-6">
           <NavLinks scrolled={scrolled} />
-          
-          <LanguageSwitcher />
           
           {isAuthenticated ? (
             <UserMenu />

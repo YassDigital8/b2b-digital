@@ -1,14 +1,11 @@
 
 import { Link } from 'react-router-dom';
-import { useLanguage } from '@/context/LanguageContext';
 
 interface NavLogoProps {
   scrolled: boolean;
 }
 
 export const NavLogo = ({ scrolled }: NavLogoProps) => {
-  const { t } = useLanguage();
-  
   return (
     <Link to="/" className="flex items-center gap-2">
       <img 
@@ -17,7 +14,7 @@ export const NavLogo = ({ scrolled }: NavLogoProps) => {
         className="h-10 w-auto" 
       />
       <span className={`text-xl font-bold transition-colors duration-300 ${scrolled ? 'text-chamBlue' : 'text-white'}`}>
-        {t('brand.name')}
+        Travel Hub
       </span>
     </Link>
   );

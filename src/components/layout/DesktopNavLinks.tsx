@@ -1,7 +1,6 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { navLinks } from './navData';
-import { useLanguage } from '@/context/LanguageContext';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,7 +17,6 @@ interface DesktopNavLinksProps {
 
 export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps) => {
   const location = useLocation();
-  const { t } = useLanguage();
 
   return (
     <NavigationMenu className="hidden lg:flex">
@@ -35,7 +33,7 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
                 >
                   <div className="flex items-center gap-1">
                     {link.icon && <link.icon size={16} />}
-                    {t(link.translationKey)}
+                    {link.name}
                   </div>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -50,7 +48,7 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
                           >
                             <div className="flex items-center gap-2 text-sm font-medium leading-none">
                               {item.icon && <item.icon size={18} className="text-chamGold" />}
-                              {t(item.translationKey)}
+                              {item.name}
                             </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                               {item.description}
@@ -76,7 +74,7 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
                 onClick={onLinkClick}
               >
                 {link.icon && <link.icon size={16} />}
-                {t(link.translationKey)}
+                {link.name}
               </Link>
             </NavigationMenuItem>
           );
