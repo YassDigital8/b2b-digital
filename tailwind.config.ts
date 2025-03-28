@@ -87,7 +87,7 @@ export default defineConfig({
   },
   plugins: [
     tailwindAnimate,
-    function({ addUtilities }) {
+    function({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
       const newUtilities = {
         '.rtl': {
           direction: 'rtl',
