@@ -42,7 +42,7 @@ const SignUp = () => {
                 <span className="text-chamGold">Join</span>{' '}
                 <span className="text-chamBlue">Cham Wings</span>
                 <br />
-                <span className="text-chamBlue font-display italic tracking-wide">
+                <span className="text-chamBlue font-display italic tracking-wide font-bold">
                   Travel Hub
                 </span>
               </h1>
