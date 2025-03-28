@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -19,6 +20,7 @@ interface UserMenuProps {
 
 export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
 
   const handleLogout = () => {
     logout();
@@ -29,16 +31,16 @@ export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
     return (
       <div className="mt-4 pt-4 border-t border-gray-100">
         <Link to="/dashboard" className="block py-2 text-chamDarkBlue" onClick={onLogout}>
-          Dashboard
+          {t('user.dashboard')}
         </Link>
         <Link to="/profile" className="block py-2 text-chamDarkBlue" onClick={onLogout}>
-          Profile
+          {t('user.profile')}
         </Link>
         <button
           onClick={handleLogout}
           className="block w-full text-left py-2 text-red-500"
         >
-          Log out
+          {t('user.logout')}
         </button>
       </div>
     );
@@ -59,13 +61,13 @@ export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
         <DropdownMenuItem asChild>
           <Link to="/dashboard" className="cursor-pointer w-full flex items-center">
             <User className="mr-2 h-4 w-4" />
-            <span>Dashboard</span>
+            <span>{t('user.dashboard')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/profile" className="cursor-pointer w-full flex items-center">
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>{t('user.profile')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -74,7 +76,7 @@ export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
           className="cursor-pointer text-red-500 focus:text-red-500"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>{t('user.logout')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
