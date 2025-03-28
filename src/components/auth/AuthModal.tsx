@@ -9,13 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from 'framer-motion';
-
 interface AuthModalProps {
   defaultTab?: string;
 }
-
 const COUNTRIES = ['United Arab Emirates', 'Syria', 'Lebanon', 'Jordan', 'Kuwait', 'Saudi Arabia', 'Qatar', 'Iraq', 'Egypt', 'Sudan', 'Other'];
-
 const AuthModal = ({
   defaultTab = 'login'
 }: AuthModalProps) => {
@@ -41,7 +38,6 @@ const AuthModal = ({
     signUp
   } = useAuth();
   const navigate = useNavigate();
-
   const validateLoginForm = () => {
     const newErrors: Record<string, string> = {};
     if (!loginEmail) newErrors.loginEmail = 'Email is required';
@@ -49,19 +45,17 @@ const AuthModal = ({
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const validateSignUpForm = () => {
     const newErrors: Record<string, string> = {};
     if (!name) newErrors.name = 'Full name is required';
     if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required'; else if (password.length < 8) newErrors.password = 'Password must be at least 8 characters';
+    if (!password) newErrors.password = 'Password is required';else if (password.length < 8) newErrors.password = 'Password must be at least 8 characters';
     if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     if (!agency) newErrors.agency = 'Agency name is required';
     if (!country) newErrors.country = 'Country is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateLoginForm()) return;
@@ -75,7 +69,6 @@ const AuthModal = ({
       setIsSubmitting(false);
     }
   };
-
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateSignUpForm()) return;
@@ -95,7 +88,6 @@ const AuthModal = ({
       setIsSubmitting(false);
     }
   };
-
   return <motion.div initial={{
     opacity: 0,
     y: 20
@@ -168,7 +160,7 @@ const AuthModal = ({
                   
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="agency">AccelAero username</Label>
+                  <Label htmlFor="agency">AccelAero Username</Label>
                   <Input id="agency" placeholder="Your AccelAero Sign Username" value={agency} onChange={e => setAgency(e.target.value)} className={errors.agency ? "border-red-500" : ""} />
                   {errors.agency && <p className="text-red-500 text-sm">{errors.agency}</p>}
                 </div>
@@ -201,5 +193,4 @@ const AuthModal = ({
       </Card>
     </motion.div>;
 };
-
 export default AuthModal;
