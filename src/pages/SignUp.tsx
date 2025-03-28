@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -43,7 +44,10 @@ const SignUp = () => {
                 <>
                   <h1 className="text-3xl md:text-4xl font-bold text-chamDarkBlue mb-6">
                     <span className="bg-gradient-to-r from-chamBlue to-chamDarkBlue bg-clip-text text-transparent">
-                      Join Cham Wings<br />
+                      Join Cham Wings
+                    </span>
+                    <br />
+                    <span className="bg-gradient-to-r from-chamBlue to-chamDarkBlue bg-clip-text text-transparent">
                       Travel Hub
                     </span>
                   </h1>
