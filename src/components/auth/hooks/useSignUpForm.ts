@@ -1,57 +1,59 @@
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { EmployeeData, EMPTY_EMPLOYEE } from '../utils/authConstants';
-import { validateSignUpForm, SignUpFormData } from '../utils/formValidation';
 
 interface UseSignUpFormProps {
   onSuccess?: () => void;
 }
 
+// Define schema for the form
+const signUpFormSchema = z.object({
+  name: z.string().min(1, { message: 'Agency name is required' }),
+  email: z.string().email({ message: 'Valid email is required' }),
+  agency: z.string().min(1, { message: 'AccelAero username is required' }),
+  country: z.string().min(1, { message: 'Country is required' }),
+  phoneCode: z.string().min(1, { message: 'Country code is required' }),
+  phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+});
+
+export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
+
 export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [agency, setAgency] = useState('');
-  const [country, setCountry] = useState('');
-  const [phoneCode, setPhoneCode] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [hasEmployees, setHasEmployees] = useState(false);
   const [employees, setEmployees] = useState<EmployeeData[]>([]);
   
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const formData: SignUpFormData = {
-      name,
-      email,
-      agency,
-      country,
-      phoneCode,
-      phoneNumber,
-      hasEmployees,
-      employees
-    };
-    
-    const validationErrors = validateSignUpForm(formData);
-    setErrors(validationErrors);
-    
-    if (Object.keys(validationErrors).length > 0) return;
-    
-    setIsSubmitting(true);
+  const form = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      agency: '',
+      country: '',
+      phoneCode: '',
+      phoneNumber: '',
+    },
+  });
+
+  const { formState } = form;
+  const { errors, isSubmitting } = formState;
+
+  const handleSubmit = async (data: SignUpFormValues) => {
     try {
       await signUp({
-        name,
-        email,
+        name: data.name,
+        email: data.email,
         password: '',
-        agency,
-        country,
-        phone: `${phoneCode}${phoneNumber}`,
+        agency: data.agency,
+        country: data.country,
+        phone: `${data.phoneCode}${data.phoneNumber}`,
         employees: hasEmployees ? employees.map(employee => ({
           ...employee,
           phone: `${employee.phoneCode}${employee.phoneNumber}`
@@ -64,8 +66,6 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       }
     } catch (error) {
       console.error('Sign up failed:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -91,25 +91,14 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
   };
 
   return {
+    form,
     formState: {
-      name,
-      email,
-      agency,
-      country,
-      phoneCode,
-      phoneNumber,
       hasEmployees,
       employees,
       isSubmitting,
       errors
     },
-    setName,
-    setEmail,
-    setAgency,
-    setCountry,
-    setPhoneCode,
-    setPhoneNumber,
-    handleSubmit,
+    handleSubmit: form.handleSubmit(handleSubmit),
     addEmployee,
     removeEmployee,
     updateEmployee,

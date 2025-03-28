@@ -1,7 +1,12 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { User, AuthContextType, SignUpData } from './types';
+import { 
+  User, 
+  AuthContextType, 
+  SignUpData,
+  LoginFormValues
+} from './types';
 import { 
   getUserFromStorage, 
   saveUserToStorage, 
@@ -32,7 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (formData: LoginFormValues) => {
+    const { email, password } = formData;
     setIsLoading(true);
     
     try {

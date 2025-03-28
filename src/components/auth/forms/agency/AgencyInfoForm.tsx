@@ -1,141 +1,155 @@
 
 import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { SignUpFormValues } from '../../hooks/useSignUpForm';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { COUNTRIES, COUNTRY_CODES } from '../../utils/authConstants';
 
 interface AgencyInfoFormProps {
-  name: string;
-  email: string;
-  agency: string;
-  country: string;
-  phoneCode: string;
-  phoneNumber: string;
-  errors: Record<string, string>;
-  onNameChange: (value: string) => void;
-  onEmailChange: (value: string) => void;
-  onAgencyChange: (value: string) => void;
-  onCountryChange: (value: string) => void;
-  onPhoneCodeChange: (value: string) => void;
-  onPhoneNumberChange: (value: string) => void;
+  form: UseFormReturn<SignUpFormValues>;
+  errors: Record<string, any>;
 }
 
 export const AgencyInfoForm: React.FC<AgencyInfoFormProps> = ({
-  name,
-  email,
-  agency,
-  country,
-  phoneCode,
-  phoneNumber,
-  errors,
-  onNameChange,
-  onEmailChange,
-  onAgencyChange,
-  onCountryChange,
-  onPhoneCodeChange,
-  onPhoneNumberChange
+  form,
+  errors
 }) => {
   const handleCountryChange = (value: string) => {
-    onCountryChange(value);
+    form.setValue('country', value);
     const countryData = COUNTRY_CODES.find(c => c.country === value);
     if (countryData) {
-      onPhoneCodeChange(countryData.code);
+      form.setValue('phoneCode', countryData.code);
     }
   };
 
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Travel Agency Name</Label>
-        <Input 
-          id="name" 
-          placeholder="Your Office Name" 
-          value={name} 
-          onChange={e => onNameChange(e.target.value)} 
-          className={errors.name ? "border-red-500" : ""} 
-        />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-      </div>
+      <FormField
+        control={form.control}
+        name="name"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Travel Agency Name</FormLabel>
+            <FormControl>
+              <Input placeholder="Your Office Name" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="signup-email">Email</Label>
-        <Input 
-          id="signup-email" 
-          type="email" 
-          placeholder="your@email.com" 
-          value={email} 
-          onChange={e => onEmailChange(e.target.value)} 
-          className={errors.email ? "border-red-500" : ""} 
-        />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-        <p className="text-xs text-muted-foreground">
-          Your password will be generated automatically and sent to this email.
-        </p>
-      </div>
+      <FormField
+        control={form.control}
+        name="email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input type="email" placeholder="your@email.com" {...field} />
+            </FormControl>
+            <FormMessage />
+            <p className="text-xs text-muted-foreground">
+              Your password will be generated automatically and sent to this email.
+            </p>
+          </FormItem>
+        )}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="agency">AccelAero Username</Label>
-        <Input 
-          id="agency" 
-          placeholder="Your AccelAero Sign Username" 
-          value={agency} 
-          onChange={e => onAgencyChange(e.target.value)} 
-          className={errors.agency ? "border-red-500" : ""} 
-        />
-        {errors.agency && <p className="text-red-500 text-sm">{errors.agency}</p>}
-      </div>
+      <FormField
+        control={form.control}
+        name="agency"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>AccelAero Username</FormLabel>
+            <FormControl>
+              <Input placeholder="Your AccelAero Sign Username" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="country">POS | Point of Sale</Label>
-        <Select value={country} onValueChange={handleCountryChange}>
-          <SelectTrigger id="country" className={errors.country ? "border-red-500" : ""}>
-            <SelectValue placeholder="Select your country" />
-          </SelectTrigger>
-          <SelectContent enableSearch={true}>
-            {COUNTRIES.map(c => (
-              <SelectItem key={c} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="phone">Phone Number</Label>
-        <div className="flex gap-2">
-          <div className="w-1/3">
-            <Select value={phoneCode} onValueChange={onPhoneCodeChange}>
-              <SelectTrigger id="phone-code" className={errors.phoneCode ? "border-red-500" : ""}>
-                <SelectValue placeholder="Code" />
-              </SelectTrigger>
+      <FormField
+        control={form.control}
+        name="country"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>POS | Point of Sale</FormLabel>
+            <Select 
+              value={field.value} 
+              onValueChange={handleCountryChange}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your country" />
+                </SelectTrigger>
+              </FormControl>
               <SelectContent enableSearch={true}>
-                {COUNTRY_CODES.map(c => (
-                  <SelectItem key={c.code} value={c.code}>
-                    {c.code} - {c.country}
+                {COUNTRIES.map(c => (
+                  <SelectItem key={c} value={c}>
+                    {c}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <div className="space-y-2">
+        <FormLabel>Phone Number</FormLabel>
+        <div className="flex gap-2">
+          <div className="w-1/3">
+            <FormField
+              control={form.control}
+              name="phoneCode"
+              render={({ field }) => (
+                <FormItem>
+                  <Select 
+                    value={field.value} 
+                    onValueChange={field.onChange}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Code" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent enableSearch={true}>
+                      {COUNTRY_CODES.map(c => (
+                        <SelectItem key={c.code} value={c.code}>
+                          {c.code} - {c.country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <div className="w-2/3">
-            <Input 
-              id="phone-number" 
-              type="tel" 
-              placeholder="Phone number"
-              value={phoneNumber}
-              onChange={e => onPhoneNumberChange(e.target.value.replace(/\D/g, ''))}
-              className={errors.phoneNumber ? "border-red-500" : ""}
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input 
+                      type="tel" 
+                      placeholder="Phone number"
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value.replace(/\D/g, ''))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
         </div>
-        {(errors.phoneCode || errors.phoneNumber) && (
-          <p className="text-red-500 text-sm">
-            {errors.phoneCode || errors.phoneNumber}
-          </p>
-        )}
       </div>
     </div>
   );

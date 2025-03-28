@@ -11,11 +11,16 @@ export interface User {
   managerId?: string;
 }
 
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
 export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (formData: LoginFormValues) => Promise<void>;
   signUp: (userData: SignUpData) => Promise<void>;
   logout: () => void;
 }
