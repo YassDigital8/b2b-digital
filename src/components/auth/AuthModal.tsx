@@ -15,7 +15,7 @@ interface AuthModalProps {
   defaultTab?: string;
 }
 
-const COUNTRIES = ['United Arab Emirates', 'Syria', 'Lebanon', 'Jordan', 'Kuwait', 'Saudi Arabia', 'Qatar', 'Iraq', 'Egypt', 'Sudan', 'Other'];
+const COUNTRIES = ['United Arab Emirates', 'Syria', 'Lebanon', 'Jordan', 'Kuwait', 'Saudi Arabia', 'Qatar', 'Iraq', 'Egypt', 'Sudan', 'Bahrain', 'Oman', 'Yemen', 'Libya', 'Algeria', 'Morocco', 'Tunisia', 'Palestine', 'Turkey', 'Iran', 'Other'];
 
 const COUNTRY_CODES = [
   { country: 'United Arab Emirates', code: '+971' },
@@ -28,6 +28,16 @@ const COUNTRY_CODES = [
   { country: 'Iraq', code: '+964' },
   { country: 'Egypt', code: '+20' },
   { country: 'Sudan', code: '+249' },
+  { country: 'Bahrain', code: '+973' },
+  { country: 'Oman', code: '+968' },
+  { country: 'Yemen', code: '+967' },
+  { country: 'Libya', code: '+218' },
+  { country: 'Algeria', code: '+213' },
+  { country: 'Morocco', code: '+212' },
+  { country: 'Tunisia', code: '+216' },
+  { country: 'Palestine', code: '+970' },
+  { country: 'Turkey', code: '+90' },
+  { country: 'Iran', code: '+98' },
   { country: 'Other', code: '+' },
 ];
 
