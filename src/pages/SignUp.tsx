@@ -39,8 +39,10 @@ const SignUp = () => {
               className="max-w-md"
             >
               <h1 className="text-3xl md:text-4xl font-bold text-chamDarkBlue mb-6">
+                <span className="text-chamGold">Join</span>
+                <br />
                 <span className="bg-gradient-to-r from-chamBlue to-chamDarkBlue bg-clip-text text-transparent">
-                  Join Cham Wings Travel Hub
+                  Cham Wings Travel Hub
                 </span>
               </h1>
               
