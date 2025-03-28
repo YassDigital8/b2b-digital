@@ -46,3 +46,23 @@ export const COUNTRY_CODES = [
   { country: 'Iran', code: '+98' },
   { country: 'Other', code: '+' },
 ];
+
+export interface EmployeeData {
+  name: string;
+  email: string;
+  role: string;
+}
+
+export const EMPLOYEE_ROLES = [
+  { value: 'agent', label: 'Booking Agent' },
+  { value: 'accountant', label: 'Accountant' },
+  { value: 'manager', label: 'Manager' },
+  { value: 'supervisor', label: 'Supervisor' },
+  { value: 'other', label: 'Other' }
+];
+
+export const EMPTY_EMPLOYEE: EmployeeData = {
+  name: '',
+  email: '',
+  role: 'agent'
+};

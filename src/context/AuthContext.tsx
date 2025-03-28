@@ -1,16 +1,18 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { EmployeeData } from '@/components/auth/utils/authConstants';
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'agent' | 'admin';
+  role: 'agent' | 'admin' | 'manager' | 'accountant' | 'supervisor' | 'other';
   agency?: string;
   country?: string;
   phone?: string;
   balance: number;
+  managerId?: string;
 }
 
 interface AuthContextType {
@@ -29,6 +31,7 @@ interface SignUpData {
   agency: string;
   country: string;
   phone?: string;
+  employees?: EmployeeData[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -146,20 +149,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // In a real app, you would send an email with the generated password here
       console.log(`Generated password for ${userData.email}: ${generatedPassword}`);
       
-      // Notify user about password email
-      toast.success('Account created! Check your email for your password.');
-
       // Create new user (in a real app, this would be handled by the backend)
+      const newUserId = `${MOCK_USERS.length + 1}`;
       const newUser: User = {
-        id: `${MOCK_USERS.length + 1}`,
+        id: newUserId,
         email: userData.email,
         name: userData.name,
-        role: 'agent',
+        role: 'manager', // Set the main account as a manager role
         agency: userData.agency,
         country: userData.country,
         phone: userData.phone,
         balance: 0
       };
+
+      // Handle employee accounts if they exist
+      if (userData.employees && userData.employees.length > 0) {
+        // In a real implementation, we would create accounts for employees here
+        // and send them emails with their login credentials
+        
+        // Log the employee accounts for demonstration
+        userData.employees.forEach((employee, index) => {
+          const employeePassword = Math.random().toString(36).slice(-8);
+          console.log(`Created employee account for ${employee.name} (${employee.email})`);
+          console.log(`Generated password for ${employee.email}: ${employeePassword}`);
+          
+          // In a real app, these would be saved to the database
+          // For now, we'll just log them
+        });
+        
+        // Show a success toast that includes info about employee accounts
+        toast.success(
+          `Account created! ${userData.employees.length} employee account${
+            userData.employees.length > 1 ? 's' : ''
+          } also created. Check email for login details.`
+        );
+      } else {
+        // Notify user about password email (only for the main account)
+        toast.success('Account created! Check your email for your password.');
+      }
 
       // In a real app, we would save this to the backend
       setUser(newUser);
