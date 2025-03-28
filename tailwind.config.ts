@@ -82,21 +82,21 @@ export default defineConfig({
       },
       boxShadow: {
         'soft': '0 10px 30px rgba(0, 0, 0, 0.05)',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
       },
     },
   },
   plugins: [
     tailwindAnimate,
-    function({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
-      const newUtilities = {
+    function({ addUtilities }) {
+      addUtilities({
         '.rtl': {
           direction: 'rtl',
         },
         '.ltr': {
           direction: 'ltr',
         },
-      };
-      addUtilities(newUtilities);
+      });
     },
   ],
 });
