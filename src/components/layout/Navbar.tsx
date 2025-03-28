@@ -18,8 +18,24 @@ const Navbar = () => {
   
   const closeMenu = () => setIsOpen(false);
   
+  // Check if the current path is a light background page
+  const isLightBackgroundPage = () => {
+    const lightBackgroundPaths = ['/login', '/signup'];
+    return lightBackgroundPaths.includes(location.pathname);
+  };
+  
+  // Set initial scrolled state based on the page path
+  useEffect(() => {
+    setScrolled(isLightBackgroundPage());
+  }, [location.pathname]);
+  
   // Handle scroll event for navbar styling
   useEffect(() => {
+    if (isLightBackgroundPage()) {
+      setScrolled(true);
+      return;
+    }
+    
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setScrolled(true);
@@ -30,7 +46,7 @@ const Navbar = () => {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
   
   // Close menu when location changes
   useEffect(() => {
@@ -56,7 +72,7 @@ const Navbar = () => {
         {/* Mobile menu button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-chamBlue p-2"
+          className={`lg:hidden p-2 ${scrolled ? 'text-chamBlue' : 'text-white'}`}
           aria-label="Toggle menu"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
