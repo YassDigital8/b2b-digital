@@ -44,8 +44,6 @@ const AuthModal = ({
   // Sign Up form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [agency, setAgency] = useState('');
   const [country, setCountry] = useState('');
   const [phoneCode, setPhoneCode] = useState('');
@@ -71,8 +69,6 @@ const AuthModal = ({
     const newErrors: Record<string, string> = {};
     if (!name) newErrors.name = 'Full name is required';
     if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';else if (password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-    if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     if (!agency) newErrors.agency = 'Agency name is required';
     if (!country) newErrors.country = 'Country is required';
     if (!phoneCode) newErrors.phoneCode = 'Country code is required';
@@ -103,7 +99,7 @@ const AuthModal = ({
       await signUp({
         name,
         email,
-        password,
+        password: '', // Password will be generated automatically
         agency,
         country,
         phone: `${phoneCode}${phoneNumber}`
@@ -191,18 +187,9 @@ const AuthModal = ({
                   <Label htmlFor="signup-email">Email</Label>
                   <Input id="signup-email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className={errors.email ? "border-red-500" : ""} />
                   {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input id="signup-password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} className={errors.password ? "border-red-500" : ""} />
-                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input id="confirm-password" type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className={errors.confirmPassword ? "border-red-500" : ""} />
-                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Your password will be generated automatically and sent to this email.
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="agency">AccelAero Username</Label>

@@ -25,7 +25,7 @@ interface AuthContextType {
 interface SignUpData {
   name: string;
   email: string;
-  password: string;
+  password?: string; // Made optional since it will be auto-generated
   agency: string;
   country: string;
   phone?: string;
@@ -140,6 +140,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Email already in use');
       }
 
+      // Generate a random password (in a real app, this would be done server-side)
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      
+      // In a real app, you would send an email with the generated password here
+      console.log(`Generated password for ${userData.email}: ${generatedPassword}`);
+      
+      // Notify user about password email
+      toast.success('Account created! Check your email for your password.');
+
       // Create new user (in a real app, this would be handled by the backend)
       const newUser: User = {
         id: `${MOCK_USERS.length + 1}`,
@@ -155,7 +164,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // In a real app, we would save this to the backend
       setUser(newUser);
       localStorage.setItem('chamWingsUser', JSON.stringify(newUser));
-      toast.success('Account created successfully!');
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
