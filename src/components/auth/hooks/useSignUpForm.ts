@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { EmployeeData, EMPTY_EMPLOYEE } from '../utils/authConstants';
+import { toast } from 'sonner';
 
 interface UseSignUpFormProps {
   onSuccess?: () => void;
@@ -47,6 +48,47 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
 
   const handleSubmit = async (data: SignUpFormValues) => {
     try {
+      // Prepare emails array (main user + employees)
+      const emails = [data.email];
+      const phones = [data.phoneNumber];
+      const codes = [data.phoneCode];
+      
+      // Add employee data if exists
+      if (hasEmployees && employees.length > 0) {
+        employees.forEach(employee => {
+          if (employee.email) {
+            emails.push(employee.email);
+            phones.push(employee.phoneNumber);
+            codes.push(employee.phoneCode);
+          }
+        });
+      }
+
+      // Format data for API
+      const apiData = {
+        travel_agent_office: data.name,
+        pos: data.country === 'Syria' ? 'SYR' : data.country,
+        email: emails,
+        phone: phones,
+        code: codes,
+        user_name: data.agency
+      };
+
+      // Send POST request to API
+      const response = await fetch('http://127.0.0.1:8000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to sign up');
+      }
+
+      // Call the auth context signUp method to handle local state
       await signUp({
         name: data.name,
         email: data.email,
@@ -59,6 +101,9 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
           phone: `${employee.phoneCode}${employee.phoneNumber}`
         })) : undefined
       });
+
+      toast.success('Account created successfully!');
+      
       if (onSuccess) {
         onSuccess();
       } else {
@@ -66,6 +111,11 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       }
     } catch (error) {
       console.error('Sign up failed:', error);
+      let errorMessage = 'Failed to create account';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      toast.error(errorMessage);
     }
   };
 
