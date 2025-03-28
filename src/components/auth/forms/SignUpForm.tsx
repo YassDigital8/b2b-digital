@@ -53,6 +53,8 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         if (!employee.name) newErrors[`employee-${index}-name`] = 'Employee name is required';
         if (!employee.email) newErrors[`employee-${index}-email`] = 'Employee email is required';
         if (!employee.role) newErrors[`employee-${index}-role`] = 'Employee role is required';
+        if (!employee.phoneCode) newErrors[`employee-${index}-phoneCode`] = 'Employee phone code is required';
+        if (!employee.phoneNumber) newErrors[`employee-${index}-phoneNumber`] = 'Employee phone number is required';
       });
     }
     
@@ -72,7 +74,10 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         agency,
         country,
         phone: `${phoneCode}${phoneNumber}`,
-        employees: hasEmployees ? employees : undefined
+        employees: hasEmployees ? employees.map(employee => ({
+          ...employee,
+          phone: `${employee.phoneCode}${employee.phoneNumber}`
+        })) : undefined
       });
       if (onSuccess) {
         onSuccess();
@@ -106,6 +111,10 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     const updatedEmployees = [...employees];
     updatedEmployees[index] = { ...updatedEmployees[index], [field]: value };
     setEmployees(updatedEmployees);
+  };
+
+  const handleEmployeeCountryCodeChange = (index: number, value: string) => {
+    updateEmployee(index, 'phoneCode', value);
   };
 
   return (
@@ -299,6 +308,47 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
                               ))}
                             </SelectContent>
                           </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor={`employee-${index}-phone`}>Phone Number</Label>
+                          <div className="flex gap-2">
+                            <div className="w-1/3">
+                              <Select 
+                                value={employee.phoneCode} 
+                                onValueChange={(value) => handleEmployeeCountryCodeChange(index, value)}
+                              >
+                                <SelectTrigger 
+                                  id={`employee-${index}-phone-code`} 
+                                  className={errors[`employee-${index}-phoneCode`] ? "border-red-500" : ""}
+                                >
+                                  <SelectValue placeholder="Code" />
+                                </SelectTrigger>
+                                <SelectContent enableSearch={true}>
+                                  {COUNTRY_CODES.map(c => (
+                                    <SelectItem key={c.code} value={c.code}>
+                                      {c.code} - {c.country}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="w-2/3">
+                              <Input 
+                                id={`employee-${index}-phone-number`}
+                                type="tel" 
+                                placeholder="Phone number"
+                                value={employee.phoneNumber}
+                                onChange={(e) => updateEmployee(index, 'phoneNumber', e.target.value.replace(/\D/g, ''))}
+                                className={errors[`employee-${index}-phoneNumber`] ? "border-red-500" : ""}
+                              />
+                            </div>
+                          </div>
+                          {(errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]) && (
+                            <p className="text-red-500 text-sm">
+                              {errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </motion.div>

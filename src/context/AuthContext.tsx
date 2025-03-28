@@ -31,7 +31,7 @@ interface SignUpData {
   agency: string;
   country: string;
   phone?: string;
-  employees?: EmployeeData[];
+  employees?: (EmployeeData & { phone?: string })[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -172,6 +172,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const employeePassword = Math.random().toString(36).slice(-8);
           console.log(`Created employee account for ${employee.name} (${employee.email})`);
           console.log(`Generated password for ${employee.email}: ${employeePassword}`);
+          console.log(`Employee phone: ${employee.phone || 'Not provided'}`);
           
           // In a real app, these would be saved to the database
           // For now, we'll just log them

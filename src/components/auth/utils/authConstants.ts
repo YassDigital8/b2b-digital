@@ -51,6 +51,8 @@ export interface EmployeeData {
   name: string;
   email: string;
   role: string;
+  phoneCode: string;
+  phoneNumber: string;
 }
 
 export const EMPLOYEE_ROLES = [
@@ -64,5 +66,7 @@ export const EMPLOYEE_ROLES = [
 export const EMPTY_EMPLOYEE: EmployeeData = {
   name: '',
   email: '',
-  role: 'agent'
+  role: 'agent',
+  phoneCode: '',
+  phoneNumber: ''
 };
