@@ -1,4 +1,5 @@
-import { EmployeeData } from '../auth/utils/authConstants';
+
+import { EmployeeData } from './authConstants';
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -7,8 +8,6 @@ const isValidEmail = (email: string): boolean => {
 
 export const validateEmployee = (employee: EmployeeData, index: number) => {
   const errors: Record<string, string> = {};
-
-  // No need to validate name since it's been removed
   
   if (!employee.email) {
     errors[`employee-${index}-email`] = 'Email is required';
