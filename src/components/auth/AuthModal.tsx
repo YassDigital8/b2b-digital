@@ -165,7 +165,7 @@ const AuthModal = ({
                   {errors.agency && <p className="text-red-500 text-sm">{errors.agency}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
+                  <Label htmlFor="country">POS | Point of Sale</Label>
                   <Select value={country} onValueChange={setCountry}>
                     <SelectTrigger id="country" className={errors.country ? "border-red-500" : ""}>
                       <SelectValue placeholder="Select your country" />
