@@ -9,6 +9,7 @@ interface User {
   role: 'agent' | 'admin';
   agency?: string;
   country?: string;
+  phone?: string;
   balance: number;
 }
 
@@ -27,6 +28,7 @@ interface SignUpData {
   password: string;
   agency: string;
   country: string;
+  phone?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -41,6 +43,7 @@ const MOCK_USERS = [
     role: 'agent' as const,
     agency: 'Global Travel Agency',
     country: 'United Arab Emirates',
+    phone: '+971501234567',
     balance: 5000
   },
   {
@@ -102,6 +105,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if ('country' in foundUser) {
           userWithoutPassword.country = foundUser.country;
         }
+
+        if ('phone' in foundUser) {
+          userWithoutPassword.phone = foundUser.phone;
+        }
         
         setUser(userWithoutPassword);
         localStorage.setItem('chamWingsUser', JSON.stringify(userWithoutPassword));
@@ -141,6 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role: 'agent',
         agency: userData.agency,
         country: userData.country,
+        phone: userData.phone,
         balance: 0
       };
 

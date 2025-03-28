@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,10 +10,27 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from 'framer-motion';
+
 interface AuthModalProps {
   defaultTab?: string;
 }
+
 const COUNTRIES = ['United Arab Emirates', 'Syria', 'Lebanon', 'Jordan', 'Kuwait', 'Saudi Arabia', 'Qatar', 'Iraq', 'Egypt', 'Sudan', 'Other'];
+
+const COUNTRY_CODES = [
+  { country: 'United Arab Emirates', code: '+971' },
+  { country: 'Syria', code: '+963' },
+  { country: 'Lebanon', code: '+961' },
+  { country: 'Jordan', code: '+962' },
+  { country: 'Kuwait', code: '+965' },
+  { country: 'Saudi Arabia', code: '+966' },
+  { country: 'Qatar', code: '+974' },
+  { country: 'Iraq', code: '+964' },
+  { country: 'Egypt', code: '+20' },
+  { country: 'Sudan', code: '+249' },
+  { country: 'Other', code: '+' },
+];
+
 const AuthModal = ({
   defaultTab = 'login'
 }: AuthModalProps) => {
@@ -30,6 +48,8 @@ const AuthModal = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agency, setAgency] = useState('');
   const [country, setCountry] = useState('');
+  const [phoneCode, setPhoneCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   // Form validation state
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -38,6 +58,7 @@ const AuthModal = ({
     signUp
   } = useAuth();
   const navigate = useNavigate();
+
   const validateLoginForm = () => {
     const newErrors: Record<string, string> = {};
     if (!loginEmail) newErrors.loginEmail = 'Email is required';
@@ -45,6 +66,7 @@ const AuthModal = ({
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const validateSignUpForm = () => {
     const newErrors: Record<string, string> = {};
     if (!name) newErrors.name = 'Full name is required';
@@ -53,9 +75,12 @@ const AuthModal = ({
     if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     if (!agency) newErrors.agency = 'Agency name is required';
     if (!country) newErrors.country = 'Country is required';
+    if (!phoneCode) newErrors.phoneCode = 'Country code is required';
+    if (!phoneNumber) newErrors.phoneNumber = 'Phone number is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateLoginForm()) return;
@@ -69,6 +94,7 @@ const AuthModal = ({
       setIsSubmitting(false);
     }
   };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateSignUpForm()) return;
@@ -79,7 +105,8 @@ const AuthModal = ({
         email,
         password,
         agency,
-        country
+        country,
+        phone: `${phoneCode}${phoneNumber}`
       });
       navigate('/dashboard');
     } catch (error) {
@@ -88,6 +115,16 @@ const AuthModal = ({
       setIsSubmitting(false);
     }
   };
+
+  // Update phone code when country changes
+  const handleCountryChange = (value: string) => {
+    setCountry(value);
+    const countryData = COUNTRY_CODES.find(c => c.country === value);
+    if (countryData) {
+      setPhoneCode(countryData.code);
+    }
+  };
+
   return <motion.div initial={{
     opacity: 0,
     y: 20
@@ -156,8 +193,16 @@ const AuthModal = ({
                   {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  
-                  
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password">Password</Label>
+                    <Input id="signup-password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} className={errors.password ? "border-red-500" : ""} />
+                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                    <Input id="confirm-password" type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className={errors.confirmPassword ? "border-red-500" : ""} />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="agency">AccelAero Username</Label>
@@ -166,7 +211,7 @@ const AuthModal = ({
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="country">POS | Point of Sale</Label>
-                  <Select value={country} onValueChange={setCountry}>
+                  <Select value={country} onValueChange={handleCountryChange}>
                     <SelectTrigger id="country" className={errors.country ? "border-red-500" : ""}>
                       <SelectValue placeholder="Select your country" />
                     </SelectTrigger>
@@ -177,6 +222,38 @@ const AuthModal = ({
                     </SelectContent>
                   </Select>
                   {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <div className="flex gap-2">
+                    <div className="w-1/3">
+                      <Select value={phoneCode} onValueChange={setPhoneCode}>
+                        <SelectTrigger id="phone-code" className={errors.phoneCode ? "border-red-500" : ""}>
+                          <SelectValue placeholder="Code" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {COUNTRY_CODES.map(c => <SelectItem key={c.code} value={c.code}>
+                            {c.code}
+                          </SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="w-2/3">
+                      <Input 
+                        id="phone-number" 
+                        type="tel" 
+                        placeholder="Phone number"
+                        value={phoneNumber}
+                        onChange={e => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                        className={errors.phoneNumber ? "border-red-500" : ""}
+                      />
+                    </div>
+                  </div>
+                  {(errors.phoneCode || errors.phoneNumber) && (
+                    <p className="text-red-500 text-sm">
+                      {errors.phoneCode || errors.phoneNumber}
+                    </p>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex-col">
@@ -193,4 +270,5 @@ const AuthModal = ({
       </Card>
     </motion.div>;
 };
+
 export default AuthModal;
