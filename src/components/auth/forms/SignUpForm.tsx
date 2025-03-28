@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Plus, X, User } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -14,10 +14,9 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
-import { COUNTRIES, COUNTRY_CODES, EMPLOYEE_ROLES, EmployeeData, EMPTY_EMPLOYEE } from '../utils/authConstants';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { motion, AnimatePresence } from 'framer-motion';
+import { COUNTRIES, COUNTRY_CODES, EmployeeData, EMPTY_EMPLOYEE } from '../utils/authConstants';
+import { validateSignUpForm, SignUpFormData } from '../utils/formValidation';
+import { EmployeeSection } from './employee/EmployeeSection';
 
 interface SignUpFormProps {
   onSuccess?: () => void;
@@ -38,33 +37,25 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (!name) newErrors.name = 'Agency name is required';
-    if (!email) newErrors.email = 'Email is required';
-    if (!agency) newErrors.agency = 'AccelAero username is required';
-    if (!country) newErrors.country = 'Country is required';
-    if (!phoneCode) newErrors.phoneCode = 'Country code is required';
-    if (!phoneNumber) newErrors.phoneNumber = 'Phone number is required';
-    
-    // Validate employees if checkbox is checked
-    if (hasEmployees && employees.length > 0) {
-      employees.forEach((employee, index) => {
-        if (!employee.name) newErrors[`employee-${index}-name`] = 'Employee name is required';
-        if (!employee.email) newErrors[`employee-${index}-email`] = 'Employee email is required';
-        if (!employee.role) newErrors[`employee-${index}-role`] = 'Employee role is required';
-        if (!employee.phoneCode) newErrors[`employee-${index}-phoneCode`] = 'Employee phone code is required';
-        if (!employee.phoneNumber) newErrors[`employee-${index}-phoneNumber`] = 'Employee phone number is required';
-      });
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    
+    const formData: SignUpFormData = {
+      name,
+      email,
+      agency,
+      country,
+      phoneCode,
+      phoneNumber,
+      hasEmployees,
+      employees
+    };
+    
+    const validationErrors = validateSignUpForm(formData);
+    setErrors(validationErrors);
+    
+    if (Object.keys(validationErrors).length > 0) return;
+    
     setIsSubmitting(true);
     try {
       await signUp({
@@ -113,8 +104,11 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     setEmployees(updatedEmployees);
   };
 
-  const handleEmployeeCountryCodeChange = (index: number, value: string) => {
-    updateEmployee(index, 'phoneCode', value);
+  const handleHasEmployeesChange = (checked: boolean) => {
+    setHasEmployees(checked);
+    if (checked && employees.length === 0) {
+      addEmployee();
+    }
   };
 
   return (
@@ -212,167 +206,15 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           )}
         </div>
 
-        <div className="flex items-center space-x-2 pt-4">
-          <Checkbox 
-            id="has-employees" 
-            checked={hasEmployees}
-            onCheckedChange={(checked) => {
-              setHasEmployees(checked === true);
-              if (checked === true && employees.length === 0) {
-                addEmployee();
-              }
-            }}
-          />
-          <label
-            htmlFor="has-employees"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            I want to create accounts for my employees
-          </label>
-        </div>
-
-        {hasEmployees && (
-          <Accordion type="single" collapsible className="border rounded-md" defaultValue="employees">
-            <AccordionItem value="employees" className="border-none">
-              <AccordionTrigger className="px-4 py-2 hover:no-underline">
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  <span>Employee Accounts ({employees.length})</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <AnimatePresence>
-                  {employees.map((employee, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="border rounded-md p-4 mb-4 relative"
-                    >
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-2 top-2"
-                        onClick={() => removeEmployee(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                      
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor={`employee-${index}-name`}>Employee Name</Label>
-                          <Input
-                            id={`employee-${index}-name`}
-                            value={employee.name}
-                            onChange={(e) => updateEmployee(index, 'name', e.target.value)}
-                            placeholder="Full Name"
-                            className={errors[`employee-${index}-name`] ? "border-red-500" : ""}
-                          />
-                          {errors[`employee-${index}-name`] && (
-                            <p className="text-red-500 text-sm">{errors[`employee-${index}-name`]}</p>
-                          )}
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor={`employee-${index}-email`}>Employee Email</Label>
-                          <Input
-                            id={`employee-${index}-email`}
-                            type="email"
-                            value={employee.email}
-                            onChange={(e) => updateEmployee(index, 'email', e.target.value)}
-                            placeholder="employee@example.com"
-                            className={errors[`employee-${index}-email`] ? "border-red-500" : ""}
-                          />
-                          {errors[`employee-${index}-email`] && (
-                            <p className="text-red-500 text-sm">{errors[`employee-${index}-email`]}</p>
-                          )}
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor={`employee-${index}-role`}>Role</Label>
-                          <Select
-                            value={employee.role}
-                            onValueChange={(value) => updateEmployee(index, 'role', value)}
-                          >
-                            <SelectTrigger id={`employee-${index}-role`}>
-                              <SelectValue placeholder="Select role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {EMPLOYEE_ROLES.map((role) => (
-                                <SelectItem key={role.value} value={role.value}>
-                                  {role.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor={`employee-${index}-phone`}>Phone Number</Label>
-                          <div className="flex gap-2">
-                            <div className="w-1/3">
-                              <Select 
-                                value={employee.phoneCode} 
-                                onValueChange={(value) => handleEmployeeCountryCodeChange(index, value)}
-                              >
-                                <SelectTrigger 
-                                  id={`employee-${index}-phone-code`} 
-                                  className={errors[`employee-${index}-phoneCode`] ? "border-red-500" : ""}
-                                >
-                                  <SelectValue placeholder="Code" />
-                                </SelectTrigger>
-                                <SelectContent enableSearch={true}>
-                                  {COUNTRY_CODES.map(c => (
-                                    <SelectItem key={c.code} value={c.code}>
-                                      {c.code} - {c.country}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div className="w-2/3">
-                              <Input 
-                                id={`employee-${index}-phone-number`}
-                                type="tel" 
-                                placeholder="Phone number"
-                                value={employee.phoneNumber}
-                                onChange={(e) => updateEmployee(index, 'phoneNumber', e.target.value.replace(/\D/g, ''))}
-                                className={errors[`employee-${index}-phoneNumber`] ? "border-red-500" : ""}
-                              />
-                            </div>
-                          </div>
-                          {(errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]) && (
-                            <p className="text-red-500 text-sm">
-                              {errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-                
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="w-full mt-2"
-                  onClick={addEmployee}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Employee
-                </Button>
-                
-                <p className="text-xs text-muted-foreground mt-2">
-                  Login credentials will be automatically generated and sent to each employee email address.
-                </p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
+        <EmployeeSection
+          hasEmployees={hasEmployees}
+          employees={employees}
+          errors={errors}
+          onHasEmployeesChange={handleHasEmployeesChange}
+          onAddEmployee={addEmployee}
+          onRemoveEmployee={removeEmployee}
+          onUpdateEmployee={updateEmployee}
+        />
       </CardContent>
       <CardFooter className="flex-col">
         <Button type="submit" className="w-full bg-chamBlue hover:bg-chamBlue/90" disabled={isSubmitting}>
