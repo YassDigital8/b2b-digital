@@ -7,11 +7,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { EmployeeData, EMPTY_EMPLOYEE } from '../../utils/authConstants';
 import { EmployeeForm } from './EmployeeForm';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FieldErrors } from 'react-hook-form';
+import { SignUpFormValues } from '../../hooks/useSignUpForm';
 
 interface EmployeeSectionProps {
   hasEmployees: boolean;
   employees: EmployeeData[];
-  errors: Record<string, string>;
+  errors: FieldErrors<SignUpFormValues>;
   onHasEmployeesChange: (checked: boolean) => void;
   onAddEmployee: () => void;
   onRemoveEmployee: (index: number) => void;

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, FieldErrors } from 'react-hook-form';
 import { SignUpFormValues } from '../../hooks/useSignUpForm';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { COUNTRIES, COUNTRY_CODES } from '../../utils/authConstants';
 
 interface AgencyInfoFormProps {
   form: UseFormReturn<SignUpFormValues>;
-  errors: Record<string, any>;
+  errors: FieldErrors<SignUpFormValues>;
 }
 
 export const AgencyInfoForm: React.FC<AgencyInfoFormProps> = ({

@@ -6,11 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { COUNTRY_CODES, EMPLOYEE_ROLES, EmployeeData } from '../../utils/authConstants';
+import { FieldErrors } from 'react-hook-form';
+import { SignUpFormValues } from '../../hooks/useSignUpForm';
 
 interface EmployeeFormProps {
   employee: EmployeeData;
   index: number;
-  errors: Record<string, string>;
+  errors: FieldErrors<SignUpFormValues>;
   onUpdate: (index: number, field: keyof EmployeeData, value: string) => void;
   onRemove: (index: number) => void;
 }
