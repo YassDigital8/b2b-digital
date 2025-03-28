@@ -1,6 +1,7 @@
 
 import { defineConfig } from "tailwindcss";
 import tailwindAnimate from "tailwindcss-animate";
+import type { PluginAPI } from 'tailwindcss/types/config';
 
 export default defineConfig({
   darkMode: ["class"],
@@ -88,7 +89,7 @@ export default defineConfig({
   },
   plugins: [
     tailwindAnimate,
-    function({ addUtilities }) {
+    function({ addUtilities }: PluginAPI) {
       addUtilities({
         '.rtl': {
           direction: 'rtl',
