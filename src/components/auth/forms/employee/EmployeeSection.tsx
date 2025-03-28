@@ -50,8 +50,13 @@ export const EmployeeSection = ({
           <AccordionItem value="employees" className="border-none">
             <AccordionTrigger className="px-4 py-2 hover:no-underline">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                <span>Employee Accounts ({employees.length})</span>
+                <User className="w-4 h-4 text-chamBlue" />
+                <span className="flex items-center">
+                  Employee Accounts 
+                  <span className="ml-1.5 inline-flex items-center justify-center bg-chamBlue text-white text-xs font-medium rounded-full h-5 min-w-5 px-1.5">
+                    {employees.length}
+                  </span>
+                </span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="px-4">
@@ -79,7 +84,7 @@ export const EmployeeSection = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="w-full mt-2"
+                className="w-full mt-2 border-chamBlue text-chamBlue hover:bg-chamBlue/10"
                 onClick={onAddEmployee}
               >
                 <Plus className="h-4 w-4 mr-2" />
