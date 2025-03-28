@@ -1,7 +1,7 @@
 
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Globe } from 'lucide-react';
+import { Languages } from 'lucide-react';
 
 export const LanguageSwitcher = () => {
   const { language, setLanguage, dir } = useLanguage();
@@ -13,15 +13,15 @@ export const LanguageSwitcher = () => {
   return (
     <Button
       variant="ghost"
-      size="icon"
+      size="sm"
       onClick={toggleLanguage}
-      className="text-current hover:bg-black/10 rtl:flex-row-reverse"
+      className="text-current hover:bg-black/10 flex items-center gap-1.5"
       aria-label="Switch language"
       dir="ltr" // Button always keeps its internal direction
     >
-      <Globe className="h-5 w-5" />
-      <span className={`ml-1 rtl:mr-1 rtl:ml-0 text-xs font-bold`}>
-        {language === 'en' ? 'عربي' : 'EN'}
+      <Languages className="h-5 w-5" />
+      <span className="text-xs font-bold">
+        {language === 'en' ? 'عربي' : 'English'}
       </span>
     </Button>
   );

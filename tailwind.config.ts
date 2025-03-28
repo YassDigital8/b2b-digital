@@ -92,9 +92,43 @@ export default defineConfig({
       addUtilities({
         '.rtl': {
           direction: 'rtl',
+          textAlign: 'right',
         },
         '.ltr': {
           direction: 'ltr',
+          textAlign: 'left',
+        },
+        '.flip-x': {
+          transform: 'scaleX(-1)',
+        },
+        '.rtl-mirror': {
+          '.rtl &': {
+            transform: 'scaleX(-1)',
+          }
+        },
+        '.rtl-ml': {
+          '.rtl &': {
+            marginRight: 'var(--spacing)',
+            marginLeft: '0',
+          }
+        },
+        '.rtl-mr': {
+          '.rtl &': {
+            marginLeft: 'var(--spacing)',
+            marginRight: '0',
+          }
+        },
+        '.rtl-pl': {
+          '.rtl &': {
+            paddingRight: 'var(--spacing)',
+            paddingLeft: '0',
+          }
+        },
+        '.rtl-pr': {
+          '.rtl &': {
+            paddingLeft: 'var(--spacing)',
+            paddingRight: '0',
+          }
         },
       });
     },
