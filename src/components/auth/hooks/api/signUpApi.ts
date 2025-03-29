@@ -4,9 +4,9 @@ import { toast } from 'sonner';
 interface SignUpApiData {
   travel_agent_office: string;
   pos: string;
-  email: string[];
-  phone: string[];
-  code: string[];
+  email: string | string[];
+  phone: string | string[];
+  code: string | string[];
   user_name: string;
 }
 
@@ -33,13 +33,13 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
   console.log('Preparing API request to:', targetUrl);
   
   // Format the request data according to expected API structure
-  // Convert arrays to strings for the fields that might need it
+  // The API expects strings, not arrays
   const formattedData = {
     travel_agent_office: apiData.travel_agent_office,
     pos: apiData.pos,
-    email: apiData.email[0],  // Send the first email as a string
-    phone: apiData.phone[0],  // Send the first phone as a string
-    code: apiData.code[0],    // Send the first code as a string
+    email: typeof apiData.email === 'string' ? apiData.email : apiData.email[0],
+    phone: typeof apiData.phone === 'string' ? apiData.phone : apiData.phone[0],
+    code: typeof apiData.code === 'string' ? apiData.code : apiData.code[0],
     user_name: apiData.user_name
   };
   

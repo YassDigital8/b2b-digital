@@ -23,13 +23,13 @@ export const prepareSignUpApiData = (
     });
   }
 
-  // Format data for API
+  // Format data for API - returning the data as the server expects it
   return {
     travel_agent_office: formData.name,
     pos: formData.country === 'Syria' ? 'SYR' : formData.country,
-    email: emails,
-    phone: phones,
-    code: codes,
+    email: formData.email,
+    phone: formData.phoneNumber,
+    code: formData.phoneCode,
     user_name: formData.agency
   };
 };
