@@ -53,7 +53,7 @@ export const prepareSignUpContextData = (
   };
 };
 
-// Add the formatFormData function that was missing
+// Function that formats the form data for the API
 export const formatFormData = (
   formData: SignUpFormValues,
   employees: EmployeeData[]

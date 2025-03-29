@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -16,6 +17,8 @@ export interface SignUpApiResponse {
   error?: boolean;
   raw?: string;
   requestData?: SignUpApiData;
+  status?: string;
+  errors?: Record<string, string[]>;
 }
 
 // Public free CORS proxies (we use multiple in case one fails)
@@ -28,7 +31,19 @@ const CORS_PROXIES = [
 export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpApiResponse> {
   const targetUrl = 'https://b2b-chamwings.com/api/signup';
   console.log('Preparing API request to:', targetUrl);
-  console.log('Request data:', JSON.stringify(apiData, null, 2));
+  
+  // Format the request data according to expected API structure
+  // Convert arrays to strings for the fields that might need it
+  const formattedData = {
+    travel_agent_office: apiData.travel_agent_office,
+    pos: apiData.pos,
+    email: apiData.email[0],  // Send the first email as a string
+    phone: apiData.phone[0],  // Send the first phone as a string
+    code: apiData.code[0],    // Send the first code as a string
+    user_name: apiData.user_name
+  };
+  
+  console.log('Request data:', JSON.stringify(formattedData, null, 2));
 
   // Try each proxy in order until one works
   for (let i = 0; i < CORS_PROXIES.length; i++) {
@@ -45,7 +60,7 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest', // Required by some proxies like cors-anywhere
         },
-        body: JSON.stringify(apiData),
+        body: JSON.stringify(formattedData),
         signal: controller.signal,
       });
       
