@@ -74,8 +74,8 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
         user_name: data.agency
       };
 
-      // Send POST request to API
-      const response = await fetch('http://127.0.0.1:8000/api/signup', {
+      // Send POST request to API - Updated endpoint URL
+      const response = await fetch('https://b2b-chamwings.com/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
