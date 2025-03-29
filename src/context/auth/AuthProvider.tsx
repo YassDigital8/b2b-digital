@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { 
@@ -150,7 +149,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const verifyOTP = async (otp: string) => {
+  const verifyOTP = async (otp: string): Promise<void> => {
     setIsLoading(true);
     
     try {
@@ -184,8 +183,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // In a real app, you would notify the backend about successful verification
       console.log(`User ${storedUser.email} verified successfully with OTP: ${otp}`);
-      
-      return verifiedUser;
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

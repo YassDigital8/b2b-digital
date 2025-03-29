@@ -99,7 +99,8 @@ const VerifyOTP = () => {
                     <div className="flex justify-center">
                       <InputOTP 
                         maxLength={6}
-                        {...form.register('otp')}
+                        value={form.watch("otp")}
+                        onChange={(value) => form.setValue("otp", value)}
                       >
                         <InputOTPGroup>
                           <InputOTPSlot index={0} />
