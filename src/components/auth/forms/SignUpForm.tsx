@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Terminal } from 'lucide-react';
+import { Loader2, Terminal, WifiOff } from 'lucide-react';
 import { AgencyInfoForm } from './agency/AgencyInfoForm';
 import { EmployeeSection } from './employee/EmployeeSection';
 import { useSignUpForm } from '../hooks/useSignUpForm';
@@ -21,7 +21,8 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       employees,
       isSubmitting,
       errors,
-      apiResponse
+      apiResponse,
+      networkError
     },
     handleSubmit,
     addEmployee,
@@ -49,7 +50,21 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             onUpdateEmployee={updateEmployee}
           />
           
-          {apiResponse && (
+          {networkError && (
+            <Alert variant="destructive" className="mt-4">
+              <WifiOff className="h-4 w-4" />
+              <AlertTitle>Network Error</AlertTitle>
+              <AlertDescription>
+                <p>{networkError}</p>
+                <p className="text-xs mt-2">
+                  This is likely due to CORS restrictions. The API server needs to allow requests from your domain.
+                  Please contact the API provider or try using a CORS proxy for testing.
+                </p>
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {apiResponse && !networkError && (
             <Alert className="mt-4">
               <Terminal className="h-4 w-4" />
               <AlertTitle>API Response</AlertTitle>
