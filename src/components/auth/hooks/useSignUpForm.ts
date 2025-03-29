@@ -27,6 +27,7 @@ export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
 export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
   const [hasEmployees, setHasEmployees] = useState(false);
   const [employees, setEmployees] = useState<EmployeeData[]>([]);
+  const [apiResponse, setApiResponse] = useState<any>(null);
   
   const { signUp } = useAuth();
   const navigate = useNavigate();
@@ -74,6 +75,9 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
         user_name: data.agency
       };
 
+      console.log('Sending API request to:', 'https://b2b-chamwings.com/api/signup');
+      console.log('Request data:', JSON.stringify(apiData, null, 2));
+
       // Send POST request to API - Updated endpoint URL
       const response = await fetch('https://b2b-chamwings.com/api/signup', {
         method: 'POST',
@@ -83,9 +87,30 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
         body: JSON.stringify(apiData),
       });
 
+      // Get the raw response text and parse it as JSON if possible
+      const responseText = await response.text();
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        responseData = { raw: responseText };
+      }
+
+      // Store the API response
+      setApiResponse(responseData);
+      console.log('API Response:', responseData);
+
+      // Display the response in a toast
+      toast(
+        response.ok ? "API Response (Success)" : "API Response (Error)",
+        {
+          description: <pre className="max-h-[300px] overflow-auto text-xs">{JSON.stringify(responseData, null, 2)}</pre>,
+          duration: 10000, // 10 seconds
+        }
+      );
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to sign up');
+        throw new Error(responseData.message || 'Failed to sign up');
       }
 
       // Call the auth context signUp method to handle local state
@@ -146,7 +171,8 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       hasEmployees,
       employees,
       isSubmitting,
-      errors
+      errors,
+      apiResponse
     },
     handleSubmit: form.handleSubmit(handleSubmit),
     addEmployee,

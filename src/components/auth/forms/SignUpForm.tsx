@@ -2,11 +2,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Terminal } from 'lucide-react';
 import { AgencyInfoForm } from './agency/AgencyInfoForm';
 import { EmployeeSection } from './employee/EmployeeSection';
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import { Form } from '@/components/ui/form';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface SignUpFormProps {
   onSuccess?: () => void;
@@ -19,7 +20,8 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       hasEmployees,
       employees,
       isSubmitting,
-      errors
+      errors,
+      apiResponse
     },
     handleSubmit,
     addEmployee,
@@ -46,6 +48,18 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             onRemoveEmployee={removeEmployee}
             onUpdateEmployee={updateEmployee}
           />
+          
+          {apiResponse && (
+            <Alert className="mt-4">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>API Response</AlertTitle>
+              <AlertDescription>
+                <div className="max-h-[200px] overflow-auto rounded bg-gray-100 p-2 text-xs">
+                  <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
         </CardContent>
         <CardFooter className="flex-col">
           <Button type="submit" className="w-full bg-chamBlue hover:bg-chamBlue/90" disabled={isSubmitting}>
