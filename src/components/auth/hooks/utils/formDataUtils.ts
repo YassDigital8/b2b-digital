@@ -24,6 +24,7 @@ export const prepareSignUpApiData = (
   }
 
   // Format data for API - returning the data as the server expects it
+  // The API needs these exact field names without any modifications
   return {
     travel_agent_office: formData.name,
     pos: formData.country === 'Syria' ? 'SYR' : formData.country,

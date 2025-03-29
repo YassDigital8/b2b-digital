@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -32,15 +31,14 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
   const targetUrl = 'https://b2b-chamwings.com/api/signup';
   console.log('Preparing API request to:', targetUrl);
   
-  // Format the request data according to expected API structure
-  // The API expects strings, not arrays
+  // Ensure all fields are strings as expected by the API
   const formattedData = {
-    travel_agent_office: apiData.travel_agent_office,
-    pos: apiData.pos,
-    email: typeof apiData.email === 'string' ? apiData.email : apiData.email[0],
-    phone: typeof apiData.phone === 'string' ? apiData.phone : apiData.phone[0],
-    code: typeof apiData.code === 'string' ? apiData.code : apiData.code[0],
-    user_name: apiData.user_name
+    travel_agent_office: String(apiData.travel_agent_office).trim(),
+    pos: String(apiData.pos).trim(),
+    email: typeof apiData.email === 'string' ? String(apiData.email).trim() : String(apiData.email[0]).trim(),
+    phone: typeof apiData.phone === 'string' ? String(apiData.phone).trim() : String(apiData.phone[0]).trim(),
+    code: typeof apiData.code === 'string' ? String(apiData.code).trim() : String(apiData.code[0]).trim(),
+    user_name: String(apiData.user_name).trim()
   };
   
   console.log('Request data:', JSON.stringify(formattedData, null, 2));
