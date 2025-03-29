@@ -24,13 +24,12 @@ export const prepareSignUpApiData = (
   }
 
   // Format data for API - returning the data as the server expects it
-  // The API needs these exact field names without any modifications
   return {
     travel_agent_office: formData.name,
     pos: formData.country === 'Syria' ? 'SYR' : formData.country,
-    email: emails.length > 1 ? emails : emails[0],
-    phone: phones.length > 1 ? phones : phones[0],
-    code: codes.length > 1 ? codes : codes[0],
+    email: hasEmployees && employees.length > 0 ? emails : formData.email,
+    phone: hasEmployees && employees.length > 0 ? phones : formData.phoneNumber,
+    code: hasEmployees && employees.length > 0 ? codes : formData.phoneCode,
     user_name: formData.agency
   };
 };
@@ -59,6 +58,7 @@ export const formatFormData = (
   formData: SignUpFormValues,
   employees: EmployeeData[]
 ) => {
+  const hasEmployees = employees.length > 0;
   // Use the existing function to prepare data for the API
-  return prepareSignUpApiData(formData, employees.length > 0, employees);
+  return prepareSignUpApiData(formData, hasEmployees, employees);
 };
