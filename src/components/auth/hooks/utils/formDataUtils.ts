@@ -52,3 +52,12 @@ export const prepareSignUpContextData = (
     })) : undefined
   };
 };
+
+// Add the formatFormData function that was missing
+export const formatFormData = (
+  formData: SignUpFormValues,
+  employees: EmployeeData[]
+) => {
+  // Use the existing function to prepare data for the API
+  return prepareSignUpApiData(formData, employees.length > 0, employees);
+};
