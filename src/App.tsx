@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import VerifyOTP from "./pages/VerifyOTP";
 import Dashboard from "./pages/Dashboard";
 import TransportationBooking from "./pages/TransportationBooking";
 import TopUp from "./pages/TopUp";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/verify-otp" element={<VerifyOTP />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/transportation" element={<TransportationBooking />} />
               <Route path="/top-up" element={<TopUp />} />

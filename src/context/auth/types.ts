@@ -9,6 +9,7 @@ export interface User {
   phone?: string;
   balance: number;
   managerId?: string;
+  verified?: boolean;
 }
 
 export interface LoginFormValues {
@@ -16,12 +17,19 @@ export interface LoginFormValues {
   password: string;
 }
 
+export interface VerifyOTPValues {
+  otp: string;
+}
+
 export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  needsVerification: boolean;
+  pendingVerificationEmail: string | null;
   login: (formData: LoginFormValues) => Promise<void>;
   signUp: (userData: SignUpData) => Promise<void>;
+  verifyOTP: (otp: string) => Promise<void>;
   logout: () => void;
 }
 

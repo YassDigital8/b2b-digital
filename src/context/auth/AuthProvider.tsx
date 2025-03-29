@@ -5,7 +5,8 @@ import {
   User, 
   AuthContextType, 
   SignUpData,
-  LoginFormValues
+  LoginFormValues,
+  VerifyOTPValues
 } from './types';
 import { 
   getUserFromStorage, 
@@ -23,13 +24,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [needsVerification, setNeedsVerification] = useState<boolean>(false);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<string | null>(null);
 
   // Check for existing session on mount
   useEffect(() => {
     const checkAuth = () => {
       const storedUser = getUserFromStorage();
       if (storedUser) {
-        setUser(storedUser);
+        // If the user is not verified, set verification states
+        if (storedUser.verified === false) {
+          setNeedsVerification(true);
+          setPendingVerificationEmail(storedUser.email);
+        } else {
+          setUser(storedUser);
+        }
       }
       setIsLoading(false);
     };
@@ -50,6 +59,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (foundUser) {
         const userWithoutPassword = createUserWithoutPassword(foundUser);
         
+        // Check if user needs verification
+        if (userWithoutPassword.verified === false) {
+          setNeedsVerification(true);
+          setPendingVerificationEmail(email);
+          
+          // Store unverified user in storage with verification flag
+          saveUserToStorage({
+            ...userWithoutPassword,
+            verified: false
+          });
+          
+          toast.info('Please verify your email to continue');
+          return;
+        }
+        
+        // User is verified, proceed with login
         setUser(userWithoutPassword);
         saveUserToStorage(userWithoutPassword);
         toast.success('Welcome back!');
@@ -96,21 +121,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         agency: userData.agency,
         country: userData.country,
         phone: userData.phone,
-        balance: 0
+        balance: 0,
+        verified: false // User starts as unverified
       };
 
       // Handle employee accounts if they exist
       handleEmployeeAccounts(userData.employees);
 
-      // If no employees, show a different success message
-      if (!userData.employees || userData.employees.length === 0) {
-        // Notify user about password email (only for the main account)
-        toast.success('Account created! Check your email for your password.');
-      }
-
-      // In a real app, we would save this to the backend
-      setUser(newUser);
+      // Set verification states
+      setNeedsVerification(true);
+      setPendingVerificationEmail(userData.email);
+      
+      // In a real app, user data wouldn't be stored locally until after verification
+      // But for demo purposes, we'll store it with the verified flag set to false
       saveUserToStorage(newUser);
+      
+      // Show a message about the OTP
+      toast.success('Account created! Check your email for the verification code.');
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -123,8 +150,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const verifyOTP = async (otp: string) => {
+    setIsLoading(true);
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // For demo purposes, accept any 6-digit OTP
+      if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+        throw new Error('Invalid OTP format. Please enter 6 digits.');
+      }
+
+      // Get the unverified user from storage
+      const storedUser = getUserFromStorage();
+      if (!storedUser) {
+        throw new Error('No pending verification found');
+      }
+      
+      // Update user's verification status
+      const verifiedUser: User = {
+        ...storedUser,
+        verified: true
+      };
+      
+      // Update states
+      setUser(verifiedUser);
+      setNeedsVerification(false);
+      setPendingVerificationEmail(null);
+      
+      // Update storage
+      saveUserToStorage(verifiedUser);
+      
+      // In a real app, you would notify the backend about successful verification
+      console.log(`User ${storedUser.email} verified successfully with OTP: ${otp}`);
+      
+      return verifiedUser;
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('Failed to verify OTP');
+      }
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
+    setNeedsVerification(false);
+    setPendingVerificationEmail(null);
     removeUserFromStorage();
     toast.info('You have been logged out');
   };
@@ -133,10 +210,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!user.verified,
         isLoading,
+        needsVerification,
+        pendingVerificationEmail,
         login,
         signUp,
+        verifyOTP,
         logout
       }}
     >
