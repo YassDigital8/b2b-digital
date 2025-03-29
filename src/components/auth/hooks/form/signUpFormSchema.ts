@@ -1,5 +1,5 @@
-
-import * as z from 'zod';
+import { z } from 'zod';
+import { employeeSchema } from './employeeSchema';
 
 // Define schema for the form
 export const signUpFormSchema = z.object({
@@ -11,4 +11,5 @@ export const signUpFormSchema = z.object({
   phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
 });
 
+// Make sure to export this type
 export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
