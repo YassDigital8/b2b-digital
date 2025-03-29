@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -19,75 +18,98 @@ export interface SignUpApiResponse {
   requestData?: SignUpApiData;
 }
 
+// Public free CORS proxies (we use multiple in case one fails)
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://cors-anywhere.herokuapp.com/',
+  'https://api.allorigins.win/raw?url='
+];
+
 export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpApiResponse> {
-  console.log('Sending API request to:', 'https://b2b-chamwings.com/api/signup');
+  const targetUrl = 'https://b2b-chamwings.com/api/signup';
+  console.log('Preparing API request to:', targetUrl);
   console.log('Request data:', JSON.stringify(apiData, null, 2));
 
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-    
-    const response = await fetch('https://b2b-chamwings.com/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(apiData),
-      signal: controller.signal,
-      mode: 'cors', // Explicitly set CORS mode
-    });
-    
-    clearTimeout(timeoutId);
-
-    // Get the raw response text and parse it as JSON if possible
-    const responseText = await response.text();
-    let responseData: SignUpApiResponse;
+  // Try each proxy in order until one works
+  for (let i = 0; i < CORS_PROXIES.length; i++) {
+    const proxyUrl = CORS_PROXIES[i] + encodeURIComponent(targetUrl);
+    console.log(`Attempting with CORS proxy ${i+1}:`, CORS_PROXIES[i]);
     
     try {
-      responseData = JSON.parse(responseText);
-    } catch (e) {
-      responseData = { raw: responseText };
-    }
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      
+      const response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest', // Required by some proxies like cors-anywhere
+        },
+        body: JSON.stringify(apiData),
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
 
-    // Display the response in a toast
-    toast(
-      response.ok ? "API Response (Success)" : "API Response (Error)",
-      {
-        description: JSON.stringify(responseData, null, 2),
-        duration: 10000, // 10 seconds
+      // Get the raw response text and parse it as JSON if possible
+      const responseText = await response.text();
+      let responseData: SignUpApiResponse;
+      
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        responseData = { raw: responseText };
       }
-    );
 
-    if (!response.ok) {
-      throw new Error(responseData.message || 'Failed to sign up');
-    }
+      // Display the response in a toast
+      toast(
+        response.ok ? "API Response (Success)" : "API Response (Error)",
+        {
+          description: JSON.stringify(responseData, null, 2),
+          duration: 10000, // 10 seconds
+        }
+      );
 
-    return responseData;
-  } catch (error) {
-    console.error('Network error:', error);
-    let errorMessage = 'Network error: ';
-    
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      errorMessage += 'Request timed out after 15 seconds';
-    } else if (error instanceof TypeError && error.message === 'Failed to fetch') {
-      errorMessage += 'Cross-origin request blocked - API may not allow requests from this domain';
-      return {
-        error: true,
-        message: 'API connection error: Cross-origin request blocked. The API server may not be configured to accept requests from this domain.'
-      };
-    } else if (error instanceof Error) {
-      errorMessage += error.message || 'Unknown error';
-    } else {
-      errorMessage += 'Unknown error';
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Failed to sign up');
+      }
+
+      console.log('Successful response from proxy', i+1);
+      return responseData;
+    } catch (error) {
+      console.error(`Error with proxy ${i+1}:`, error);
+      
+      // If this is the last proxy, throw the error
+      if (i === CORS_PROXIES.length - 1) {
+        let errorMessage = 'Network error: ';
+        
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          errorMessage += 'Request timed out after 15 seconds';
+        } else if (error instanceof TypeError && error.message === 'Failed to fetch') {
+          errorMessage += 'API request failed - the proxy may be unavailable';
+        } else if (error instanceof Error) {
+          errorMessage += error.message || 'Unknown error';
+        } else {
+          errorMessage += 'Unknown error';
+        }
+        
+        toast.error(errorMessage, { duration: 6000 });
+        
+        // Return an error response
+        return {
+          error: true,
+          message: errorMessage,
+          requestData: apiData
+        };
+      }
+      // Otherwise continue to the next proxy
     }
-    
-    toast.error(errorMessage, { duration: 6000 });
-    
-    // Return an error response
-    return {
-      error: true,
-      message: errorMessage,
-      requestData: apiData
-    };
   }
+  
+  // This should never happen due to the loop structure, but TypeScript needs it
+  return {
+    error: true,
+    message: "All CORS proxies failed",
+    requestData: apiData
+  };
 }
