@@ -100,11 +100,11 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       setApiResponse(responseData);
       console.log('API Response:', responseData);
 
-      // Display the response in a toast
+      // Display the response in a toast - using a string instead of JSX
       toast(
         response.ok ? "API Response (Success)" : "API Response (Error)",
         {
-          description: <pre className="max-h-[300px] overflow-auto text-xs">{JSON.stringify(responseData, null, 2)}</pre>,
+          description: JSON.stringify(responseData, null, 2),
           duration: 10000, // 10 seconds
         }
       );
