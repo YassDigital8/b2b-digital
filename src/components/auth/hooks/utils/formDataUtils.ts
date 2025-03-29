@@ -24,12 +24,14 @@ export const prepareSignUpApiData = (
   }
 
   // Format data for API - returning the data as the server expects it
+  // When there are employees, we need to send arrays, otherwise single values
   return {
     travel_agent_office: formData.name,
     pos: formData.country === 'Syria' ? 'SYR' : formData.country,
-    email: hasEmployees && employees.length > 0 ? emails : formData.email,
-    phone: hasEmployees && employees.length > 0 ? phones : formData.phoneNumber,
-    code: hasEmployees && employees.length > 0 ? codes : formData.phoneCode,
+    // Always send arrays for these fields regardless of employee count
+    email: emails,
+    phone: phones,
+    code: codes,
     user_name: formData.agency
   };
 };

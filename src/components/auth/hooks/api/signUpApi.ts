@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -32,18 +31,8 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
   const targetUrl = 'https://b2b-chamwings.com/api/signup';
   console.log('Preparing API request to:', targetUrl);
   
-  // Don't modify the structure of apiData to match the API's expected format
-  // We'll send it as-is, because the API expects arrays for multiple employees
-  const formattedData = {
-    travel_agent_office: String(apiData.travel_agent_office).trim(),
-    pos: String(apiData.pos).trim(),
-    email: apiData.email,
-    phone: apiData.phone,
-    code: apiData.code,
-    user_name: String(apiData.user_name).trim()
-  };
-  
-  console.log('Request data:', JSON.stringify(formattedData, null, 2));
+  // Send the data directly without any modifications
+  console.log('Request data:', JSON.stringify(apiData, null, 2));
 
   // Try each proxy in order until one works
   for (let i = 0; i < CORS_PROXIES.length; i++) {
@@ -60,7 +49,7 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest', // Required by some proxies like cors-anywhere
         },
-        body: JSON.stringify(formattedData),
+        body: JSON.stringify(apiData),
         signal: controller.signal,
       });
       
@@ -68,6 +57,8 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
 
       // Get the raw response text and parse it as JSON if possible
       const responseText = await response.text();
+      console.log('Raw API response:', responseText);
+      
       let responseData: SignUpApiResponse;
       
       try {
@@ -75,6 +66,8 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
       } catch (e) {
         responseData = { raw: responseText };
       }
+
+      console.log('Parsed API response:', responseData);
 
       // Display the response in a toast
       toast(
