@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { sendSignUpRequest, SignUpApiResponse } from './api/signUpApi';
 import { addEmployee, removeEmployee, updateEmployee } from './utils/employeeUtils';
 import { formatFormData } from './utils/formDataUtils';
+import { toast } from 'sonner';
 
 interface UseSignUpFormProps {
   onSuccess?: () => void;
@@ -63,6 +64,27 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
     setApiResponse(null);
 
     try {
+      // Validate the form data before sending to API
+      if (!data.name.trim() || !data.email.trim() || !data.agency.trim() || 
+          !data.country.trim() || !data.phoneCode.trim() || !data.phoneNumber.trim()) {
+        toast.error("Please fill in all required fields");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Validate employee data if any
+      if (hasEmployees && employees.length > 0) {
+        const hasInvalidEmployee = employees.some(emp => 
+          !emp.email.trim() || !emp.phoneNumber.trim() || !emp.phoneCode.trim()
+        );
+        
+        if (hasInvalidEmployee) {
+          toast.error("Please fill in all employee fields or remove incomplete employees");
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      
       const formattedData = formatFormData(data, hasEmployees ? employees : []);
       const response = await sendSignUpRequest(formattedData);
       
@@ -70,12 +92,21 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       
       if (response.error) {
         setNetworkError(response.message || 'Unknown error occurred');
+      } else if (response.status === "error" && response.errors) {
+        // Handle API validation errors
+        const errorMessages = Object.entries(response.errors)
+          .map(([field, msgs]) => `${field}: ${msgs.join(', ')}`)
+          .join('\n');
+        
+        toast.error(`API Validation Errors:\n${errorMessages}`, { duration: 5000 });
       } else if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      setNetworkError(error instanceof Error ? error.message : 'Unknown error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setNetworkError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
