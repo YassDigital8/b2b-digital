@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -31,13 +32,14 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
   const targetUrl = 'https://b2b-chamwings.com/api/signup';
   console.log('Preparing API request to:', targetUrl);
   
-  // Ensure all fields are strings as expected by the API
+  // Don't modify the structure of apiData to match the API's expected format
+  // We'll send it as-is, because the API expects arrays for multiple employees
   const formattedData = {
     travel_agent_office: String(apiData.travel_agent_office).trim(),
     pos: String(apiData.pos).trim(),
-    email: typeof apiData.email === 'string' ? String(apiData.email).trim() : String(apiData.email[0]).trim(),
-    phone: typeof apiData.phone === 'string' ? String(apiData.phone).trim() : String(apiData.phone[0]).trim(),
-    code: typeof apiData.code === 'string' ? String(apiData.code).trim() : String(apiData.code[0]).trim(),
+    email: apiData.email,
+    phone: apiData.phone,
+    code: apiData.code,
     user_name: String(apiData.user_name).trim()
   };
   

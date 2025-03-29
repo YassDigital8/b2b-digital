@@ -28,9 +28,9 @@ export const prepareSignUpApiData = (
   return {
     travel_agent_office: formData.name,
     pos: formData.country === 'Syria' ? 'SYR' : formData.country,
-    email: formData.email,
-    phone: formData.phoneNumber,
-    code: formData.phoneCode,
+    email: emails.length > 1 ? emails : emails[0],
+    phone: phones.length > 1 ? phones : phones[0],
+    code: codes.length > 1 ? codes : codes[0],
     user_name: formData.agency
   };
 };
