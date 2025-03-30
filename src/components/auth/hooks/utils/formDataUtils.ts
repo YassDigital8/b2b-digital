@@ -7,23 +7,7 @@ export const prepareSignUpApiData = (
   hasEmployees: boolean, 
   employees: EmployeeData[]
 ) => {
-  // Prepare emails array (main user + employees)
-  const emails = [formData.email.trim()];
-  const phones = [formData.phoneNumber.trim()];
-  const codes = [formData.phoneCode.trim()];
-  
-  // Add employee data if exists
-  if (hasEmployees && employees.length > 0) {
-    employees.forEach(employee => {
-      if (employee.email && employee.email.trim()) {
-        emails.push(employee.email.trim());
-        phones.push(employee.phoneNumber.trim());
-        codes.push(employee.phoneCode.trim());
-      }
-    });
-  }
-
-  // Ensure no empty values are sent
+  // Validate required fields
   if (!formData.name.trim()) {
     throw new Error("Travel Agent Office name is required");
   }
@@ -48,16 +32,16 @@ export const prepareSignUpApiData = (
     throw new Error("Country code is required");
   }
 
-  // Format data for API - returning the data as the server expects it
+  // Format data for API - sending data as the server expects it
+  // Now sending single values instead of arrays for the main user
   return {
     travel_agent_office: formData.name.trim(),
     pos: formData.country === 'Syria' ? 'SYR' : formData.country.trim(),
-    // Always send arrays for these fields regardless of employee count
-    email: emails,
-    phone: phones,
-    code: codes,
+    email: formData.email.trim(),
+    phone: formData.phoneNumber.trim(),
+    code: formData.phoneCode.trim(),
     user_name: formData.agency.trim(),
-    // Add governate if needed (appears in the API example)
+    // Include governate with a default value
     governate: "Damascus" // Default value since it's required but not in the form
   };
 };
