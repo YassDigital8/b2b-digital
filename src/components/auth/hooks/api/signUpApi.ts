@@ -4,9 +4,9 @@ import { toast } from 'sonner';
 interface SignUpApiData {
   travel_agent_office: string;
   pos: string;
-  email: string | string[];
-  phone: string | string[];
-  code: string | string[];
+  email: string[]; // Changed to array
+  phone: string[]; // Changed to array
+  code: string[]; // Changed to array
   user_name: string;
 }
 

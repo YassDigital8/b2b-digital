@@ -1,3 +1,4 @@
+
 import { SignUpFormValues } from '../form/signUpFormSchema';
 import { EmployeeData } from '../../utils/authConstants';
 
@@ -31,13 +32,13 @@ export const prepareSignUpApiData = (
     throw new Error("Country code is required");
   }
 
-  // Format data for API - sending data as the server expects it
+  // Format data for API - sending fields as arrays as required by the API
   return {
     travel_agent_office: formData.name.trim(),
     pos: formData.country === 'Syria' ? 'SYR' : formData.country.trim(),
-    email: formData.email.trim(),
-    phone: formData.phoneNumber.trim(),
-    code: formData.phoneCode.trim(),
+    email: [formData.email.trim()], // Convert to array
+    phone: [formData.phoneNumber.trim()], // Convert to array
+    code: [formData.phoneCode.trim()], // Convert to array
     user_name: formData.agency.trim()
   };
 };
