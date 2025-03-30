@@ -1,4 +1,3 @@
-
 import { SignUpFormValues } from '../form/signUpFormSchema';
 import { EmployeeData } from '../../utils/authConstants';
 
@@ -33,7 +32,7 @@ export const prepareSignUpApiData = (
   }
 
   // Format data for API - sending fields as arrays as required by the API
-  return {
+  const apiData = {
     travel_agent_office: formData.name.trim(),
     pos: formData.country === 'Syria' ? 'SYR' : formData.country.trim(),
     email: [formData.email.trim()], // Convert to array
@@ -41,6 +40,29 @@ export const prepareSignUpApiData = (
     code: [formData.phoneCode.trim()], // Convert to array
     user_name: formData.agency.trim()
   };
+
+  // Add employee data to the arrays if employees exist
+  if (hasEmployees && employees.length > 0) {
+    // Filter out any employees with empty required fields
+    const validEmployees = employees.filter(emp => 
+      emp.email.trim() && emp.phoneNumber.trim() && emp.phoneCode.trim()
+    );
+
+    // Add employee emails to the email array
+    validEmployees.forEach(emp => {
+      if (emp.email.trim()) {
+        apiData.email.push(emp.email.trim());
+      }
+      if (emp.phoneNumber.trim()) {
+        apiData.phone.push(emp.phoneNumber.trim());
+      }
+      if (emp.phoneCode.trim()) {
+        apiData.code.push(emp.phoneCode.trim());
+      }
+    });
+  }
+
+  return apiData;
 };
 
 export const prepareSignUpContextData = (
