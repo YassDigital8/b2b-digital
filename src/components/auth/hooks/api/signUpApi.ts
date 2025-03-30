@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 interface SignUpApiData {
@@ -32,15 +33,28 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
   console.log('Preparing API request to:', targetUrl);
   console.log('Request data:', JSON.stringify(apiData, null, 2));
 
-  // Handle the API request directly first
+  // Try direct API call first without a proxy
   try {
     const response = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: JSON.stringify(apiData),
     });
+
+    // Check if the response is 403 Forbidden
+    if (response.status === 403) {
+      console.log('Server returned 403 Forbidden - CORS issue detected');
+      return {
+        error: true,
+        status: "error",
+        message: "API access forbidden. The server is blocking requests from this application.",
+        raw: "403 Forbidden - CORS issue detected",
+        requestData: apiData
+      };
+    }
 
     const responseText = await response.text();
     console.log('Direct API response:', responseText);
@@ -93,8 +107,9 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
           return {
             error: true,
             status: "error",
-            message: "The API server is rejecting access from CORS proxies. Please try again later or contact support.",
-            requestData: apiData
+            message: "The API server is blocking access from all available methods. Please try again later or contact support.",
+            requestData: apiData,
+            raw: responseText
           };
         }
         // Otherwise try the next proxy

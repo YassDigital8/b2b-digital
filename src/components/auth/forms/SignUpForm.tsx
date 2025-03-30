@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Terminal, WifiOff, ShieldAlert } from 'lucide-react';
+import { Loader2, Terminal, WifiOff, ShieldAlert, ExternalLink } from 'lucide-react';
 import { AgencyInfoForm } from './agency/AgencyInfoForm';
 import { EmployeeSection } from './employee/EmployeeSection';
 import { useSignUpForm } from '../hooks/useSignUpForm';
@@ -63,9 +63,25 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
               <AlertDescription>
                 <p>The registration server is currently not accepting requests from this application.</p>
                 <p className="text-xs mt-2">
-                  This is likely due to server-side restrictions or maintenance. Please try again later 
-                  or contact Cham Wings directly to register your travel agency office.
+                  Since you've hosted the server on Hostinger, you need to enable CORS support to allow requests from your application's domain. 
                 </p>
+                <div className="mt-3 space-y-2">
+                  <p className="font-medium">Possible solutions:</p>
+                  <ol className="text-xs list-decimal pl-5 space-y-1">
+                    <li>Enable CORS on your server by adding appropriate HTTP headers</li>
+                    <li>Create a server-side proxy endpoint that forwards requests to the API</li>
+                    <li>Contact support at <a href="mailto:support@chamwings.com" className="underline hover:text-chamGold">support@chamwings.com</a></li>
+                  </ol>
+                </div>
+                <a 
+                  href="https://b2b-chamwings.com/register" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center text-xs text-chamGold hover:underline"
+                >
+                  Try registering directly on the official website
+                  <ExternalLink className="ml-1 h-3 w-3" />
+                </a>
               </AlertDescription>
             </Alert>
           )}
