@@ -1,4 +1,3 @@
-
 import { SignUpFormValues } from '../form/signUpFormSchema';
 import { EmployeeData } from '../../utils/authConstants';
 
@@ -33,16 +32,13 @@ export const prepareSignUpApiData = (
   }
 
   // Format data for API - sending data as the server expects it
-  // Now sending single values instead of arrays for the main user
   return {
     travel_agent_office: formData.name.trim(),
     pos: formData.country === 'Syria' ? 'SYR' : formData.country.trim(),
     email: formData.email.trim(),
     phone: formData.phoneNumber.trim(),
     code: formData.phoneCode.trim(),
-    user_name: formData.agency.trim(),
-    // Include governate with a default value
-    governate: "Damascus" // Default value since it's required but not in the form
+    user_name: formData.agency.trim()
   };
 };
 
