@@ -91,7 +91,15 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
       setApiResponse(response);
       
       if (response.error) {
-        setNetworkError(response.message || 'Unknown error occurred');
+        if (response.message?.includes('403 Forbidden') || response.message?.includes('API access forbidden')) {
+          setNetworkError("Server is currently not accepting registration requests. Please try again later or contact support.");
+          toast.error("Server unavailable", { 
+            description: "Registration server is currently not accepting requests. Please try again later.",
+            duration: 8000
+          });
+        } else {
+          setNetworkError(response.message || 'Unknown error occurred');
+        }
       } else if (response.status === "error" && response.errors) {
         // Handle API validation errors
         const errorMessages = Object.entries(response.errors)
@@ -99,8 +107,17 @@ export const useSignUpForm = ({ onSuccess }: UseSignUpFormProps = {}) => {
           .join('\n');
         
         toast.error(`API Validation Errors:\n${errorMessages}`, { duration: 5000 });
-      } else if (onSuccess) {
-        onSuccess();
+      } else if (response.raw && response.raw.includes('403 Forbidden')) {
+        setNetworkError("Cannot connect to the registration server. The server is blocking access from this application.");
+        toast.error("Server access denied", { 
+          description: "The registration server is blocking requests from this application. Please try again later or contact support.",
+          duration: 8000
+        });
+      } else if (response.success || (response.status && response.status !== "error")) {
+        toast.success("Registration submitted successfully!");
+        if (onSuccess) {
+          onSuccess();
+        }
       }
     } catch (error) {
       console.error('Error submitting form:', error);

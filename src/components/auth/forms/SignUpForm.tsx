@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Terminal, WifiOff } from 'lucide-react';
+import { Loader2, Terminal, WifiOff, ShieldAlert } from 'lucide-react';
 import { AgencyInfoForm } from './agency/AgencyInfoForm';
 import { EmployeeSection } from './employee/EmployeeSection';
 import { useSignUpForm } from '../hooks/useSignUpForm';
@@ -31,6 +31,12 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     handleHasEmployeesChange
   } = useSignUpForm({ onSuccess });
 
+  // Check if the response contains a 403 Forbidden error
+  const isForbiddenError = networkError?.includes('access denied') || 
+                          networkError?.includes('403') || 
+                          apiResponse?.raw?.includes('403 Forbidden') ||
+                          apiResponse?.message?.includes('API access forbidden');
+
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit}>
@@ -50,7 +56,21 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             onUpdateEmployee={updateEmployee}
           />
           
-          {networkError && (
+          {isForbiddenError && (
+            <Alert variant="destructive" className="mt-4">
+              <ShieldAlert className="h-4 w-4" />
+              <AlertTitle>Registration Server Unavailable</AlertTitle>
+              <AlertDescription>
+                <p>The registration server is currently not accepting requests from this application.</p>
+                <p className="text-xs mt-2">
+                  This is likely due to server-side restrictions or maintenance. Please try again later 
+                  or contact Cham Wings directly to register your travel agency office.
+                </p>
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {networkError && !isForbiddenError && (
             <Alert variant="destructive" className="mt-4">
               <WifiOff className="h-4 w-4" />
               <AlertTitle>Network Error</AlertTitle>
@@ -64,7 +84,7 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             </Alert>
           )}
           
-          {apiResponse && !networkError && (
+          {apiResponse && !networkError && !isForbiddenError && (
             <Alert className="mt-4">
               <Terminal className="h-4 w-4" />
               <AlertTitle>API Response</AlertTitle>

@@ -30,11 +30,32 @@ const CORS_PROXIES = [
 export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpApiResponse> {
   const targetUrl = 'https://b2b-chamwings.com/api/signup';
   console.log('Preparing API request to:', targetUrl);
-  
-  // Send the data directly without any modifications
   console.log('Request data:', JSON.stringify(apiData, null, 2));
 
-  // Try each proxy in order until one works
+  // Handle the API request directly first
+  try {
+    const response = await fetch(targetUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(apiData),
+    });
+
+    const responseText = await response.text();
+    console.log('Direct API response:', responseText);
+    
+    try {
+      return JSON.parse(responseText);
+    } catch (e) {
+      // If not JSON, continue with proxies
+    }
+  } catch (directError) {
+    console.log('Direct API request failed, trying proxies:', directError);
+    // Continue with proxies
+  }
+
+  // If direct request failed, try each proxy in order
   for (let i = 0; i < CORS_PROXIES.length; i++) {
     const proxyUrl = CORS_PROXIES[i] + encodeURIComponent(targetUrl);
     console.log(`Attempting with CORS proxy ${i+1}:`, CORS_PROXIES[i]);
@@ -59,26 +80,55 @@ export async function sendSignUpRequest(apiData: SignUpApiData): Promise<SignUpA
       const responseText = await response.text();
       console.log('Raw API response:', responseText);
       
+      // Check for 403 Forbidden HTML response
+      if (responseText.includes('403 Forbidden') || responseText.includes('Access to this resource on the server is denied')) {
+        console.log('Detected 403 Forbidden response from proxy', i+1);
+        
+        if (i === CORS_PROXIES.length - 1) {
+          // This is the last proxy, so we should return an error
+          toast.error("API access forbidden. The server is rejecting proxy requests.", { 
+            duration: 6000 
+          });
+          
+          return {
+            error: true,
+            status: "error",
+            message: "The API server is rejecting access from CORS proxies. Please try again later or contact support.",
+            requestData: apiData
+          };
+        }
+        // Otherwise try the next proxy
+        continue;
+      }
+      
       let responseData: SignUpApiResponse;
       
       try {
         responseData = JSON.parse(responseText);
       } catch (e) {
-        responseData = { raw: responseText };
+        responseData = { 
+          raw: responseText,
+          status: "error",
+          message: "Unable to parse API response"
+        };
       }
 
       console.log('Parsed API response:', responseData);
 
       // Display the response in a toast
-      toast(
-        response.ok ? "API Response (Success)" : "API Response (Error)",
-        {
-          description: JSON.stringify(responseData, null, 2),
-          duration: 10000, // 10 seconds
-        }
-      );
+      if (!responseData.error && !responseText.includes('403 Forbidden')) {
+        toast.success("Request sent successfully", {
+          description: "Your registration request has been submitted.",
+          duration: 5000,
+        });
+      } else {
+        toast.error("API Error", {
+          description: responseData.message || "Something went wrong with your request.",
+          duration: 6000,
+        });
+      }
 
-      if (!response.ok) {
+      if (!response.ok && !responseData.success) {
         throw new Error(responseData.message || 'Failed to sign up');
       }
 
