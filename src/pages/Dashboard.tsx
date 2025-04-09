@@ -59,7 +59,7 @@ const Dashboard = () => {
             >
               <NewsAnnouncement
                 title="Travel Updates"
-                content="Book Ya Marhaba and make your passenger feel the experience of travel with Cham Wings Airlines."
+                content="Book Ya Marhaba and make your passenger feel the experience of travel with Cham Wings Airlines. | Our Travel Hub now offers a new interline booking feature, which will enable Travel Agents to make reservations on the spot."
                 onDismiss={() => setShowAnnouncement(false)}
               />
             </motion.div>
