@@ -39,6 +39,9 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
 
   const needsAnimation = contentWidth > containerWidth;
 
+  // Create a duplicated content for seamless scrolling
+  const duplicatedContent = `${content} ${content}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -55,24 +58,47 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
           </div>
           
           <div className="overflow-hidden flex-1 relative">
-            <motion.div 
-              ref={textRef}
-              className="whitespace-nowrap text-gray-700 font-medium"
-              animate={needsAnimation ? {
-                x: [0, -contentWidth],
-              } : {}}
-              transition={needsAnimation ? {
-                x: {
-                  duration: contentWidth * 0.02,
-                  ease: "linear",
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  repeatDelay: 1
-                }
-              } : {}}
-            >
-              {content}
-            </motion.div>
+            {needsAnimation ? (
+              <div className="whitespace-nowrap text-gray-700 font-medium inline-flex">
+                <motion.div
+                  animate={{
+                    x: [0, -contentWidth],
+                  }}
+                  transition={{
+                    x: {
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: contentWidth * 0.02,
+                      ease: "linear",
+                    },
+                  }}
+                  className="inline-block"
+                >
+                  {content}
+                </motion.div>
+                <motion.div
+                  animate={{
+                    x: [0, -contentWidth],
+                  }}
+                  transition={{
+                    x: {
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: contentWidth * 0.02,
+                      ease: "linear",
+                    },
+                  }}
+                  className="inline-block"
+                  style={{ marginLeft: 50 }} // Add some spacing between repeated content
+                >
+                  {content}
+                </motion.div>
+              </div>
+            ) : (
+              <div ref={textRef} className="whitespace-nowrap text-gray-700 font-medium">
+                {content}
+              </div>
+            )}
           </div>
         </div>
         
