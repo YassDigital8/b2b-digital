@@ -37,6 +37,8 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
     };
   }, [content]);
 
+  const needsAnimation = contentWidth > containerWidth;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -56,18 +58,18 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
             <motion.div 
               ref={textRef}
               className="whitespace-nowrap text-gray-700 font-medium"
-              animate={{
-                x: [0, containerWidth > contentWidth ? 0 : -contentWidth]
-              }}
-              transition={{
+              animate={needsAnimation ? {
+                x: [0, -contentWidth],
+              } : {}}
+              transition={needsAnimation ? {
                 x: {
-                  duration: containerWidth > contentWidth ? 0 : contentWidth * 0.03,
+                  duration: contentWidth * 0.02,
                   ease: "linear",
                   repeat: Infinity,
                   repeatType: "loop",
-                  repeatDelay: containerWidth > contentWidth ? 0 : 1
+                  repeatDelay: 1
                 }
-              }}
+              } : {}}
             >
               {content}
             </motion.div>
