@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { 
@@ -40,8 +41,8 @@ export const useAuthOperations = (
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      // Call the login API endpoint
-      const response = await fetch('http://127.0.0.1:8000/api/login', {
+      // Call the login API endpoint with the updated URL
+      const response = await fetch('https://b2b-chamwings.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

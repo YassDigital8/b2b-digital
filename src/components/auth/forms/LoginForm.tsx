@@ -54,6 +54,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       }
     } catch (error) {
       console.error('Login failed:', error);
+      // Error is already displayed via toast in the login function
     }
   };
 
