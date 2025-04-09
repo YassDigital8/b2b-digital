@@ -1,25 +1,23 @@
-
 import { motion } from 'framer-motion';
 import { Filter, BarChart2, TrendingUp, PieChart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-
 const ReportsSection = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, duration: 0.5 }}
-      className="mb-8"
-    >
+  return <motion.div initial={{
+    opacity: 0,
+    y: 20
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    delay: 0.5,
+    duration: 0.5
+  }} className="mb-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-chamDarkBlue">Performance Reports</h2>
-        <div className="flex items-center gap-2 text-chamBlue text-sm">
-          <Filter className="h-4 w-4" />
-          <span>Last 6 Months</span>
-        </div>
+        
       </div>
       
       <Card className="border-none shadow-soft overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1">
@@ -53,9 +51,7 @@ const ReportsSection = () => {
             </div>
             
             <Link to="/reports" className="mt-8 inline-block w-full">
-              <Button 
-                className="w-full bg-chamBlue hover:bg-chamBlue/90 text-white shadow-sm flex items-center justify-center gap-2 py-6"
-              >
+              <Button className="w-full bg-chamBlue hover:bg-chamBlue/90 text-white shadow-sm flex items-center justify-center gap-2 py-6">
                 View All Reports
                 <ArrowRight className="h-5 w-5 animate-pulse" />
               </Button>
@@ -64,16 +60,10 @@ const ReportsSection = () => {
           
           <div className="md:w-2/5 h-auto relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-chamBlue/20 to-transparent z-10"></div>
-            <img
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-              alt="Performance Reports"
-              className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-            />
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Performance Reports" className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
           </div>
         </div>
       </Card>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default ReportsSection;
