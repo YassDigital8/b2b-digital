@@ -37,6 +37,7 @@ const App = () => (
               <Route path="/top-up" element={<TopUp />} />
               <Route path="/interline" element={<InterlineBooking />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/reports" element={<NotFound />} />
               <Route path="/about" element={<NotFound />} />
               <Route path="/services" element={<NotFound />} />
               <Route path="/support" element={<NotFound />} />
