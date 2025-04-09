@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -9,10 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 import ServicesSection from '@/components/dashboard/ServicesSection';
 import ReportsSection from '@/components/dashboard/ReportsSection';
 import AccountSection from '@/components/dashboard/AccountSection';
+import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
-  
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
+
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
     if (isAuthenticated) {
@@ -46,6 +48,15 @@ const Dashboard = () => {
               Manage your bookings and services from your dashboard
             </motion.p>
           </div>
+          
+          {/* News Announcement - Added at the top */}
+          {showAnnouncement && (
+            <NewsAnnouncement
+              title="Announcements"
+              content="A new interline booking feature is now available at our Travel Hub. This will enable Travel Agents to make reservations on the spot."
+              onDismiss={() => setShowAnnouncement(false)}
+            />
+          )}
           
           {/* Account Section - First section */}
           <AccountSection user={user} />
