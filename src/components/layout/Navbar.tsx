@@ -20,7 +20,7 @@ const Navbar = () => {
   
   // Check if the current path is a light background page
   const isLightBackgroundPage = () => {
-    const lightBackgroundPaths = ['/login', '/signup'];
+    const lightBackgroundPaths = ['/login', '/signup', '/dashboard', '/transportation', '/top-up', '/interline', '/profile'];
     return lightBackgroundPaths.includes(location.pathname);
   };
   

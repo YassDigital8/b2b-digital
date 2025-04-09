@@ -38,7 +38,7 @@ export const loginOperation = async (
       id: '12345',
       name: email.split('@')[0],
       email: email,
-      role: 'agent',
+      role: 'agent' as const, // Use 'as const' to specify literal type
       agency: 'Cham Wings Agency',
       country: 'UAE',
       phone: '+971501234567',
@@ -72,7 +72,7 @@ export const loginOperation = async (
         id: '12345',
         name: email.split('@')[0],
         email: email,
-        role: 'agent',
+        role: 'agent' as const, // Use 'as const' to specify literal type
         agency: 'Cham Wings Agency',
         country: 'UAE',
         phone: '+971501234567',
