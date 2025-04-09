@@ -12,13 +12,15 @@ export const loginOperation = async (
   setAuthState(prev => ({ ...prev, isLoading: true }));
   
   try {
-    // Call the login API endpoint with the updated URL
+    // Call the login API endpoint
     const response = await fetch('https://b2b-chamwings.com/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',  // Request CORS access
       },
       body: JSON.stringify({ email, password }),
+      mode: 'cors',  // Enable CORS mode
     });
     
     if (!response.ok) {
@@ -51,7 +53,11 @@ export const loginOperation = async (
     toast.success('Welcome back!');
     
   } catch (error) {
-    if (error instanceof Error) {
+    console.error('Login error:', error);
+    
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      toast.error('Could not connect to the server. Please check your internet connection or try again later.');
+    } else if (error instanceof Error) {
       toast.error(error.message);
     } else {
       toast.error('Failed to login');
