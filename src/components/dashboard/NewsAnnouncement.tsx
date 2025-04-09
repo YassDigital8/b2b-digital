@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Newspaper, X, ArrowRight, Airplane, MapPin } from 'lucide-react';
+import { Newspaper, X, ArrowRight, Plane, MapPin } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,7 +44,7 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
     const trimmedItem = item.trim();
     
     // Select an appropriate icon based on the content
-    let Icon = Airplane; // Default icon
+    let Icon = Plane; // Default icon - using Plane instead of Airplane
     
     if (trimmedItem.toLowerCase().includes('hub') || trimmedItem.toLowerCase().includes('booking')) {
       Icon = MapPin;
