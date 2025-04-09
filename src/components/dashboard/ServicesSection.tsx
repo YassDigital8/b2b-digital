@@ -12,7 +12,8 @@ const services = [
     icon: Car,
     link: '/transportation',
     color: 'bg-blue-100',
-    buttonText: 'Book Transportation'
+    buttonText: 'Book Transportation',
+    isNew: false
   },
   {
     id: 'top-up',
@@ -21,7 +22,8 @@ const services = [
     icon: CreditCard,
     link: '/top-up',
     color: 'bg-green-100',
-    buttonText: 'Top Up Now'
+    buttonText: 'Top Up Now',
+    isNew: false
   },
   {
     id: 'interline',
@@ -30,7 +32,8 @@ const services = [
     icon: Plane,
     link: '/interline',
     color: 'bg-purple-100',
-    buttonText: 'Book Flights'
+    buttonText: 'Book Flights',
+    isNew: true
   },
 ];
 
