@@ -20,6 +20,20 @@ const Dashboard = () => {
     if (isAuthenticated) {
       window.scrollTo(0, 0);
     }
+    
+    // Add CommonNinja script
+    const script = document.createElement('script');
+    script.src = 'https://cdn.commoninja.com/sdk/latest/commonninja.js';
+    script.defer = true;
+    document.head.appendChild(script);
+    
+    return () => {
+      // Clean up script when component unmounts
+      const scriptElement = document.querySelector('script[src="https://cdn.commoninja.com/sdk/latest/commonninja.js"]');
+      if (scriptElement && scriptElement.parentNode) {
+        scriptElement.parentNode.removeChild(scriptElement);
+      }
+    };
   }, [requireAuth]);
   
   if (!user) return null;
@@ -47,6 +61,11 @@ const Dashboard = () => {
             >
               Manage your bookings and services from your dashboard
             </motion.p>
+          </div>
+          
+          {/* CommonNinja Widget */}
+          <div className="mb-6">
+            <div className="commonninja_component pid-5cd7cb42-b80c-4341-81ef-fce67e7645c6"></div>
           </div>
           
           {/* News Announcement - Added at the top */}
