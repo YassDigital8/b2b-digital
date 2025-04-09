@@ -7,7 +7,6 @@ import { useAuth } from '@/hooks/useAuth';
 
 // Import components
 import ServicesSection from '@/components/dashboard/ServicesSection';
-import AccountSection from '@/components/dashboard/AccountSection';
 import ReportsSection from '@/components/dashboard/ReportsSection';
 
 const Dashboard = () => {
@@ -52,9 +51,6 @@ const Dashboard = () => {
           
           {/* Services Section */}
           <ServicesSection />
-          
-          {/* Account Section */}
-          <AccountSection user={user} />
         </div>
       </main>
       
