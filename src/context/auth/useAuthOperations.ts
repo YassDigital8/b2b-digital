@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { 
@@ -41,39 +40,44 @@ export const useAuthOperations = (
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call the login API endpoint
+      const response = await fetch('http://127.0.0.1:8000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
       
-      const foundUser = findUserByCredentials(email, password);
-      
-      if (foundUser) {
-        const userWithoutPassword = createUserWithoutPassword(foundUser);
-        
-        // Check if user needs verification
-        if (userWithoutPassword.verified === false) {
-          setAuthState(prev => ({
-            ...prev,
-            needsVerification: true,
-            pendingVerificationEmail: email
-          }));
-          
-          // Store unverified user in storage with verification flag
-          saveUserToStorage({
-            ...userWithoutPassword,
-            verified: false
-          });
-          
-          toast.info('Please verify your email to continue');
-          return;
-        }
-        
-        // User is verified, proceed with login
-        setAuthState(prev => ({ ...prev, user: userWithoutPassword }));
-        saveUserToStorage(userWithoutPassword);
-        toast.success('Welcome back!');
-      } else {
-        throw new Error('Invalid email or password');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Invalid email or password');
       }
+      
+      const userData = await response.json();
+      
+      // Transform API response to user object
+      const user: User = {
+        id: userData.id || userData.user_id || String(userData.user_id),
+        name: userData.name || userData.travel_agent_office || '',
+        email: userData.email || email,
+        role: userData.role || 'agent',
+        agency: userData.agency || userData.user_name || '',
+        country: userData.country || userData.pos || '',
+        phone: userData.phone || '',
+        balance: userData.balance || 0,
+        verified: true // User is verified since they logged in successfully
+      };
+      
+      // Update auth state with user data
+      setAuthState(prev => ({ ...prev, user }));
+      
+      // Save user data to storage
+      saveUserToStorage(user);
+      
+      // Show success message
+      toast.success('Welcome back!');
+      
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
