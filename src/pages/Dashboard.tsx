@@ -59,7 +59,7 @@ const Dashboard = () => {
             >
               <NewsAnnouncement
                 title="Travel Updates"
-                content="New interline booking features are now available at our Travel Hub. Special summer promotions for international flights. Updated COVID-19 travel requirements for popular destinations. Book now for early bird discounts on winter packages."
+                content="Our Travel Hub now offers a new interline booking feature, which will enable Travel Agents to make reservations on the spot."
                 onDismiss={() => setShowAnnouncement(false)}
               />
             </motion.div>
