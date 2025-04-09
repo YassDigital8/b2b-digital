@@ -6,6 +6,16 @@ import ServiceCard from './ServiceCard';
 // Mock data for services
 const services = [
   {
+    id: 'interline',
+    title: 'Interline Booking',
+    description: 'Book tickets with Jazeera Airways, Air Arabia, or FlyDubai',
+    icon: Plane,
+    link: '/interline',
+    color: 'bg-purple-100',
+    buttonText: 'Book Flights',
+    isNew: true
+  },
+  {
     id: 'transportation',
     title: 'Transportation',
     description: 'Book Ya Marhaba services or arrange limousine for business class passengers',
@@ -24,17 +34,7 @@ const services = [
     color: 'bg-green-100',
     buttonText: 'Top Up Now',
     isNew: false
-  },
-  {
-    id: 'interline',
-    title: 'Interline Booking',
-    description: 'Book tickets with Jazeera Airways, Air Arabia, or FlyDubai',
-    icon: Plane,
-    link: '/interline',
-    color: 'bg-purple-100',
-    buttonText: 'Book Flights',
-    isNew: true
-  },
+  }
 ];
 
 const ServicesSection = () => {
