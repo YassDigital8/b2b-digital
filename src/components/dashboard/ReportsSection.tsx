@@ -1,35 +1,37 @@
 
 import { motion } from 'framer-motion';
 import { Filter } from 'lucide-react';
-import BookingTrendsChart from './charts/BookingTrendsChart';
-import RevenueChart from './charts/RevenueChart';
-import DestinationsChart from './charts/DestinationsChart';
-import UpcomingBookingsCard from './charts/UpcomingBookingsCard';
+import ReportCard from './ReportCard';
 
 // Mock data for reports
-const bookingData = [
-  { month: 'Jan', count: 5 },
-  { month: 'Feb', count: 7 },
-  { month: 'Mar', count: 12 },
-  { month: 'Apr', count: 9 },
-  { month: 'May', count: 11 },
-  { month: 'Jun', count: 8 },
-];
-
-const revenueData = [
-  { month: 'Jan', amount: 510 },
-  { month: 'Feb', amount: 780 },
-  { month: 'Mar', amount: 1250 },
-  { month: 'Apr', amount: 950 },
-  { month: 'May', amount: 1100 },
-  { month: 'Jun', amount: 820 },
-];
-
-const topDestinations = [
-  { name: 'Dubai', value: 42 },
-  { name: 'Kuwait', value: 28 },
-  { name: 'Cairo', value: 19 },
-  { name: 'Beirut', value: 11 },
+const reports = [
+  {
+    id: 'booking-trends',
+    title: 'Booking Trends',
+    description: 'View monthly patterns and growth in your booking activity',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    link: '/reports/booking-trends',
+    color: 'bg-indigo-100',
+    buttonText: 'View Trends'
+  },
+  {
+    id: 'revenue-analysis',
+    title: 'Revenue Analysis',
+    description: 'Track your financial performance and revenue growth',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    link: '/reports/revenue',
+    color: 'bg-emerald-100',
+    buttonText: 'View Revenue'
+  },
+  {
+    id: 'top-destinations',
+    title: 'Popular Destinations',
+    description: 'Discover the most requested travel destinations',
+    image: 'https://images.unsplash.com/photo-1488085061387-422e29b40080?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    link: '/reports/destinations',
+    color: 'bg-amber-100',
+    buttonText: 'View Destinations'
+  },
 ];
 
 const ReportsSection = () => {
@@ -48,11 +50,13 @@ const ReportsSection = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <BookingTrendsChart data={bookingData} />
-        <RevenueChart data={revenueData} />
-        <DestinationsChart data={topDestinations} />
-        <UpcomingBookingsCard />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {reports.map((report) => (
+          <ReportCard 
+            key={report.id}
+            {...report}
+          />
+        ))}
       </div>
     </motion.div>
   );
