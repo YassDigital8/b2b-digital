@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
-import { Car, CreditCard, Plane, Clock, CheckCircle2 } from 'lucide-react';
+import { Car, CreditCard, Plane, Clock, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
@@ -68,7 +68,8 @@ const Dashboard = () => {
       description: 'Book Ya Marhaba services or arrange limousine for business class passengers',
       icon: Car,
       link: '/transportation',
-      color: 'bg-blue-100'
+      color: 'bg-blue-100',
+      buttonText: 'Book Transportation'
     },
     {
       id: 'top-up',
@@ -76,15 +77,17 @@ const Dashboard = () => {
       description: 'Add funds to your account through eCash, Haram, or Fouad',
       icon: CreditCard,
       link: '/top-up',
-      color: 'bg-green-100'
+      color: 'bg-green-100',
+      buttonText: 'Top Up Now'
     },
     {
       id: 'interline',
       title: 'Interline Booking',
-      description: 'Book tickets with Jazeera, Air Arabia, or FlyDubai',
+      description: 'Book tickets with Jazeera Airways, Air Arabia, or FlyDubai',
       icon: Plane,
       link: '/interline',
-      color: 'bg-purple-100'
+      color: 'bg-purple-100',
+      buttonText: 'Book Flights'
     },
   ];
   
@@ -115,11 +118,57 @@ const Dashboard = () => {
             </motion.p>
           </div>
           
+          {/* Services Section - Moved to top for more visibility */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-12"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-chamDarkBlue">Book Services</h2>
+              <p className="text-chamBlue">Select a service to get started</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {services.map((service, index) => (
+                <Card 
+                  key={service.id} 
+                  className="border-none shadow-soft overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+                >
+                  <div className={`${service.color} h-2 w-full`}></div>
+                  <CardHeader>
+                    <div className="flex justify-between items-center">
+                      <div className={`${service.color} p-3 rounded-lg w-12 h-12 flex items-center justify-center`}>
+                        <service.icon className="h-6 w-6 text-chamBlue" />
+                      </div>
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-chamBlue/10 text-chamBlue">
+                        Available
+                      </span>
+                    </div>
+                    <CardTitle className="text-xl text-chamDarkBlue mt-2">{service.title}</CardTitle>
+                    <CardDescription className="text-gray-600">{service.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Link to={service.link} className="w-full">
+                      <Button 
+                        className="w-full bg-chamBlue hover:bg-chamBlue/90 flex items-center justify-center gap-2"
+                      >
+                        {service.buttonText}
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
               className="col-span-2"
             >
               <Card className="h-full border-none shadow-soft">
@@ -152,7 +201,7 @@ const Dashboard = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
               <Card className="h-full border-none shadow-soft">
                 <CardHeader className="pb-2">
@@ -181,32 +230,6 @@ const Dashboard = () => {
               </Card>
             </motion.div>
           </div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="mb-12"
-          >
-            <h2 className="text-2xl font-bold text-chamDarkBlue mb-6">Quick Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {services.map((service, index) => (
-                <Link key={service.id} to={service.link}>
-                  <Card className={`h-full border-none shadow-soft card-hover cursor-pointer`}>
-                    <CardHeader className="pb-0">
-                      <div className={`${service.color} p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-2`}>
-                        <service.icon className="h-6 w-6 text-chamBlue" />
-                      </div>
-                      <CardTitle className="text-xl text-chamDarkBlue">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-gray-600">{service.description}</CardDescription>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
