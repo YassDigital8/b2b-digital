@@ -24,6 +24,12 @@ import { motion } from 'framer-motion';
 import { Plane, Calendar as CalendarIcon, Users, MapPin, Check, Info, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const InterlineBooking = () => {
   const { user, requireAuth } = useAuth();
@@ -119,12 +125,17 @@ const InterlineBooking = () => {
   };
   
   const airlines = [
+    { id: 'chamwings', name: 'Cham Wings Airlines', code: 'SAW' },
     { id: 'jazeera', name: 'Jazeera Airways', code: 'J9' },
     { id: 'airarabia', name: 'Air Arabia', code: 'G9' },
     { id: 'flydubai', name: 'FlyDubai', code: 'FZ' }
   ];
   
   const cities = {
+    chamwings: [
+      'Damascus', 'Aleppo', 'Latakia', 'Beirut', 'Dubai', 'Abu Dhabi', 'Cairo', 
+      'Alexandria', 'Baghdad', 'Tehran', 'Khartoum', 'Kuwait City'
+    ],
     jazeera: [
       'Damascus', 'Kuwait City', 'Cairo', 'Dubai', 'Abu Dhabi', 'Doha', 'Riyadh', 'Jeddah', 'Amman', 'Beirut'
     ],
@@ -223,14 +234,14 @@ const InterlineBooking = () => {
             </Card>
           </motion.div>
           
-          <Tabs defaultValue="jazeera" value={activeTab} onValueChange={setActiveTab}>
+          <Tabs defaultValue="chamwings" value={activeTab} onValueChange={setActiveTab}>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               className="mb-8"
             >
-              <TabsList className="grid w-full max-w-md grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 {airlines.map((airline) => (
                   <TabsTrigger key={airline.id} value={airline.id} className="flex items-center gap-2">
                     <Plane className="h-4 w-4" />
@@ -278,7 +289,7 @@ const InterlineBooking = () => {
                               <SelectTrigger id="from-city">
                                 <SelectValue placeholder="Departure city" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent enableSearch>
                                 {cities[airline.id as keyof typeof cities].map((city) => (
                                   <SelectItem key={city} value={city}>
                                     {city}
@@ -294,7 +305,7 @@ const InterlineBooking = () => {
                               <SelectTrigger id="to-city">
                                 <SelectValue placeholder="Destination city" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent enableSearch>
                                 {cities[airline.id as keyof typeof cities]
                                   .filter(city => city !== fromCity)
                                   .map((city) => (
@@ -393,6 +404,30 @@ const InterlineBooking = () => {
                                 <SelectItem value="business">Business Class</SelectItem>
                               </SelectContent>
                             </Select>
+                          </div>
+
+                          <div className="space-y-2 lg:col-span-2">
+                            <Label>Select Airline</Label>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="w-full justify-between">
+                                  <span>{airlines.find(a => a.id === activeTab)?.name || 'Select Airline'}</span>
+                                  <Plane className="ml-2 h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className="w-full">
+                                {airlines.map((airline) => (
+                                  <DropdownMenuItem 
+                                    key={airline.id} 
+                                    onClick={() => setActiveTab(airline.id)}
+                                    className="cursor-pointer"
+                                  >
+                                    <Plane className="mr-2 h-4 w-4" />
+                                    {airline.name} ({airline.code})
+                                  </DropdownMenuItem>
+                                ))}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </div>
                         
