@@ -9,9 +9,11 @@ import { useAuth } from '@/hooks/useAuth';
 import ServicesSection from '@/components/dashboard/ServicesSection';
 import ReportsSection from '@/components/dashboard/ReportsSection';
 import AccountSection from '@/components/dashboard/AccountSection';
+import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
 
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
@@ -47,21 +49,21 @@ const Dashboard = () => {
             </motion.p>
           </div>
           
-          {/* Static News Ticker Image */}
-          <div className="mb-6">
-            <motion.div
+          {/* News Announcement - Moving ticker */}
+          {showAnnouncement && (
+            <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-full border border-blue-200 rounded-md overflow-hidden"
+              className="mb-6"
             >
-              <img 
-                src="/lovable-uploads/052ec344-d2e0-4af7-b2ff-2c93877c8875.png"
-                alt="Travel Hub News Ticker"
-                className="w-full h-auto"
+              <NewsAnnouncement
+                title="Travel Updates"
+                content="New interline booking features are now available at our Travel Hub. Special summer promotions for international flights. Updated COVID-19 travel requirements for popular destinations. Book now for early bird discounts on winter packages."
+                onDismiss={() => setShowAnnouncement(false)}
               />
             </motion.div>
-          </div>
+          )}
           
           {/* Account Section - First section */}
           <AccountSection user={user} />
