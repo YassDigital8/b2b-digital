@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 // Import components
 import ServicesSection from '@/components/dashboard/ServicesSection';
 import ReportsSection from '@/components/dashboard/ReportsSection';
+import AccountSection from '@/components/dashboard/AccountSection';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
@@ -46,7 +47,10 @@ const Dashboard = () => {
             </motion.p>
           </div>
           
-          {/* Reports Section - Now at the top */}
+          {/* Account Section - Now at the top */}
+          <AccountSection user={user} />
+          
+          {/* Reports Section */}
           <ReportsSection />
           
           {/* Services Section */}
