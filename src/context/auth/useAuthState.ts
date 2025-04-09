@@ -2,9 +2,15 @@
 import { useState, useEffect } from 'react';
 import { User } from './types';
 import { getUserFromStorage } from './authUtils';
-import { AuthState } from './useAuthOperations';
 
-export const useAuthState = (): AuthState => {
+export interface AuthState {
+  user: User | null;
+  isLoading: boolean;
+  needsVerification: boolean;
+  pendingVerificationEmail: string | null;
+}
+
+export const useAuthState = (): [AuthState, React.Dispatch<React.SetStateAction<AuthState>>] => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     isLoading: true,
@@ -40,5 +46,5 @@ export const useAuthState = (): AuthState => {
     checkAuth();
   }, []);
 
-  return authState;
+  return [authState, setAuthState];
 };
