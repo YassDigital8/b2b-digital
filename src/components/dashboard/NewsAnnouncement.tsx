@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Newspaper, X, ArrowRight } from 'lucide-react';
+import { Newspaper, X, ArrowRight, Airplane, MapPin } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -39,8 +39,25 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
 
   const needsAnimation = contentWidth > containerWidth;
 
-  // Create a duplicated content for seamless scrolling
-  const duplicatedContent = `${content} ${content}`;
+  // Process the content to add icons
+  const processedContent = content.split('|').map((item, index) => {
+    const trimmedItem = item.trim();
+    
+    // Select an appropriate icon based on the content
+    let Icon = Airplane; // Default icon
+    
+    if (trimmedItem.toLowerCase().includes('hub') || trimmedItem.toLowerCase().includes('booking')) {
+      Icon = MapPin;
+    }
+    
+    return (
+      <span key={index} className="flex items-center gap-2 mx-3 first:ml-0">
+        {index > 0 && <span className="text-gray-400 mx-1">•</span>}
+        <Icon className="h-4 w-4 text-chamBlue shrink-0" />
+        <span>{trimmedItem}</span>
+      </span>
+    );
+  });
 
   return (
     <motion.div
@@ -72,9 +89,9 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
                       ease: "linear",
                     },
                   }}
-                  className="inline-block"
+                  className="inline-flex items-center"
                 >
-                  {content}
+                  {processedContent}
                 </motion.div>
                 <motion.div
                   animate={{
@@ -88,15 +105,15 @@ const NewsAnnouncement = ({ title, content, onDismiss }: NewsAnnouncementProps) 
                       ease: "linear",
                     },
                   }}
-                  className="inline-block"
+                  className="inline-flex items-center"
                   style={{ marginLeft: 50 }} // Add some spacing between repeated content
                 >
-                  {content}
+                  {processedContent}
                 </motion.div>
               </div>
             ) : (
-              <div ref={textRef} className="whitespace-nowrap text-gray-700 font-medium">
-                {content}
+              <div ref={textRef} className="whitespace-nowrap text-gray-700 font-medium inline-flex items-center">
+                {processedContent}
               </div>
             )}
           </div>
