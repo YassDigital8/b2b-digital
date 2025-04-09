@@ -47,14 +47,14 @@ const Dashboard = () => {
             </motion.p>
           </div>
           
-          {/* Account Section - Now at the top */}
+          {/* Account Section - First section */}
           <AccountSection user={user} />
           
-          {/* Reports Section */}
-          <ReportsSection />
-          
-          {/* Services Section */}
+          {/* Services Section - Second section (for booking services) */}
           <ServicesSection />
+          
+          {/* Reports Section - Third section */}
+          <ReportsSection />
         </div>
       </main>
       
