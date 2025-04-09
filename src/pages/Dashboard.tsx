@@ -9,31 +9,15 @@ import { useAuth } from '@/hooks/useAuth';
 import ServicesSection from '@/components/dashboard/ServicesSection';
 import ReportsSection from '@/components/dashboard/ReportsSection';
 import AccountSection from '@/components/dashboard/AccountSection';
-import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
-  const [showAnnouncement, setShowAnnouncement] = useState(true);
 
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
     if (isAuthenticated) {
       window.scrollTo(0, 0);
     }
-    
-    // Add CommonNinja script
-    const script = document.createElement('script');
-    script.src = 'https://cdn.commoninja.com/sdk/latest/commonninja.js';
-    script.defer = true;
-    document.head.appendChild(script);
-    
-    return () => {
-      // Clean up script when component unmounts
-      const scriptElement = document.querySelector('script[src="https://cdn.commoninja.com/sdk/latest/commonninja.js"]');
-      if (scriptElement && scriptElement.parentNode) {
-        scriptElement.parentNode.removeChild(scriptElement);
-      }
-    };
   }, [requireAuth]);
   
   if (!user) return null;
@@ -63,19 +47,21 @@ const Dashboard = () => {
             </motion.p>
           </div>
           
-          {/* CommonNinja Widget */}
+          {/* Static News Ticker Image */}
           <div className="mb-6">
-            <div className="commonninja_component pid-5cd7cb42-b80c-4341-81ef-fce67e7645c6"></div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="w-full border border-blue-200 rounded-md overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/052ec344-d2e0-4af7-b2ff-2c93877c8875.png"
+                alt="Travel Hub News Ticker"
+                className="w-full h-auto"
+              />
+            </motion.div>
           </div>
-          
-          {/* News Announcement - Added at the top */}
-          {showAnnouncement && (
-            <NewsAnnouncement
-              title="Announcements"
-              content="A new interline booking feature is now available at our Travel Hub. This will enable Travel Agents to make reservations on the spot."
-              onDismiss={() => setShowAnnouncement(false)}
-            />
-          )}
           
           {/* Account Section - First section */}
           <AccountSection user={user} />
