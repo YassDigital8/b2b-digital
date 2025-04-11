@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 import FlightDetailsTabs from './FlightDetailsTabs';
+import { getAirlineLogo } from '@/utils/airlineLogos';
 
 interface FlightCardProps {
   flight: Flight;
@@ -65,8 +66,19 @@ const FlightCard: React.FC<FlightCardProps> = ({
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">1</div>
-            <p className="font-medium">{flight.segments[0].airline} ({flight.segments[0].airlineCode})</p>
-            <p className="text-sm text-gray-600">Flight {flight.segments[0].flightNumber}</p>
+            <div className="flex items-center gap-2">
+              {getAirlineLogo(flight.segments[0].airlineCode) ? (
+                <img 
+                  src={getAirlineLogo(flight.segments[0].airlineCode)} 
+                  alt={flight.segments[0].airline}
+                  className="h-5 w-auto object-contain"
+                />
+              ) : (
+                <span className="text-xs px-1 py-0.5 bg-gray-100 rounded font-mono">{flight.segments[0].airlineCode}</span>
+              )}
+              <p className="font-medium">{flight.segments[0].airline}</p>
+              <p className="text-sm text-gray-600">Flight {flight.segments[0].flightNumber}</p>
+            </div>
           </div>
           
           <div className="grid grid-cols-7 gap-2 items-center pl-8">
@@ -104,8 +116,19 @@ const FlightCard: React.FC<FlightCardProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">2</div>
-            <p className="font-medium">{flight.segments[1].airline} ({flight.segments[1].airlineCode})</p>
-            <p className="text-sm text-gray-600">Flight {flight.segments[1].flightNumber}</p>
+            <div className="flex items-center gap-2">
+              {getAirlineLogo(flight.segments[1].airlineCode) ? (
+                <img 
+                  src={getAirlineLogo(flight.segments[1].airlineCode)} 
+                  alt={flight.segments[1].airline}
+                  className="h-5 w-auto object-contain"
+                />
+              ) : (
+                <span className="text-xs px-1 py-0.5 bg-gray-100 rounded font-mono">{flight.segments[1].airlineCode}</span>
+              )}
+              <p className="font-medium">{flight.segments[1].airline}</p>
+              <p className="text-sm text-gray-600">Flight {flight.segments[1].flightNumber}</p>
+            </div>
           </div>
           
           <div className="grid grid-cols-7 gap-2 items-center pl-8">
