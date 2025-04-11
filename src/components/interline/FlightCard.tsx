@@ -34,6 +34,13 @@ const FlightCard: React.FC<FlightCardProps> = ({
     setShowFlightDetails(!showFlightDetails);
   };
 
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    return flight.price * totalPassengers.adults + 
+      flight.price * totalPassengers.children + 
+      (flight.price * totalPassengers.infants * 0.1);
+  };
+
   return (
     <div
       className={cn(
@@ -87,6 +94,9 @@ const FlightCard: React.FC<FlightCardProps> = ({
         <div className="text-right">
           <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
           <p className="text-xs text-gray-500">per passenger</p>
+          {totalPassengers.total > 1 && (
+            <p className="text-xs font-medium text-chamBlue">${calculateTotalPrice().toLocaleString()} total</p>
+          )}
         </div>
       </div>
       
@@ -286,9 +296,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
                   )}
                   <tr>
                     <td colSpan={2} className="py-3 font-bold text-sm">Total</td>
-                    <td className="text-right py-3 font-bold text-sm">$ {((flight.price * totalPassengers.adults) + 
-                      (flight.price * totalPassengers.children) + 
-                      (flight.price * totalPassengers.infants * 0.1)).toLocaleString()}</td>
+                    <td className="text-right py-3 font-bold text-sm">$ {calculateTotalPrice().toLocaleString()}</td>
                   </tr>
                 </tbody>
               </table>

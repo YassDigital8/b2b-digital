@@ -34,6 +34,15 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
   // Get selected flight data
   const selectedFlightData = selectedFlightId ? flights.find(f => f.id === selectedFlightId) : null;
 
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    if (!selectedFlightData) return 0;
+    
+    return selectedFlightData.price * totalPassengers.adults + 
+      selectedFlightData.price * totalPassengers.children + 
+      (selectedFlightData.price * totalPassengers.infants * 0.1);
+  };
+
   return (
     <div>
       {/* Header with sorting options */}
@@ -92,7 +101,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
                 <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
                 <div>
                   <p className="text-lg font-bold text-chamDarkBlue">
-                    Total: ${(selectedFlightData.price * totalPassengers.total).toLocaleString()}
+                    Total: ${calculateTotalPrice().toLocaleString()}
                   </p>
                   <p className="text-sm text-gray-600">
                     for {totalPassengers.total} passenger{totalPassengers.total !== 1 ? 's' : ''}

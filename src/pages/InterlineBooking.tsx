@@ -23,6 +23,14 @@ const InterlineBooking = () => {
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'arrival'>('price');
   
+  // Passenger counts from search form
+  const [passengers, setPassengers] = useState({
+    adults: 1,
+    children: 0,
+    infants: 0,
+    total: 1
+  });
+  
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
     if (isAuthenticated) {
@@ -39,6 +47,14 @@ const InterlineBooking = () => {
     setIsSearching(true);
     setSearchResults([]);
     setSelectedFlight(null);
+    
+    // Update passengers state based on search form values
+    setPassengers({
+      adults: data.adults,
+      children: data.children,
+      infants: data.infants,
+      total: data.adults + data.children + data.infants
+    });
     
     // Simulate API call to search flights across all airlines
     setTimeout(() => {
@@ -83,13 +99,10 @@ const InterlineBooking = () => {
       return;
     }
     
-    const totalPassengers = {
-      adults: selectedFlightData.cabin === 'business' ? 1 : 2,
-      children: selectedFlightData.cabin === 'business' ? 0 : 1,
-      infants: 0,
-    };
-    const totalPrice = selectedFlightData.price * 
-      (totalPassengers.adults + totalPassengers.children + (totalPassengers.infants * 0.1));
+    // Calculate total price based on actual passenger counts
+    const totalPrice = selectedFlightData.price * passengers.adults + 
+      selectedFlightData.price * passengers.children + 
+      (selectedFlightData.price * passengers.infants * 0.1);
     
     if (user.balance < totalPrice) {
       toast.error('Insufficient balance. Please top up your account');
@@ -112,14 +125,6 @@ const InterlineBooking = () => {
   const handleSortChange = (newSortBy: 'price' | 'departure' | 'arrival') => {
     setSortBy(newSortBy);
     setSearchResults(sortFlights(searchResults, newSortBy));
-  };
-  
-  // Calculate total passengers
-  const totalPassengers = {
-    adults: searchResults.length > 0 ? (searchResults[0].cabin === 'business' ? 1 : 2) : 1,
-    children: searchResults.length > 0 ? (searchResults[0].cabin === 'business' ? 0 : 1) : 0,
-    infants: 0,
-    total: searchResults.length > 0 ? (searchResults[0].cabin === 'business' ? 1 : 3) : 1,
   };
   
   if (!user) return null;
@@ -177,7 +182,7 @@ const InterlineBooking = () => {
                       flights={searchResults}
                       selectedFlightId={selectedFlight}
                       onSelectFlight={setSelectedFlight}
-                      totalPassengers={totalPassengers}
+                      totalPassengers={passengers}
                       onBook={handleBooking}
                       isSubmitting={isSubmitting}
                       sortBy={sortBy}

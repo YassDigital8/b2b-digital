@@ -20,9 +20,13 @@ const FlightDetailsTabs: React.FC<FlightDetailsTabsProps> = ({
   selectedFlight,
   totalPassengers
 }) => {
+  // Calculate prices for each passenger type
+  const adultPrice = selectedFlight.price * totalPassengers.adults;
+  const childPrice = selectedFlight.price * totalPassengers.children;
+  const infantPrice = selectedFlight.price * totalPassengers.infants * 0.1;
+  
   // Calculate total price
-  const totalPrice = selectedFlight.price * 
-    (totalPassengers.adults + totalPassengers.children + (totalPassengers.infants * 0.1));
+  const totalPrice = adultPrice + childPrice + infantPrice;
 
   return (
     <Tabs defaultValue="details" className="w-full">
@@ -109,21 +113,21 @@ const FlightDetailsTabs: React.FC<FlightDetailsTabsProps> = ({
               <TableRow>
                 <TableCell>Adult</TableCell>
                 <TableCell className="text-center">{totalPassengers.adults}</TableCell>
-                <TableCell className="text-right">$ {(selectedFlight.price * totalPassengers.adults).toLocaleString()}</TableCell>
+                <TableCell className="text-right">$ {adultPrice.toLocaleString()}</TableCell>
               </TableRow>
             )}
             {totalPassengers.children > 0 && (
               <TableRow>
                 <TableCell>Child</TableCell>
                 <TableCell className="text-center">{totalPassengers.children}</TableCell>
-                <TableCell className="text-right">$ {(selectedFlight.price * totalPassengers.children).toLocaleString()}</TableCell>
+                <TableCell className="text-right">$ {childPrice.toLocaleString()}</TableCell>
               </TableRow>
             )}
             {totalPassengers.infants > 0 && (
               <TableRow>
                 <TableCell>Infant</TableCell>
                 <TableCell className="text-center">{totalPassengers.infants}</TableCell>
-                <TableCell className="text-right">$ {(selectedFlight.price * totalPassengers.infants * 0.1).toLocaleString()}</TableCell>
+                <TableCell className="text-right">$ {infantPrice.toLocaleString()}</TableCell>
               </TableRow>
             )}
             <TableRow>
