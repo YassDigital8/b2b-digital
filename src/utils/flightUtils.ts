@@ -1,6 +1,5 @@
 
 import { Flight } from '@/types/flight';
-import { getAirlineLogo } from './airlineLogos';
 
 // Define available airlines
 export const airlines = [
@@ -103,7 +102,6 @@ export const generateInterlineFlights = (
       flightNumber: `${firstAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
       airline: firstAirline?.name || 'Unknown Airline',
       airlineCode: firstAirline?.code || 'XX',
-      airlineLogo: firstAirline ? getAirlineLogo(firstAirline.code) : '',
       from: from,
       fromCode: fromCode,
       to: connectionCity.city,
@@ -133,7 +131,6 @@ export const generateInterlineFlights = (
       flightNumber: `${secondAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
       airline: secondAirline?.name || 'Unknown Airline',
       airlineCode: secondAirline?.code || 'XX',
-      airlineLogo: secondAirline ? getAirlineLogo(secondAirline.code) : '',
       from: connectionCity.city,
       fromCode: connectionCity.code,
       to: to,

@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { ChevronUp } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flight } from '@/types/flight';
-import { getAirlineLogo } from '@/utils/airlineLogos';
 
 interface FlightDetailsTabsProps {
   selectedFlight: Flight;
@@ -76,19 +75,10 @@ const FlightDetailsTabs: React.FC<FlightDetailsTabsProps> = ({
                   <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">
                     {index + 1}
                   </div>
-                  <div className="flex items-center gap-2">
-                    {getAirlineLogo(segment.airlineCode) ? (
-                      <img 
-                        src={getAirlineLogo(segment.airlineCode)} 
-                        alt={segment.airline}
-                        className="h-5 w-auto object-contain"
-                      />
-                    ) : (
-                      <span className="text-xs px-1 py-0.5 bg-gray-100 rounded font-mono">{segment.airlineCode}</span>
-                    )}
-                    <p className="font-medium">{segment.airline} ({segment.airlineCode})</p>
-                    <p className="text-sm text-gray-600">Flight {segment.flightNumber}</p>
-                  </div>
+                  <p className="font-medium">
+                    {segment.airline} ({segment.airlineCode})
+                  </p>
+                  <p className="text-sm text-gray-600">Flight {segment.flightNumber}</p>
                 </div>
                 
                 <div className="grid grid-cols-7 gap-4 ml-8">
