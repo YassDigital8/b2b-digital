@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 import FlightCard from './FlightCard';
+import { ArrowUpDown, CheckCircle2 } from 'lucide-react';
 
 interface FlightResultsListProps {
   flights: Flight[];
@@ -35,39 +36,44 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
 
   return (
     <div>
-      {/* Sorting options */}
-      <div className="px-6 pb-2 flex items-center border-b">
-        <span className="text-sm font-medium mr-2">Sort by:</span>
-        <div className="flex space-x-2">
-          <Button 
-            variant={sortBy === 'price' ? 'secondary' : 'ghost'} 
-            size="sm" 
-            onClick={() => onSortChange('price')}
-            className="text-xs h-8"
-          >
-            Cheapest
-          </Button>
-          <Button 
-            variant={sortBy === 'departure' ? 'secondary' : 'ghost'} 
-            size="sm"
-            onClick={() => onSortChange('departure')}
-            className="text-xs h-8"
-          >
-            Departure
-          </Button>
-          <Button 
-            variant={sortBy === 'arrival' ? 'secondary' : 'ghost'} 
-            size="sm"
-            onClick={() => onSortChange('arrival')}
-            className="text-xs h-8"
-          >
-            Arrival
-          </Button>
+      {/* Header with sorting options */}
+      <div className="px-6 py-3 flex items-center justify-between bg-white border-b sticky top-0 z-10">
+        <div className="flex items-center">
+          <span className="text-sm font-medium text-gray-700 mr-2">Found {flights.length} flights</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600 mr-1">Sort by:</span>
+          <div className="flex bg-gray-100 rounded-md p-0.5">
+            <Button 
+              variant={sortBy === 'price' ? 'secondary' : 'ghost'} 
+              size="sm" 
+              onClick={() => onSortChange('price')}
+              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'price' ? 'bg-white shadow-sm' : ''}`}
+            >
+              Price
+            </Button>
+            <Button 
+              variant={sortBy === 'departure' ? 'secondary' : 'ghost'} 
+              size="sm"
+              onClick={() => onSortChange('departure')}
+              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'departure' ? 'bg-white shadow-sm' : ''}`}
+            >
+              Departure
+            </Button>
+            <Button 
+              variant={sortBy === 'arrival' ? 'secondary' : 'ghost'} 
+              size="sm"
+              onClick={() => onSortChange('arrival')}
+              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'arrival' ? 'bg-white shadow-sm' : ''}`}
+            >
+              Arrival
+            </Button>
+          </div>
         </div>
       </div>
       
-      <div className="pt-4">
-        <div className="space-y-6">
+      <div className="p-4">
+        <div className="space-y-4">
           {flights.map((flight) => (
             <FlightCard
               key={flight.id}
@@ -80,21 +86,24 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         </div>
         
         {selectedFlightData && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <p className="text-lg font-bold text-chamDarkBlue">
-                  Total: ${(selectedFlightData.price * totalPassengers.total).toLocaleString()}
-                </p>
-                <p className="text-sm text-gray-600">
-                  for {totalPassengers.total} passenger{totalPassengers.total !== 1 ? 's' : ''}
-                  {totalPassengers.adults > 0 && ` (${totalPassengers.adults} adult${totalPassengers.adults !== 1 ? 's' : ''}${totalPassengers.children > 0 ? `, ${totalPassengers.children} child${totalPassengers.children !== 1 ? 'ren' : ''}` : ''}${totalPassengers.infants > 0 ? `, ${totalPassengers.infants} infant${totalPassengers.infants !== 1 ? 's' : ''}` : ''})`}
-                </p>
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-chamBlue/5 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
+                <div>
+                  <p className="text-lg font-bold text-chamDarkBlue">
+                    Total: ${(selectedFlightData.price * totalPassengers.total).toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    for {totalPassengers.total} passenger{totalPassengers.total !== 1 ? 's' : ''}
+                    {totalPassengers.adults > 0 && ` (${totalPassengers.adults} adult${totalPassengers.adults !== 1 ? 's' : ''}${totalPassengers.children > 0 ? `, ${totalPassengers.children} child${totalPassengers.children !== 1 ? 'ren' : ''}` : ''}${totalPassengers.infants > 0 ? `, ${totalPassengers.infants} infant${totalPassengers.infants !== 1 ? 's' : ''}` : ''})`}
+                  </p>
+                </div>
               </div>
               
               <Button
                 onClick={onBook}
-                className="bg-chamGold hover:bg-chamGold/90 min-w-[140px]"
+                className="bg-chamGold hover:bg-chamGold/90 min-w-[140px] shadow-sm"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Processing...' : 'Book Now'}
