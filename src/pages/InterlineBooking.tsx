@@ -34,6 +34,12 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 // Define schema for the booking form
 const bookingFormSchema = z.object({
@@ -50,29 +56,72 @@ const bookingFormSchema = z.object({
 
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
+// Interfaces for flight data
+interface Segment {
+  id: string;
+  flightNumber: string;
+  airline: string;
+  airlineCode: string;
+  airlineLogo?: string;
+  from: string;
+  fromCode: string;
+  to: string;
+  toCode: string;
+  departureTime: Date;
+  arrivalTime: Date;
+  duration: string;
+}
+
+interface Flight {
+  id: string;
+  segments: Segment[];
+  stops: number;
+  price: number;
+  seats: number;
+  cabin: string;
+  connectionTime?: string;
+}
+
 const InterlineBooking = () => {
   const { user, requireAuth } = useAuth();
   const [isSearching, setIsSearching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Flight search results state
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<Flight[]>([]);
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'price' | 'departure' | 'arrival'>('price');
   
-  // Define available airlines and cities
+  // Define available airlines
   const airlines = [
-    { id: 'chamwings', name: 'Cham Wings Airlines', code: 'SAW' },
+    { id: 'chamwings', name: 'Cham Wings Airlines', code: '6Q' },
     { id: 'jazeera', name: 'Jazeera Airways', code: 'J9' },
     { id: 'airarabia', name: 'Air Arabia', code: 'G9' },
-    { id: 'flydubai', name: 'FlyDubai', code: 'FZ' }
+    { id: 'flydubai', name: 'FlyDubai', code: 'FZ' },
+    { id: 'kuwait', name: 'Kuwait Airways', code: 'KU' }
   ];
   
-  // All available cities across all airlines (deduplicated)
-  const allCities = Array.from(new Set([
-    'Damascus', 'Aleppo', 'Latakia', 'Beirut', 'Dubai', 'Abu Dhabi', 'Cairo', 
-    'Alexandria', 'Baghdad', 'Tehran', 'Khartoum', 'Kuwait City', 'Doha', 'Riyadh', 
-    'Jeddah', 'Amman', 'Sharjah', 'Basra'
-  ])).sort();
+  // All available cities with airport codes
+  const allCities = [
+    { city: 'Damascus', code: 'DAM' },
+    { city: 'Aleppo', code: 'ALP' },
+    { city: 'Latakia', code: 'LTK' },
+    { city: 'Beirut', code: 'BEY' },
+    { city: 'Dubai', code: 'DXB' },
+    { city: 'Abu Dhabi', code: 'AUH' },
+    { city: 'Cairo', code: 'CAI' }, 
+    { city: 'Alexandria', code: 'ALY' },
+    { city: 'Baghdad', code: 'BGW' },
+    { city: 'Tehran', code: 'IKA' },
+    { city: 'Khartoum', code: 'KRT' },
+    { city: 'Kuwait City', code: 'KWI' },
+    { city: 'Doha', code: 'DOH' },
+    { city: 'Riyadh', code: 'RUH' }, 
+    { city: 'Jeddah', code: 'JED' },
+    { city: 'Amman', code: 'AMM' },
+    { city: 'Sharjah', code: 'SHJ' },
+    { city: 'Basra', code: 'BSR' }
+  ];
   
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
@@ -108,6 +157,18 @@ const InterlineBooking = () => {
       form.setValue('returnDate', null);
     }
   }, [tripType, form]);
+
+  // Helper function to get city name from code
+  const getCityNameFromCode = (code: string): string => {
+    const city = allCities.find(c => c.code === code);
+    return city ? city.city : code;
+  };
+
+  // Helper function to get city code from name
+  const getCityCodeFromName = (name: string): string => {
+    const city = allCities.find(c => c.city === name);
+    return city ? city.code : '';
+  };
   
   const handleSearch = async (data: BookingFormValues) => {
     // Validate that cities are not the same
@@ -140,23 +201,22 @@ const InterlineBooking = () => {
     
     // Simulate API call to search flights across all airlines
     setTimeout(() => {
-      const allResults = [];
+      // Get from and to city codes
+      const fromCode = getCityCodeFromName(data.fromCity);
+      const toCode = getCityCodeFromName(data.toCity);
       
-      // Generate mock results for each airline
-      for (const airline of airlines) {
-        const airlineResults = generateMockFlights(
-          data.fromCity,
-          data.toCity,
-          data.departureDate,
-          airline.id,
-          data.cabinClass,
-        );
-        
-        allResults.push(...airlineResults);
-      }
+      // Generate interline connection flights
+      const results = generateInterlineFlights(
+        data.fromCity,
+        data.toCity,
+        fromCode,
+        toCode,
+        data.departureDate,
+        data.cabinClass,
+      );
       
       // Sort results by price (lowest first) as default
-      const sortedResults = allResults.sort((a, b) => a.price - b.price);
+      const sortedResults = sortFlights(results, 'price');
       
       setSearchResults(sortedResults);
       setIsSearching(false);
@@ -164,7 +224,7 @@ const InterlineBooking = () => {
       if (sortedResults.length === 0) {
         toast.error('No flights found for the selected criteria');
       } else {
-        toast.success(`Found ${sortedResults.length} flights for your search`);
+        toast.success(`Found ${sortedResults.length} interline flights for your search`);
       }
     }, 2000);
   };
@@ -237,52 +297,141 @@ const InterlineBooking = () => {
       return;
     }
     
-    const totalPassengers = form.getValues('adults') + form.getValues('children') + form.getValues('infants');
-    if (increment && totalPassengers >= 9) {
+    const totalPassengers = (type === 'adults' ? newValue : form.getValues('adults')) + 
+                           (type === 'children' ? newValue : form.getValues('children')) + 
+                           (type === 'infants' ? newValue : form.getValues('infants'));
+    
+    if (increment && totalPassengers > 9) {
       toast.error('Maximum 9 passengers allowed per booking');
       return;
     }
     
     form.setValue(type, newValue);
   };
+
+  // Function to sort flights
+  const sortFlights = (flights: Flight[], sortType: 'price' | 'departure' | 'arrival') => {
+    return [...flights].sort((a, b) => {
+      if (sortType === 'price') {
+        return a.price - b.price;
+      } else if (sortType === 'departure') {
+        return a.segments[0].departureTime.getTime() - b.segments[0].departureTime.getTime();
+      } else if (sortType === 'arrival') {
+        const aLastSegment = a.segments[a.segments.length - 1];
+        const bLastSegment = b.segments[b.segments.length - 1];
+        return aLastSegment.arrivalTime.getTime() - bLastSegment.arrivalTime.getTime();
+      }
+      return 0;
+    });
+  };
+
+  // Handle sorting change
+  const handleSortChange = (newSortBy: 'price' | 'departure' | 'arrival') => {
+    setSortBy(newSortBy);
+    setSearchResults(sortFlights(searchResults, newSortBy));
+  };
   
-  // Mock flight generation
-  const generateMockFlights = (from: string, to: string, date: Date, airline: string, cabin: string) => {
-    const flights = [];
-    const airlineData = airlines.find(a => a.id === airline);
-    const airlineCode = airlineData?.code || 'XX';
+  // Mock interline flight generation
+  const generateInterlineFlights = (
+    from: string, 
+    to: string, 
+    fromCode: string, 
+    toCode: string,
+    date: Date, 
+    cabin: string
+  ): Flight[] => {
+    const flights: Flight[] = [];
     const cabinPriceMultiplier = cabin === 'business' ? 3 : 1;
     
-    const departureTimeBase = new Date(date);
-    departureTimeBase.setHours(6, 0, 0, 0);
-    
-    // Generate 0-4 flights per airline
-    const numFlights = Math.floor(Math.random() * 5);
+    // Generate 5-10 interline flights
+    const numFlights = 5 + Math.floor(Math.random() * 6);
     
     for (let i = 0; i < numFlights; i++) {
-      const flightNumber = `${airlineCode}${100 + Math.floor(Math.random() * 900)}`;
+      // Ensure at least one segment is operated by Cham Wings (6Q)
+      const chamWingsFirst = Math.random() > 0.5;
+      const departureTimeBase = new Date(date);
+      departureTimeBase.setHours(6 + Math.floor(Math.random() * 12), Math.floor(Math.random() * 60), 0, 0);
       
-      const departureTime = new Date(departureTimeBase);
-      departureTime.setHours(departureTime.getHours() + (i * 3));
+      // Select a connection city (different from origin and destination)
+      const possibleConnections = allCities.filter(c => 
+        c.city !== from && c.city !== to
+      );
+      const connectionCity = possibleConnections[Math.floor(Math.random() * possibleConnections.length)];
       
-      const arrivalTime = new Date(departureTime);
-      arrivalTime.setHours(arrivalTime.getHours() + 2 + Math.floor(Math.random() * 3));
+      // Create first segment
+      const firstAirline = chamWingsFirst 
+        ? airlines.find(a => a.code === '6Q') 
+        : airlines[Math.floor(Math.random() * (airlines.length - 1)) + 1]; // Skip Cham Wings
       
-      const price = Math.floor((200 + Math.random() * 300) * cabinPriceMultiplier);
+      const segment1DepartureTime = new Date(departureTimeBase);
+      const segment1Duration = 60 + Math.floor(Math.random() * 120); // 1-3 hours in minutes
+      const segment1ArrivalTime = new Date(segment1DepartureTime);
+      segment1ArrivalTime.setMinutes(segment1ArrivalTime.getMinutes() + segment1Duration);
+      
+      const firstSegment: Segment = {
+        id: `seg1-${i}`,
+        flightNumber: `${firstAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
+        airline: firstAirline?.name || 'Unknown Airline',
+        airlineCode: firstAirline?.code || 'XX',
+        from: from,
+        fromCode: fromCode,
+        to: connectionCity.city,
+        toCode: connectionCity.code,
+        departureTime: segment1DepartureTime,
+        arrivalTime: segment1ArrivalTime,
+        duration: `${Math.floor(segment1Duration / 60)}h ${segment1Duration % 60}m`,
+      };
+      
+      // Create connection time
+      const connectionDuration = 60 + Math.floor(Math.random() * 120); // 1-3 hours
+      
+      // Create second segment
+      const secondAirline = chamWingsFirst 
+        ? airlines[Math.floor(Math.random() * (airlines.length - 1)) + 1] // Skip Cham Wings
+        : airlines.find(a => a.code === '6Q');
+      
+      const segment2DepartureTime = new Date(segment1ArrivalTime);
+      segment2DepartureTime.setMinutes(segment2DepartureTime.getMinutes() + connectionDuration);
+      
+      const segment2Duration = 60 + Math.floor(Math.random() * 120); // 1-3 hours in minutes
+      const segment2ArrivalTime = new Date(segment2DepartureTime);
+      segment2ArrivalTime.setMinutes(segment2ArrivalTime.getMinutes() + segment2Duration);
+      
+      const secondSegment: Segment = {
+        id: `seg2-${i}`,
+        flightNumber: `${secondAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
+        airline: secondAirline?.name || 'Unknown Airline',
+        airlineCode: secondAirline?.code || 'XX',
+        from: connectionCity.city,
+        fromCode: connectionCity.code,
+        to: to,
+        toCode: toCode,
+        departureTime: segment2DepartureTime,
+        arrivalTime: segment2ArrivalTime,
+        duration: `${Math.floor(segment2Duration / 60)}h ${segment2Duration % 60}m`,
+      };
+      
+      // Calculate total duration including connection
+      const totalDurationMinutes = 
+        segment1Duration + 
+        connectionDuration + 
+        segment2Duration;
+      
+      const totalDuration = `${Math.floor(totalDurationMinutes / 60)}h ${totalDurationMinutes % 60}m`;
+      
+      // Calculate price - more expensive for shorter connections
+      const basePrice = 300 + Math.floor(Math.random() * 500);
+      const connectionFactor = Math.max(0.8, 1 - (connectionDuration / 300)); // Higher for shorter connections
+      const price = Math.floor(basePrice * cabinPriceMultiplier * connectionFactor);
       
       flights.push({
-        id: `${airline}-${i}`,
-        flightNumber,
-        airline: airlineData?.name || 'Unknown Airline',
-        airlineCode: airlineCode,
-        from,
-        to,
-        departureTime,
-        arrivalTime,
-        duration: Math.floor((arrivalTime.getTime() - departureTime.getTime()) / (1000 * 60)) + ' mins',
-        price,
+        id: `flight-${i}`,
+        segments: [firstSegment, secondSegment],
+        stops: 1,
+        price: price,
         seats: Math.floor(Math.random() * 30) + 1,
-        cabin
+        cabin: cabin,
+        connectionTime: `${Math.floor(connectionDuration / 60)}h ${connectionDuration % 60}m`,
       });
     }
     
@@ -307,7 +456,7 @@ const InterlineBooking = () => {
             className="mb-8"
           >
             <h1 className="text-3xl font-bold text-chamDarkBlue">Interline Booking</h1>
-            <p className="text-gray-600">Book partner airline tickets using your Cham Wings account</p>
+            <p className="text-gray-600">Book connecting flights with Cham Wings (6Q) and partner airlines</p>
           </motion.div>
           
           <motion.div
@@ -330,7 +479,7 @@ const InterlineBooking = () => {
                   
                   <div className="bg-chamGold/10 px-4 py-2 rounded-lg">
                     <p className="text-sm text-chamGold font-medium">
-                      Use your balance to book tickets with partner airlines
+                      Use your balance to book interline tickets with Cham Wings and partner airlines
                     </p>
                   </div>
                 </div>
@@ -346,7 +495,7 @@ const InterlineBooking = () => {
             <Card className="border-none shadow-soft mb-8">
               <CardHeader>
                 <CardTitle className="text-2xl text-chamDarkBlue">Flight Search</CardTitle>
-                <CardDescription>Search for flights across all partner airlines</CardDescription>
+                <CardDescription>Search for interline connecting flights</CardDescription>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
@@ -397,8 +546,8 @@ const InterlineBooking = () => {
                               </FormControl>
                               <SelectContent enableSearch>
                                 {allCities.map((city) => (
-                                  <SelectItem key={city} value={city}>
-                                    {city}
+                                  <SelectItem key={city.code} value={city.city}>
+                                    {city.city} ({city.code})
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -425,10 +574,10 @@ const InterlineBooking = () => {
                               </FormControl>
                               <SelectContent enableSearch>
                                 {allCities
-                                  .filter(city => city !== fromCity)
+                                  .filter(city => city.city !== fromCity)
                                   .map((city) => (
-                                    <SelectItem key={city} value={city}>
-                                      {city}
+                                    <SelectItem key={city.code} value={city.city}>
+                                      {city.city} ({city.code})
                                     </SelectItem>
                                   ))}
                               </SelectContent>
@@ -684,9 +833,9 @@ const InterlineBooking = () => {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-xl text-chamDarkBlue">Available Flights</CardTitle>
+                        <CardTitle className="text-xl text-chamDarkBlue">Available Interline Flights</CardTitle>
                         <CardDescription>
-                          {form.getValues('fromCity')} to {form.getValues('toCity')} on {format(form.getValues('departureDate'), "MMMM d, yyyy")}
+                          {form.getValues('fromCity')} ({getCityCodeFromName(form.getValues('fromCity'))}) to {form.getValues('toCity')} ({getCityCodeFromName(form.getValues('toCity'))}) on {format(form.getValues('departureDate'), "MMMM d, yyyy")}
                         </CardDescription>
                       </div>
                       <div className="text-sm text-muted-foreground">
@@ -694,61 +843,161 @@ const InterlineBooking = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
+                  
+                  {/* Sorting options */}
+                  <div className="px-6 pb-2 flex items-center border-b">
+                    <span className="text-sm font-medium mr-2">Sort by:</span>
+                    <div className="flex space-x-2">
+                      <Button 
+                        variant={sortBy === 'price' ? 'secondary' : 'ghost'} 
+                        size="sm" 
+                        onClick={() => handleSortChange('price')}
+                        className="text-xs h-8"
+                      >
+                        Cheapest
+                      </Button>
+                      <Button 
+                        variant={sortBy === 'departure' ? 'secondary' : 'ghost'} 
+                        size="sm"
+                        onClick={() => handleSortChange('departure')}
+                        className="text-xs h-8"
+                      >
+                        Departure
+                      </Button>
+                      <Button 
+                        variant={sortBy === 'arrival' ? 'secondary' : 'ghost'} 
+                        size="sm"
+                        onClick={() => handleSortChange('arrival')}
+                        className="text-xs h-8"
+                      >
+                        Arrival
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <CardContent className="pt-4">
+                    <div className="space-y-6">
                       {searchResults.map((flight) => (
                         <div
                           key={flight.id}
                           className={cn(
-                            "p-4 rounded-lg border transition-all duration-300 cursor-pointer",
+                            "border rounded-lg transition-all duration-300 cursor-pointer overflow-hidden",
                             selectedFlight === flight.id
                               ? "border-chamBlue bg-chamBlue/5"
                               : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50"
                           )}
                           onClick={() => setSelectedFlight(flight.id)}
                         >
-                          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <p className="font-bold text-chamDarkBlue">{flight.flightNumber}</p>
-                                <span className="bg-gray-100 text-xs px-2 py-0.5 rounded">
-                                  {flight.airlineCode}
-                                </span>
-                              </div>
-                              <p className="text-sm text-gray-600">{flight.airline}</p>
+                          {/* Flight header with price */}
+                          <div className="flex justify-between items-center p-3 bg-gray-50 border-b">
+                            <div className="flex items-center gap-2">
+                              <Plane className="h-4 w-4 text-chamBlue" />
+                              <span className="font-medium">Interline Flight</span>
+                              <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">
+                                {flight.stops} stop
+                              </span>
                             </div>
-                            
-                            <div className="col-span-2">
-                              <div className="flex items-center justify-center gap-3">
-                                <div className="text-right">
-                                  <p className="font-bold text-chamDarkBlue">
-                                    {format(flight.departureTime, "HH:mm")}
-                                  </p>
-                                  <p className="text-xs text-gray-500">{flight.from}</p>
-                                </div>
-                                <div className="w-16 h-px bg-gray-300 relative">
-                                  <Plane className="absolute top-1/2 right-0 transform -translate-y-1/2 h-3 w-3 text-chamBlue" />
-                                </div>
-                                <div className="text-left">
-                                  <p className="font-bold text-chamDarkBlue">
-                                    {format(flight.arrivalTime, "HH:mm")}
-                                  </p>
-                                  <p className="text-xs text-gray-500">{flight.to}</p>
-                                </div>
-                              </div>
-                              <p className="text-xs text-gray-500 mt-1 text-center">{flight.duration}</p>
-                            </div>
-                            
-                            <div className="text-center">
-                              <p className="text-sm text-gray-600">
-                                {flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}
-                              </p>
-                              <p className="text-xs text-gray-500">{flight.seats} seats available</p>
-                            </div>
-                            
                             <div className="text-right">
-                              <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
+                              <p className="font-bold text-lg text-chamDarkBlue">${flight.price}</p>
                               <p className="text-xs text-gray-500">per passenger</p>
+                            </div>
+                          </div>
+                          
+                          {/* Flight segments */}
+                          <div className="p-4">
+                            {/* First segment */}
+                            <div className="mb-4">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">1</div>
+                                <p className="font-medium">{flight.segments[0].airline} ({flight.segments[0].airlineCode})</p>
+                                <p className="text-sm text-gray-600">Flight {flight.segments[0].flightNumber}</p>
+                              </div>
+                              
+                              <div className="grid grid-cols-7 gap-2 items-center pl-8">
+                                <div className="col-span-3">
+                                  <p className="text-base font-semibold">{format(flight.segments[0].departureTime, "HH:mm")}</p>
+                                  <p className="text-sm">{flight.segments[0].fromCode}</p>
+                                  <p className="text-xs text-gray-500">{flight.segments[0].from}</p>
+                                </div>
+                                
+                                <div className="col-span-1 flex flex-col items-center">
+                                  <div className="text-xs text-gray-500">{flight.segments[0].duration}</div>
+                                  <div className="w-full h-px bg-gray-300 my-1 relative">
+                                    <Plane className="absolute top-1/2 right-0 transform -translate-y-1/2 h-3 w-3 text-chamBlue" />
+                                  </div>
+                                  <div className="text-xs text-gray-500">Direct</div>
+                                </div>
+                                
+                                <div className="col-span-3 text-right">
+                                  <p className="text-base font-semibold">{format(flight.segments[0].arrivalTime, "HH:mm")}</p>
+                                  <p className="text-sm">{flight.segments[0].toCode}</p>
+                                  <p className="text-xs text-gray-500">{flight.segments[0].to}</p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Connection information */}
+                            <div className="flex items-center justify-center py-2 px-4 bg-orange-50 rounded-md mb-4">
+                              <div className="flex items-center gap-2 text-sm text-orange-700">
+                                <Info className="h-4 w-4" />
+                                <span>Connection time: {flight.connectionTime} in {flight.segments[0].to} ({flight.segments[0].toCode})</span>
+                              </div>
+                            </div>
+                            
+                            {/* Second segment */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">2</div>
+                                <p className="font-medium">{flight.segments[1].airline} ({flight.segments[1].airlineCode})</p>
+                                <p className="text-sm text-gray-600">Flight {flight.segments[1].flightNumber}</p>
+                              </div>
+                              
+                              <div className="grid grid-cols-7 gap-2 items-center pl-8">
+                                <div className="col-span-3">
+                                  <p className="text-base font-semibold">{format(flight.segments[1].departureTime, "HH:mm")}</p>
+                                  <p className="text-sm">{flight.segments[1].fromCode}</p>
+                                  <p className="text-xs text-gray-500">{flight.segments[1].from}</p>
+                                </div>
+                                
+                                <div className="col-span-1 flex flex-col items-center">
+                                  <div className="text-xs text-gray-500">{flight.segments[1].duration}</div>
+                                  <div className="w-full h-px bg-gray-300 my-1 relative">
+                                    <Plane className="absolute top-1/2 right-0 transform -translate-y-1/2 h-3 w-3 text-chamBlue" />
+                                  </div>
+                                  <div className="text-xs text-gray-500">Direct</div>
+                                </div>
+                                
+                                <div className="col-span-3 text-right">
+                                  <p className="text-base font-semibold">{format(flight.segments[1].arrivalTime, "HH:mm")}</p>
+                                  <p className="text-sm">{flight.segments[1].toCode}</p>
+                                  <p className="text-xs text-gray-500">{flight.segments[1].to}</p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Additional flight info */}
+                            <div className="mt-4 pt-3 border-t border-dashed flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-4">
+                                <div className="flex items-center">
+                                  <Check className="h-4 w-4 text-green-600 mr-1" />
+                                  <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-gray-600">{flight.seats} seats left</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-4 w-4 text-chamBlue" />
+                                <span>Total journey time: {
+                                  (() => {
+                                    const startTime = flight.segments[0].departureTime;
+                                    const endTime = flight.segments[1].arrivalTime;
+                                    const durationMs = endTime.getTime() - startTime.getTime();
+                                    const durationMins = Math.floor(durationMs / (1000 * 60));
+                                    return `${Math.floor(durationMins / 60)}h ${durationMins % 60}m`;
+                                  })()
+                                }</span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -796,9 +1045,9 @@ const InterlineBooking = () => {
                   <div>
                     <h3 className="font-medium text-chamDarkBlue mb-2">About Interline Booking</h3>
                     <p className="text-gray-600 text-sm">
-                      Cham Wings Airlines has partnered with Jazeera Airways, Air Arabia, and FlyDubai
-                      to offer convenient interline booking options. Book tickets with our partner airlines
-                      using your Cham Wings account balance.
+                      Cham Wings Airlines has partnered with several airlines to offer interline booking options.
+                      This allows you to book flights where at least one segment is operated by Cham Wings (code 6Q),
+                      with connecting flights on partner airlines, all in a single reservation.
                     </p>
                   </div>
                   
@@ -810,7 +1059,7 @@ const InterlineBooking = () => {
                       <li className="flex items-start gap-2">
                         <Plane className="h-5 w-5 text-chamBlue shrink-0 mt-0.5" />
                         <div>
-                          <p className="font-medium text-chamDarkBlue">Cham Wings Airlines (SAW)</p>
+                          <p className="font-medium text-chamDarkBlue">Cham Wings Airlines (6Q)</p>
                           <p className="text-xs text-gray-600">Syria's leading private carrier</p>
                         </div>
                       </li>
@@ -835,6 +1084,13 @@ const InterlineBooking = () => {
                           <p className="text-xs text-gray-600">Dubai-based carrier serving the Middle East, Africa, and Asia</p>
                         </div>
                       </li>
+                      <li className="flex items-start gap-2">
+                        <Plane className="h-5 w-5 text-chamBlue shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-medium text-chamDarkBlue">Kuwait Airways (KU)</p>
+                          <p className="text-xs text-gray-600">Kuwait's national carrier with global connections</p>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                   
@@ -846,11 +1102,12 @@ const InterlineBooking = () => {
                       <div>
                         <p className="text-sm text-chamBlue font-medium mb-1">Important Information:</p>
                         <ul className="list-disc list-inside text-xs text-chamBlue/80 space-y-1">
-                          <li>Bookings are subject to availability and partner airline policies</li>
-                          <li>Your Cham Wings account will be debited at the time of booking</li>
-                          <li>Changes and cancellations are subject to partner airline policies</li>
+                          <li>All interline bookings include at least one segment operated by Cham Wings Airlines (6Q)</li>
+                          <li>Baggage policies follow the most restrictive rules of the operating airlines</li>
+                          <li>For flight changes or cancellations, please contact Cham Wings customer service</li>
+                          <li>Connection times shown are minimum required times at each airport</li>
+                          <li>Visa requirements are the passenger's responsibility</li>
                           <li>E-tickets will be sent to your registered email address</li>
-                          <li>For assistance, please contact Cham Wings customer service</li>
                         </ul>
                       </div>
                     </div>
