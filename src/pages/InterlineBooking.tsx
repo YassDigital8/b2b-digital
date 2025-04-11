@@ -20,7 +20,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Plane, Calendar as CalendarIcon, Users, MapPin, Check, Info, Search, Plus, Minus } from 'lucide-react';
+import { Plane, Calendar as CalendarIcon, Users, MapPin, Check, Info, Search, Plus, Minus, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import {
@@ -40,6 +40,8 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import FlightDetailsTabs from '@/components/interline/FlightDetailsTabs';
+import { Flight } from '@/types/flight';
 
 // Define schema for the booking form
 const bookingFormSchema = z.object({
@@ -56,32 +58,6 @@ const bookingFormSchema = z.object({
 
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
-// Interfaces for flight data
-interface Segment {
-  id: string;
-  flightNumber: string;
-  airline: string;
-  airlineCode: string;
-  airlineLogo?: string;
-  from: string;
-  fromCode: string;
-  to: string;
-  toCode: string;
-  departureTime: Date;
-  arrivalTime: Date;
-  duration: string;
-}
-
-interface Flight {
-  id: string;
-  segments: Segment[];
-  stops: number;
-  price: number;
-  seats: number;
-  cabin: string;
-  connectionTime?: string;
-}
-
 const InterlineBooking = () => {
   const { user, requireAuth } = useAuth();
   const [isSearching, setIsSearching] = useState(false);
@@ -91,6 +67,7 @@ const InterlineBooking = () => {
   const [searchResults, setSearchResults] = useState<Flight[]>([]);
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'arrival'>('price');
+  const [showFlightDetails, setShowFlightDetails] = useState(false);
   
   // Define available airlines
   const airlines = [
@@ -157,6 +134,11 @@ const InterlineBooking = () => {
       form.setValue('returnDate', null);
     }
   }, [tripType, form]);
+
+  useEffect(() => {
+    // Reset flight details view when a new flight is selected
+    setShowFlightDetails(false);
+  }, [selectedFlight]);
 
   // Helper function to get city name from code
   const getCityNameFromCode = (code: string): string => {
@@ -331,6 +313,10 @@ const InterlineBooking = () => {
     setSearchResults(sortFlights(searchResults, newSortBy));
   };
   
+  const handleToggleFlightDetails = () => {
+    setShowFlightDetails(!showFlightDetails);
+  };
+
   // Mock interline flight generation
   const generateInterlineFlights = (
     from: string, 
@@ -368,7 +354,7 @@ const InterlineBooking = () => {
       const segment1ArrivalTime = new Date(segment1DepartureTime);
       segment1ArrivalTime.setMinutes(segment1ArrivalTime.getMinutes() + segment1Duration);
       
-      const firstSegment: Segment = {
+      const firstSegment = {
         id: `seg1-${i}`,
         flightNumber: `${firstAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
         airline: firstAirline?.name || 'Unknown Airline',
@@ -397,7 +383,7 @@ const InterlineBooking = () => {
       const segment2ArrivalTime = new Date(segment2DepartureTime);
       segment2ArrivalTime.setMinutes(segment2ArrivalTime.getMinutes() + segment2Duration);
       
-      const secondSegment: Segment = {
+      const secondSegment = {
         id: `seg2-${i}`,
         flightNumber: `${secondAirline?.code}${100 + Math.floor(Math.random() * 900)}`,
         airline: secondAirline?.name || 'Unknown Airline',
@@ -430,7 +416,7 @@ const InterlineBooking = () => {
         stops: 1,
         price: price,
         seats: Math.floor(Math.random() * 30) + 1,
-        cabin: cabin,
+        cabin: cabin as 'economy' | 'business',
         connectionTime: `${Math.floor(connectionDuration / 60)}h ${connectionDuration % 60}m`,
       });
     }
@@ -441,7 +427,15 @@ const InterlineBooking = () => {
   if (!user) return null;
   
   // Calculate total passengers
-  const totalPassengers = form.watch('adults') + form.watch('children') + form.watch('infants');
+  const totalPassengers = {
+    adults: form.watch('adults'),
+    children: form.watch('children'),
+    infants: form.watch('infants'),
+    total: form.watch('adults') + form.watch('children') + form.watch('infants')
+  };
+
+  // Get selected flight data
+  const selectedFlightData = selectedFlight ? searchResults.find(f => f.id === selectedFlight) : null;
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -791,9 +785,9 @@ const InterlineBooking = () => {
                             </div>
                           </div>
                         </div>
-                        {totalPassengers > 0 && (
+                        {totalPassengers.total > 0 && (
                           <p className="text-xs text-muted-foreground mt-2">
-                            Total passengers: {totalPassengers}
+                            Total passengers: {totalPassengers.total}
                           </p>
                         )}
                       </div>
@@ -881,15 +875,17 @@ const InterlineBooking = () => {
                         <div
                           key={flight.id}
                           className={cn(
-                            "border rounded-lg transition-all duration-300 cursor-pointer overflow-hidden",
+                            "border rounded-lg transition-all duration-300 overflow-hidden",
                             selectedFlight === flight.id
                               ? "border-chamBlue bg-chamBlue/5"
                               : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50"
                           )}
-                          onClick={() => setSelectedFlight(flight.id)}
                         >
                           {/* Flight header with price */}
-                          <div className="flex justify-between items-center p-3 bg-gray-50 border-b">
+                          <div 
+                            className="flex justify-between items-center p-3 bg-gray-50 border-b cursor-pointer"
+                            onClick={() => setSelectedFlight(flight.id === selectedFlight ? null : flight.id)}
+                          >
                             <div className="flex items-center gap-2">
                               <Plane className="h-4 w-4 text-chamBlue" />
                               <span className="font-medium">Interline Flight</span>
@@ -999,21 +995,48 @@ const InterlineBooking = () => {
                                 }</span>
                               </div>
                             </div>
+
+                            {/* Flight details button */}
+                            {selectedFlight === flight.id && (
+                              <div className="mt-4 flex justify-center">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleToggleFlightDetails}
+                                  className="text-chamBlue border-chamBlue/30"
+                                >
+                                  {showFlightDetails ? (
+                                    <>
+                                      <ChevronUp className="h-4 w-4 mr-1" /> Hide Flight Details
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ChevronDown className="h-4 w-4 mr-1" /> Show Flight Details
+                                    </>
+                                  )}
+                                </Button>
+                              </div>
+                            )}
                           </div>
+
+                          {/* Detailed Flight Info Tabs - shown when a flight is selected */}
+                          {selectedFlight === flight.id && showFlightDetails && (
+                            <FlightDetailsTabs selectedFlight={flight} totalPassengers={totalPassengers} />
+                          )}
                         </div>
                       ))}
                     </div>
                     
-                    {selectedFlight && (
+                    {selectedFlightData && (
                       <div className="mt-6 pt-6 border-t border-gray-200">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                           <div>
                             <p className="text-lg font-bold text-chamDarkBlue">
-                              Total: ${(searchResults.find(f => f.id === selectedFlight)?.price || 0) * totalPassengers}
+                              Total: ${(selectedFlightData.price * totalPassengers.total).toLocaleString()}
                             </p>
                             <p className="text-sm text-gray-600">
-                              for {totalPassengers} passenger{totalPassengers !== 1 ? 's' : ''}
-                              {form.watch('adults') > 0 && ` (${form.watch('adults')} adult${form.watch('adults') !== 1 ? 's' : ''}${form.watch('children') > 0 ? `, ${form.watch('children')} child${form.watch('children') !== 1 ? 'ren' : ''}` : ''}${form.watch('infants') > 0 ? `, ${form.watch('infants')} infant${form.watch('infants') !== 1 ? 's' : ''}` : ''})`}
+                              for {totalPassengers.total} passenger{totalPassengers.total !== 1 ? 's' : ''}
+                              {totalPassengers.adults > 0 && ` (${totalPassengers.adults} adult${totalPassengers.adults !== 1 ? 's' : ''}${totalPassengers.children > 0 ? `, ${totalPassengers.children} child${totalPassengers.children !== 1 ? 'ren' : ''}` : ''}${totalPassengers.infants > 0 ? `, ${totalPassengers.infants} infant${totalPassengers.infants !== 1 ? 's' : ''}` : ''})`}
                             </p>
                           </div>
                           
