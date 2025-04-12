@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -29,7 +28,6 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-// Define schema for the booking form
 export const bookingFormSchema = z.object({
   tripType: z.enum(['one-way', 'round-trip']),
   fromCity: z.string().min(1, { message: "Please select a departure city" }),
@@ -44,13 +42,13 @@ export const bookingFormSchema = z.object({
 
 export type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
-interface SearchFormProps {
+export interface SearchFormProps {
   onSearch: (data: BookingFormValues) => void;
   isSearching: boolean;
+  initialValues?: BookingFormValues;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching }) => {
-  // All available cities with airport codes
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialValues }) => {
   const allCities = [
     { city: 'Damascus', code: 'DAM' },
     { city: 'Aleppo', code: 'ALP' },
@@ -87,11 +85,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching }) => {
     },
   });
   
-  // Watch for trip type changes to validate return date requirement
   const tripType = form.watch('tripType');
   const fromCity = form.watch('fromCity');
   
-  // Adjust validation for return date based on trip type
   useEffect(() => {
     if (tripType === 'round-trip') {
       form.register('returnDate', { required: "Return date is required for round trips" });
@@ -100,12 +96,22 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching }) => {
     }
   }, [tripType, form]);
   
-  // Helper function to adjust passenger count
+  useEffect(() => {
+    if (initialValues) {
+      form.setValue('fromCity', initialValues.fromCity);
+      form.setValue('toCity', initialValues.toCity);
+      form.setValue('departureDate', initialValues.departureDate);
+      form.setValue('cabinClass', initialValues.cabinClass);
+      form.setValue('adults', initialValues.adults);
+      form.setValue('children', initialValues.children);
+      form.setValue('infants', initialValues.infants);
+    }
+  }, [initialValues, form.setValue]);
+  
   const adjustPassenger = (type: 'adults' | 'children' | 'infants', increment: boolean) => {
     const currentValue = form.getValues(type);
     const newValue = increment ? currentValue + 1 : Math.max(type === 'adults' ? 1 : 0, currentValue - 1);
     
-    // Apply business rules
     if (type === 'adults' && newValue > 9) {
       toast.error('Maximum 9 adults allowed per booking');
       return;
@@ -134,19 +140,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching }) => {
   };
 
   const handleSubmit = (data: BookingFormValues) => {
-    // Validate that cities are not the same
     if (data.fromCity === data.toCity) {
       toast.error('Departure and destination cities cannot be the same');
       return;
     }
     
-    // For round-trip, ensure return date is after departure date
     if (data.tripType === 'round-trip' && data.returnDate && data.departureDate > data.returnDate) {
       toast.error('Return date must be after departure date');
       return;
     }
     
-    // Validate passenger count
     const totalPassengers = data.adults + data.children + data.infants;
     if (totalPassengers > 9) {
       toast.error('Maximum 9 passengers allowed per booking');

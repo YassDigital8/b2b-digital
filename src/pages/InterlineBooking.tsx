@@ -23,6 +23,9 @@ const InterlineBooking = () => {
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'arrival'>('price');
   
+  // Search parameters for reuse
+  const [lastSearchCriteria, setLastSearchCriteria] = useState<BookingFormValues | null>(null);
+  
   // Passenger counts from search form
   const [passengers, setPassengers] = useState({
     adults: 1,
@@ -40,13 +43,16 @@ const InterlineBooking = () => {
 
   useEffect(() => {
     // Reset flight details view when a new flight is selected
-    // This is now handled in the FlightCard component
+    // This is handled in the FlightCard component
   }, [selectedFlight]);
 
   const handleSearch = async (data: BookingFormValues) => {
     setIsSearching(true);
     setSearchResults([]);
     setSelectedFlight(null);
+    
+    // Store search criteria for potential reuse
+    setLastSearchCriteria(data);
     
     // Update passengers state based on search form values
     setPassengers({
@@ -163,7 +169,8 @@ const InterlineBooking = () => {
               <CardContent className="pt-6">
                 <SearchForm 
                   onSearch={handleSearch} 
-                  isSearching={isSearching} 
+                  isSearching={isSearching}
+                  initialValues={lastSearchCriteria || undefined}
                 />
               </CardContent>
             </Card>
@@ -176,7 +183,7 @@ const InterlineBooking = () => {
                 transition={{ duration: 0.5 }}
                 className="mb-8"
               >
-                <Card className="border-none shadow-soft">
+                <Card className="border-none shadow-soft overflow-hidden">
                   <CardContent className="p-0">
                     <FlightResultsList 
                       flights={searchResults}
