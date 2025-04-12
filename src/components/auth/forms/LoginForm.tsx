@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { LoginFormValues } from '@/context/auth/types';
@@ -19,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 // Define the form schema
 const formSchema = z.object({
@@ -72,7 +71,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <CardContent className="space-y-4 pt-4">
           {loginError && (
             <Alert variant="destructive" className="mb-4">
-              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTriangle className="h-4 w-4" />
               <AlertDescription>{loginError}</AlertDescription>
             </Alert>
           )}
