@@ -54,7 +54,7 @@ const PartnersSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-gray-600 max-w-2xl mx-auto mb-8"
+            className="text-gray-700 max-w-2xl mx-auto mb-8"
           >
             We collaborate with leading airlines and transportation services to provide you with the best travel solutions
           </motion.p>

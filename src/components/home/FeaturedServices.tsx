@@ -86,7 +86,7 @@ const FeaturedServices = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg text-gray-700 max-w-2xl mx-auto"
           >
             Explore the exclusive services available for Cham Wings travel agents
           </motion.p>
@@ -110,7 +110,7 @@ const FeaturedServices = () => {
                     alt={service.title} 
                     className="object-cover w-full h-full transition-transform duration-500 hover:scale-105 mix-blend-overlay"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 w-full p-4">
                     <div className="flex items-center gap-3">
                       <div className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-md">
@@ -121,13 +121,13 @@ const FeaturedServices = () => {
                   </div>
                 </div>
                 
-                <CardContent className="flex-grow p-6">
-                  <p className="text-gray-600">{service.description}</p>
+                <CardContent className="flex-grow p-6 bg-white">
+                  <p className="text-gray-700">{service.description}</p>
                 </CardContent>
                 
-                <CardFooter className="p-6 pt-0">
+                <CardFooter className="p-6 pt-0 bg-white">
                   <Link to={service.link} className="w-full">
-                    <Button variant="outline" className="w-full border-chamBlue text-chamBlue hover:bg-chamBlue hover:text-white group">
+                    <Button variant="outline" className="w-full border-chamBlue text-chamBlue hover:bg-chamBlue hover:text-white group font-medium">
                       <span>Learn More</span>
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Button>

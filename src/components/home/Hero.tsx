@@ -7,7 +7,7 @@ import { ChevronRight, Plane, Shield, MapPin } from 'lucide-react';
 const Hero = () => {
   return (
     <section className="relative min-h-screen bg-hero-pattern bg-cover bg-center flex items-center">
-      <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/90 to-chamDarkBlue/50 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/95 to-chamDarkBlue/70 backdrop-blur-sm"></div>
       
       <div className="container mx-auto px-4 pt-24 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -39,7 +39,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-lg text-gray-200 mb-8 max-w-2xl"
+              className="text-lg text-gray-100 mb-8 max-w-2xl"
             >
               A premium B2B platform for travel agents to manage bookings, arrange transportation, 
               top up accounts, and provide exceptional services to travelers.
@@ -52,13 +52,13 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-4 mb-12"
             >
               <Link to="/signup">
-                <Button size="lg" className="bg-chamGold hover:bg-chamGold/90 text-white w-full sm:w-auto">
+                <Button size="lg" className="bg-chamGold hover:bg-chamGold/90 text-white w-full sm:w-auto font-medium">
                   Get Started
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/login">
-                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white w-full sm:w-auto font-medium">
                   Sign In
                 </Button>
               </Link>
@@ -96,22 +96,22 @@ const Hero = () => {
                 B2B Access
               </div>
               <div className="space-y-4">
-                <div className="bg-white/5 p-4 rounded-lg">
+                <div className="bg-white/10 p-4 rounded-lg">
                   <h3 className="text-white text-lg font-semibold mb-2">Partner Benefits</h3>
                   <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-gray-200 text-sm">
+                    <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
                       <span>Exclusive airline partnerships</span>
                     </li>
-                    <li className="flex items-center gap-2 text-gray-200 text-sm">
+                    <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
                       <span>Premium transportation services</span>
                     </li>
-                    <li className="flex items-center gap-2 text-gray-200 text-sm">
+                    <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
                       <span>Flexible payment options</span>
                     </li>
-                    <li className="flex items-center gap-2 text-gray-200 text-sm">
+                    <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
                       <span>Dedicated support team</span>
                     </li>
@@ -119,7 +119,7 @@ const Hero = () => {
                 </div>
                 <div className="mt-4">
                   <Link to="/signup" className="block w-full">
-                    <Button className="w-full bg-white/20 hover:bg-white/30 text-white">
+                    <Button className="w-full bg-white/20 hover:bg-white/30 text-white font-medium">
                       Join Now
                     </Button>
                   </Link>

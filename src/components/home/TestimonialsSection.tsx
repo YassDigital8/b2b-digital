@@ -42,7 +42,7 @@ const TestimonialsSection = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-1 mb-4 bg-chamBlue/10 text-chamBlue text-sm font-medium rounded-full"
+            className="inline-block px-4 py-1 mb-4 bg-chamBlue/10 text-chamBlue font-medium rounded-full"
           >
             Success Stories
           </motion.span>
@@ -76,14 +76,14 @@ const TestimonialsSection = () => {
               transition={{ delay: testimonial.delay, duration: 0.5 }}
               whileHover={{ y: -5 }}
             >
-              <Card className="h-full border-none shadow-soft relative overflow-hidden">
+              <Card className="h-full border-none shadow-soft relative overflow-hidden bg-white">
                 <div className="absolute top-0 right-0 w-20 h-20 -mr-10 -mt-10 bg-gradient-to-br from-chamBlue/10 to-chamGold/10 rounded-full"></div>
                 <div className="absolute top-4 right-4">
                   <Quote className="h-8 w-8 text-chamGold/20" />
                 </div>
                 
                 <CardContent className="p-6 relative z-10">
-                  <p className="text-gray-600 italic mb-6">"{testimonial.text}"</p>
+                  <p className="text-gray-700 italic mb-6">"{testimonial.text}"</p>
                   
                   <div className="flex items-center gap-4">
                     <img 
@@ -93,7 +93,7 @@ const TestimonialsSection = () => {
                     />
                     <div>
                       <p className="font-semibold text-chamDarkBlue">{testimonial.name}</p>
-                      <p className="text-sm text-gray-500">{testimonial.role}, {testimonial.company}</p>
+                      <p className="text-sm text-gray-600">{testimonial.role}, {testimonial.company}</p>
                     </div>
                   </div>
                 </CardContent>

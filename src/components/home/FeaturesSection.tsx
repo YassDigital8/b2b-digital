@@ -51,7 +51,7 @@ const FeaturesSection = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-1 mb-4 bg-chamGold/10 text-chamDarkBlue text-sm font-medium rounded-full"
+            className="inline-block px-4 py-1 mb-4 bg-chamGold/20 text-chamDarkBlue font-medium rounded-full"
           >
             Platform Benefits
           </motion.span>
@@ -71,7 +71,7 @@ const FeaturesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg text-gray-700 max-w-2xl mx-auto"
           >
             A comprehensive platform designed to streamline travel management for agents
           </motion.p>
@@ -91,7 +91,7 @@ const FeaturesSection = () => {
                 <feature.icon className="h-6 w-6 text-chamBlue" />
               </div>
               <h3 className="text-xl font-semibold text-chamDarkBlue mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <p className="text-gray-700">{feature.description}</p>
             </motion.div>
           ))}
         </div>
