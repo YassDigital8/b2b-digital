@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { Plane, Info, Check, MapPin, ChevronDown, ChevronUp, Clock } from 'lucide-react';
+import { Plane, Info, Check, MapPin, ChevronDown, ChevronUp, Clock, Ticket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
@@ -91,12 +91,9 @@ const FlightCard: React.FC<FlightCardProps> = ({
             </div>
           </div>
         </div>
-        <div className="text-right">
-          <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
-          <p className="text-xs text-gray-500">per passenger</p>
-          {totalPassengers.total > 1 && (
-            <p className="text-xs font-medium text-chamBlue">${calculateTotalPrice().toLocaleString()} total</p>
-          )}
+        {/* Price moved to FlightResultsList component */}
+        <div className="invisible">
+          {/* This space is intentionally left empty */}
         </div>
       </div>
       
@@ -154,17 +151,25 @@ const FlightCard: React.FC<FlightCardProps> = ({
           ))}
         </div>
         
-        {/* Additional info */}
+        {/* Additional info with Book Now button in the middle */}
         <div className="flex flex-wrap items-center justify-between text-xs text-gray-600">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center">
-              <Check className="h-3.5 w-3.5 text-green-600 mr-1" />
-              <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
-            </div>
-            <div>
-              <span>{flight.seats} seats left</span>
-            </div>
+          <div className="flex items-center">
+            <Check className="h-3.5 w-3.5 text-green-600 mr-1" />
+            <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
+            <span className="mx-2">•</span>
+            <span>{flight.seats} seats left</span>
           </div>
+          
+          {/* Book Now button in the middle */}
+          <Button 
+            variant="default"
+            className="bg-chamGold hover:bg-chamGold/90 text-xs h-7 px-3"
+            size="sm"
+            onClick={() => onSelect(flight.id)}
+          >
+            <Ticket className="h-3.5 w-3.5 mr-1" />
+            Book Now
+          </Button>
           
           {isSelected ? (
             <Button 

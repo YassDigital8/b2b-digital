@@ -91,21 +91,15 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
                 onSelect={onSelectFlight}
                 totalPassengers={totalPassengers}
               />
-              {/* Book Now Button - showing on all flights */}
+              {/* Price display in the top right corner */}
               <div className="absolute top-4 right-4">
-                <Button
-                  variant="default"
-                  className="bg-chamGold hover:bg-chamGold/90"
-                  size="sm"
-                  onClick={() => {
-                    onSelectFlight(flight.id);
-                    onBook();
-                  }}
-                  disabled={isSubmitting}
-                >
-                  <Ticket className="mr-1 h-4 w-4" />
-                  Book Now
-                </Button>
+                <div className="text-right">
+                  <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
+                  <p className="text-xs text-gray-500">per passenger</p>
+                  {totalPassengers.total > 1 && (
+                    <p className="text-xs font-medium text-chamBlue">${(flight.price * totalPassengers.total).toLocaleString()} total</p>
+                  )}
+                </div>
               </div>
             </div>
           ))}
