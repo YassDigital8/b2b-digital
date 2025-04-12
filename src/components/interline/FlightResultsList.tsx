@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 import FlightCard from './FlightCard';
-import { ArrowUpDown, CheckCircle2, Ticket } from 'lucide-react';
+import { CheckCircle2, Ticket } from 'lucide-react';
 
 interface FlightResultsListProps {
   flights: Flight[];
@@ -107,7 +107,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         
         {selectedFlightData && (
           <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-chamBlue/5 p-5 rounded-lg">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-chamBlue/5 p-5 rounded-lg">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
                 <div>
@@ -123,12 +123,12 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
               
               <Button
                 onClick={onBook}
-                className="bg-chamGold hover:bg-chamGold/90 text-sm px-6 py-2.5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 min-w-[150px]"
+                className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-3 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 min-w-[180px] rounded-full text-base"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Processing...' : (
                   <div className="flex items-center justify-center gap-2">
-                    <Ticket className="h-4.5 w-4.5" />
+                    <Ticket className="h-5 w-5" />
                     <span>Book Now</span>
                   </div>
                 )}
