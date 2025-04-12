@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 import FlightCard from './FlightCard';
-import { ArrowUpDown, CheckCircle2 } from 'lucide-react';
+import { ArrowUpDown, CheckCircle2, Ticket } from 'lucide-react';
 
 interface FlightResultsListProps {
   flights: Flight[];
@@ -84,13 +84,30 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
       <div className="p-4">
         <div className="space-y-4">
           {flights.map((flight) => (
-            <FlightCard
-              key={flight.id}
-              flight={flight}
-              selectedFlightId={selectedFlightId}
-              onSelect={onSelectFlight}
-              totalPassengers={totalPassengers}
-            />
+            <div key={flight.id} className="relative">
+              <FlightCard
+                flight={flight}
+                selectedFlightId={selectedFlightId}
+                onSelect={onSelectFlight}
+                totalPassengers={totalPassengers}
+              />
+              {/* Book Now Button - showing on all flights */}
+              <div className="absolute top-4 right-4">
+                <Button
+                  variant="default"
+                  className="bg-chamGold hover:bg-chamGold/90"
+                  size="sm"
+                  onClick={() => {
+                    onSelectFlight(flight.id);
+                    onBook();
+                  }}
+                  disabled={isSubmitting}
+                >
+                  <Ticket className="mr-1 h-4 w-4" />
+                  Book Now
+                </Button>
+              </div>
+            </div>
           ))}
         </div>
         
