@@ -23,18 +23,14 @@ export const MobileMenu = ({ isOpen, isAuthenticated, scrolled, onClose }: Mobil
       className="lg:hidden bg-white overflow-hidden shadow-md"
     >
       <div className="container mx-auto px-4 py-6">
-        <div className="bg-gradient-to-r from-chamBlue/5 to-chamGold/5 rounded-xl p-4 mb-4">
-          <NavLinks scrolled={scrolled} isMobile={true} onLinkClick={onClose} />
-        </div>
+        <NavLinks scrolled={scrolled} isMobile={true} onLinkClick={onClose} />
         
         <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="p-2 rounded-lg bg-chamGray">
-            {isAuthenticated ? (
-              <UserMenu isMobile={true} onLogout={onClose} />
-            ) : (
-              <AuthButtons isMobile={true} onButtonClick={onClose} />
-            )}
-          </div>
+          {isAuthenticated ? (
+            <UserMenu isMobile={true} onLogout={onClose} />
+          ) : (
+            <AuthButtons isMobile={true} onButtonClick={onClose} />
+          )}
         </div>
       </div>
     </motion.div>
