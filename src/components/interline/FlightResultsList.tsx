@@ -107,7 +107,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         
         {selectedFlightData && (
           <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-chamBlue/5 p-4 rounded-lg">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-chamBlue/5 p-5 rounded-lg">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
                 <div>
@@ -123,10 +123,15 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
               
               <Button
                 onClick={onBook}
-                className="bg-chamGold hover:bg-chamGold/90 min-w-[140px] shadow-sm"
+                className="bg-chamGold hover:bg-chamGold/90 text-sm px-6 py-2.5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 min-w-[150px]"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Processing...' : 'Book Now'}
+                {isSubmitting ? 'Processing...' : (
+                  <div className="flex items-center justify-center gap-2">
+                    <Ticket className="h-4.5 w-4.5" />
+                    <span>Book Now</span>
+                  </div>
+                )}
               </Button>
             </div>
           </div>
