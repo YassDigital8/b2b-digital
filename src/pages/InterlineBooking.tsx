@@ -1,137 +1,29 @@
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { useAuth } from '@/hooks/useAuth';
-import { Flight } from '@/types/flight';
-import SearchForm, { BookingFormValues } from '@/components/interline/SearchForm';
-import FlightResultsList from '@/components/interline/FlightResultsList';
+import SearchForm from '@/components/interline/SearchForm';
 import AccountBalance from '@/components/interline/AccountBalance';
 import BookingInfo from '@/components/interline/BookingInfo';
-import { generateInterlineFlights, getCityCodeFromName, sortFlights } from '@/utils/flightUtils';
+import SearchResultsSection from '@/components/interline/SearchResultsSection';
+import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 
 const InterlineBooking = () => {
-  const { user, requireAuth } = useAuth();
-  const [isSearching, setIsSearching] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Flight search results state
-  const [searchResults, setSearchResults] = useState<Flight[]>([]);
-  const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<'price' | 'departure' | 'arrival'>('price');
-  
-  // Search parameters for reuse
-  const [lastSearchCriteria, setLastSearchCriteria] = useState<BookingFormValues | null>(null);
-  
-  // Passenger counts from search form
-  const [passengers, setPassengers] = useState({
-    adults: 1,
-    children: 0,
-    infants: 0,
-    total: 1
-  });
-  
-  useEffect(() => {
-    const isAuthenticated = requireAuth('/login');
-    if (isAuthenticated) {
-      window.scrollTo(0, 0);
-    }
-  }, [requireAuth]);
-
-  useEffect(() => {
-    // Reset flight details view when a new flight is selected
-    // This is handled in the FlightCard component
-  }, [selectedFlight]);
-
-  const handleSearch = async (data: BookingFormValues) => {
-    setIsSearching(true);
-    setSearchResults([]);
-    setSelectedFlight(null);
-    
-    // Store search criteria for potential reuse
-    setLastSearchCriteria(data);
-    
-    // Update passengers state based on search form values
-    setPassengers({
-      adults: data.adults,
-      children: data.children,
-      infants: data.infants,
-      total: data.adults + data.children + data.infants
-    });
-    
-    // Simulate API call to search flights across all airlines
-    setTimeout(() => {
-      // Get from and to city codes
-      const fromCode = getCityCodeFromName(data.fromCity);
-      const toCode = getCityCodeFromName(data.toCity);
-      
-      // Generate interline connection flights
-      const results = generateInterlineFlights(
-        data.fromCity,
-        data.toCity,
-        fromCode,
-        toCode,
-        data.departureDate,
-        data.cabinClass,
-      );
-      
-      // Sort results by price (lowest first) as default
-      const sortedResults = sortFlights(results, 'price');
-      
-      setSearchResults(sortedResults);
-      setIsSearching(false);
-      
-      if (sortedResults.length === 0) {
-        toast.error('No flights found for the selected criteria');
-      } else {
-        toast.success(`Found ${sortedResults.length} interline flights for your search`);
-      }
-    }, 2000);
-  };
-  
-  const handleBooking = () => {
-    if (!selectedFlight) {
-      toast.error('Please select a flight to book');
-      return;
-    }
-    
-    const selectedFlightData = searchResults.find(f => f.id === selectedFlight);
-    
-    if (!selectedFlightData) {
-      toast.error('Selected flight data not found');
-      return;
-    }
-    
-    // Calculate total price based on actual passenger counts
-    const totalPrice = selectedFlightData.price * passengers.adults + 
-      selectedFlightData.price * passengers.children + 
-      (selectedFlightData.price * passengers.infants * 0.1);
-    
-    if (user.balance < totalPrice) {
-      toast.error('Insufficient balance. Please top up your account');
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast.success('Flight booked successfully!');
-      setIsSubmitting(false);
-      
-      setSearchResults([]);
-      setSelectedFlight(null);
-    }, 1500);
-  };
-
-  // Handle sorting change
-  const handleSortChange = (newSortBy: 'price' | 'departure' | 'arrival') => {
-    setSortBy(newSortBy);
-    setSearchResults(sortFlights(searchResults, newSortBy));
-  };
+  const {
+    user,
+    searchResults,
+    selectedFlight,
+    isSearching,
+    isSubmitting,
+    sortBy,
+    passengers,
+    lastSearchCriteria,
+    setSelectedFlight,
+    handleSearch,
+    handleBooking,
+    handleSortChange
+  } = useInterlineBooking();
   
   if (!user) return null;
   
@@ -176,29 +68,16 @@ const InterlineBooking = () => {
             </Card>
             
             {/* Flight Search Results */}
-            {searchResults.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mb-8"
-              >
-                <Card className="border-none shadow-soft overflow-hidden">
-                  <CardContent className="p-0">
-                    <FlightResultsList 
-                      flights={searchResults}
-                      selectedFlightId={selectedFlight}
-                      onSelectFlight={setSelectedFlight}
-                      totalPassengers={passengers}
-                      onBook={handleBooking}
-                      isSubmitting={isSubmitting}
-                      sortBy={sortBy}
-                      onSortChange={handleSortChange}
-                    />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
+            <SearchResultsSection 
+              searchResults={searchResults}
+              selectedFlight={selectedFlight}
+              setSelectedFlight={setSelectedFlight}
+              passengers={passengers}
+              onBook={handleBooking}
+              isSubmitting={isSubmitting}
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+            />
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
