@@ -29,14 +29,14 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
         <span>{flight.seats} seats left</span>
       </div>
       
-      {/* View details button - enhanced for clarity */}
+      {/* View details button - softened edges and improved style */}
       <div className="text-right">
         {isSelected ? (
           <Button 
             variant="outline" 
             size="sm" 
             onClick={onToggleFlightDetails}
-            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium"
+            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             {showFlightDetails ? (
               <>
@@ -53,7 +53,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onSelect(flight.id)}
-            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium"
+            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details
           </Button>
