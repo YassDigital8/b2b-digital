@@ -2,12 +2,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ChevronRight, Plane, Shield, MapPin } from 'lucide-react';
+import { ChevronRight, Plane, Shield, Globe } from 'lucide-react';
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen bg-hero-pattern bg-cover bg-center flex items-center">
-      <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/95 to-chamDarkBlue/70 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/90 to-chamDarkBlue/80"></div>
       
       <div className="container mx-auto px-4 pt-24 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -21,9 +21,9 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-block px-4 py-1 mb-6 bg-chamGold/20 backdrop-blur-sm border border-chamGold/30 rounded-full"
+              className="inline-block px-4 py-1 mb-6 bg-chamGold/30 backdrop-blur-sm border border-chamGold/30 rounded-full"
             >
-              <span className="text-white font-medium text-sm">Cham Wings Travel Hub for B2B Partners</span>
+              <span className="text-white font-medium text-sm">B2B Platform for Travel Professionals</span>
             </motion.div>
             
             <motion.h1
@@ -32,7 +32,7 @@ const Hero = () => {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight"
             >
-              Enhance Travel Experiences with Cham Wings
+              Your Partner in <span className="text-chamGold">Global Air Travel</span>
             </motion.h1>
             
             <motion.p
@@ -41,8 +41,8 @@ const Hero = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-lg text-gray-100 mb-8 max-w-2xl"
             >
-              A premium B2B platform for travel agents to manage bookings, arrange transportation, 
-              top up accounts, and provide exceptional services to travelers.
+              Cham Wings Travel Hub provides travel agencies with premium booking solutions, seamless 
+              interline connections, and exclusive services to elevate your business.
             </motion.p>
             
             <motion.div
@@ -72,15 +72,15 @@ const Hero = () => {
             >
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
                 <Plane className="h-5 w-5 text-chamGold" />
-                <span className="text-white text-sm">Global Flights</span>
+                <span className="text-white text-sm">Global Network</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
                 <Shield className="h-5 w-5 text-chamGold" />
                 <span className="text-white text-sm">Secure Bookings</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
-                <MapPin className="h-5 w-5 text-chamGold" />
-                <span className="text-white text-sm">Premium Services</span>
+                <Globe className="h-5 w-5 text-chamGold" />
+                <span className="text-white text-sm">24/7 Support</span>
               </div>
             </motion.div>
           </motion.div>
@@ -93,34 +93,34 @@ const Hero = () => {
           >
             <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-xl">
               <div className="absolute -top-3 -right-3 bg-chamGold text-white text-xs px-3 py-1 rounded-full">
-                B2B Access
+                Travel Partners
               </div>
               <div className="space-y-4">
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <h3 className="text-white text-lg font-semibold mb-2">Partner Benefits</h3>
+                  <h3 className="text-white text-lg font-semibold mb-2">Agency Advantages</h3>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
-                      <span>Exclusive airline partnerships</span>
+                      <span>Competitive airline fares worldwide</span>
                     </li>
                     <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
-                      <span>Premium transportation services</span>
+                      <span>Streamlined interline booking process</span>
                     </li>
                     <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
-                      <span>Flexible payment options</span>
+                      <span>Premium ground transportation options</span>
                     </li>
                     <li className="flex items-center gap-2 text-white text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-chamGold"></div>
-                      <span>Dedicated support team</span>
+                      <span>Dedicated B2B support channels</span>
                     </li>
                   </ul>
                 </div>
                 <div className="mt-4">
                   <Link to="/signup" className="block w-full">
                     <Button className="w-full bg-white/20 hover:bg-white/30 text-white font-medium">
-                      Join Now
+                      Become a Partner
                     </Button>
                   </Link>
                 </div>

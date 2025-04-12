@@ -6,9 +6,9 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 
 const CtaSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-r from-chamDarkBlue to-chamBlue text-white">
+    <section className="py-24 bg-gradient-to-r from-chamDarkBlue to-chamBlue text-white">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-lg">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 bg-white/10 backdrop-blur-sm rounded-2xl p-10 border border-white/10 shadow-lg">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -16,16 +16,21 @@ const CtaSection = () => {
             transition={{ duration: 0.7 }}
             className="md:w-2/3"
           >
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Ready to elevate your travel business?</h2>
-            <p className="text-white/90 mb-6 max-w-xl">
-              Join Cham Wings Travel Hub today and access exclusive services for travel agents.
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to transform your travel business?</h2>
+            <p className="text-white/90 mb-8 text-lg max-w-xl">
+              Join Cham Wings Travel Hub today and gain access to exclusive airline partnerships and premium services designed specifically for travel professionals.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {['Exclusive partnerships', 'Dedicated support', 'Streamlined bookings', 'Revenue growth'].map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-chamGold" />
-                  <span className="text-white">{item}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+              {[
+                'Exclusive airline partnerships', 
+                'Premium transportation services', 
+                'Multiple payment solutions', 
+                'Dedicated agency support'
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <CheckCircle className="h-6 w-6 text-chamGold" />
+                  <span className="text-white text-lg">{item}</span>
                 </div>
               ))}
             </div>
@@ -36,19 +41,23 @@ const CtaSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex flex-col gap-4 md:w-1/3"
+            className="flex flex-col gap-5 md:w-1/3 w-full"
           >
             <Link to="/signup" className="w-full">
-              <Button size="lg" className="w-full bg-chamGold hover:bg-chamGold/90 text-white font-medium">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button size="lg" className="w-full bg-chamGold hover:bg-chamGold/90 text-white font-medium text-lg py-6">
+                Register Your Agency
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link to="/contact" className="w-full">
-              <Button size="lg" variant="outline" className="w-full border-white hover:bg-white/10 text-white font-medium">
-                Contact Sales
+              <Button size="lg" variant="outline" className="w-full border-white hover:bg-white/10 text-white font-medium text-lg py-6">
+                Contact Our Sales Team
               </Button>
             </Link>
+            
+            <div className="mt-4 text-center text-white/80 text-sm">
+              No minimum commitments. Upgrade or cancel anytime.
+            </div>
           </motion.div>
         </div>
       </div>
