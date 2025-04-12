@@ -10,12 +10,12 @@ const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-chamDarkBlue/90 to-chamDarkBlue/50 backdrop-blur-sm"></div>
       
       <div className="container mx-auto px-4 pt-24 relative z-10">
-        <div className="flex flex-col md:flex-row items-center">
+        <div className="flex flex-col md:flex-row items-center gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-3xl mr-auto"
+            className="w-full md:w-1/2 lg:w-3/5"
           >
             <motion.div
               initial={{ opacity: 0 }}
@@ -89,7 +89,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="hidden md:block md:w-2/5 lg:w-1/3 mt-8 md:mt-0"
+            className="hidden md:block w-full md:w-1/2 lg:w-2/5"
           >
             <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-xl">
               <div className="absolute -top-3 -right-3 bg-chamGold text-white text-xs px-3 py-1 rounded-full">
@@ -117,10 +117,23 @@ const Hero = () => {
                     </li>
                   </ul>
                 </div>
+                <div className="mt-4">
+                  <Link to="/signup" className="block w-full">
+                    <Button className="w-full bg-white/20 hover:bg-white/30 text-white">
+                      Join Now
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
+      </div>
+      
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,186.7C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
       </div>
     </section>
   );

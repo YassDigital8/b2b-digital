@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { MapPin, Plane, CreditCard, Car, ArrowRight } from 'lucide-react';
@@ -59,10 +59,19 @@ const FeaturedServices = () => {
   
   return (
     <section className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-chamGold/30 to-transparent"></div>
+      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-chamGray/30 to-transparent"></div>
       
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
+          <motion.span 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-block px-4 py-1 mb-4 bg-chamBlue/10 text-chamBlue text-sm font-medium rounded-full"
+          >
+            Tailored for Travel Agents
+          </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,15 +101,16 @@ const FeaturedServices = () => {
         >
           {services.map((service) => (
             <motion.div key={service.id} variants={itemVariants} className="h-full">
-              <Card className="overflow-hidden h-full flex flex-col card-hover border-none shadow-soft relative">
+              <Card className="overflow-hidden h-full flex flex-col card-hover border-none shadow-soft hover:shadow-md relative">
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-chamBlue to-chamGold z-10"></div>
                 <div className="relative h-52 overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-b ${service.color}`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color}`}></div>
                   <img 
                     src={service.image} 
                     alt={service.title} 
                     className="object-cover w-full h-full transition-transform duration-500 hover:scale-105 mix-blend-overlay"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 w-full p-4">
                     <div className="flex items-center gap-3">
                       <div className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-md">
@@ -128,6 +138,8 @@ const FeaturedServices = () => {
           ))}
         </motion.div>
       </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-chamGray/30 to-transparent"></div>
     </section>
   );
 };
