@@ -54,6 +54,13 @@ export const loginOperation = async (
     const userData = await response.json();
     console.log('Login API response data:', userData);
     
+    // Validate received user data
+    if (!userData || !userData.email) {
+      const errorMsg = 'Invalid user data received from server';
+      toast.error(errorMsg);
+      throw new Error(errorMsg);
+    }
+    
     // Create user object from API response
     const user: User = {
       id: userData.id || userData.userId || String(Date.now()), // Fallback if ID is not provided
