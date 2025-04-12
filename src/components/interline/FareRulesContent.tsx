@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, Calendar, CreditCard, Info, Luggage, Plane } from 'lucide-react';
+import { AlertCircle, Calendar, CreditCard, Info, Luggage, Plane, Baby } from 'lucide-react';
 
 const FareRulesContent: React.FC = () => {
   return (
