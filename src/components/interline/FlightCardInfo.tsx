@@ -31,28 +31,20 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
       
       {/* View details button - softened edges and improved style */}
       <div className="text-right">
-        {isSelected ? (
+        {isSelected && showFlightDetails ? (
           <Button 
             variant="outline" 
             size="sm" 
             onClick={onToggleFlightDetails}
             className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
-            {showFlightDetails ? (
-              <>
-                Hide Details <ChevronDown className="ml-1 h-4 w-4" />
-              </>
-            ) : (
-              <>
-                View Details <ChevronRight className="ml-1 h-4 w-4" />
-              </>
-            )}
+            Hide Details <ChevronDown className="ml-1 h-4 w-4" />
           </Button>
         ) : (
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onSelect(flight.id)}
+            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight.id)}
             className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details
