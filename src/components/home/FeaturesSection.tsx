@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { MapPin, Plane, CreditCard, Users, Globe, Shield } from 'lucide-react';
+import { MapPin, Plane, CreditCard, Users, Globe, Shield, Car } from 'lucide-react';
 
 const features = [
   {
