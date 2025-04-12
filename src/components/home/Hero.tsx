@@ -6,7 +6,7 @@ import { ChevronRight, Plane, Shield, Globe, MapPin } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen bg-gradient-to-b from-chamDarkBlue via-chamDarkBlue/95 to-chamDarkBlue/90 flex items-center">
+    <section className="relative min-h-screen bg-gradient-to-b from-[#051A30] via-chamDarkBlue to-[#103152] flex items-center">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/lovable-uploads/be6b5036-ad2d-47ab-a9c4-07b9ce420119.png')] bg-no-repeat bg-center opacity-5 bg-contain"></div>
@@ -27,9 +27,9 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-block px-5 py-2 mb-6 bg-chamGold/30 border border-chamGold/30 rounded-full"
+              className="inline-block px-5 py-2 mb-6 bg-chamGold/30 border border-chamGold/50 rounded-full"
             >
-              <span className="text-white font-medium">B2B Platform for Travel Professionals</span>
+              <span className="text-white font-semibold">B2B Platform for Travel Professionals</span>
             </motion.span>
             
             <motion.h1
@@ -45,10 +45,10 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto lg:mx-0"
+              className="text-lg text-gray-100 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
             >
-              Cham Wings Travel Hub provides travel agencies with premium booking solutions, seamless 
-              interline connections, and exclusive services to elevate your business.
+              Cham Wings Travel Hub provides travel agencies with premium booking solutions, 
+              seamless interline connections, and exclusive services to elevate your business.
             </motion.p>
             
             <motion.div
@@ -58,13 +58,13 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-4 mb-12 justify-center lg:justify-start"
             >
               <Link to="/signup">
-                <Button size="lg" className="bg-chamGold hover:bg-chamGold/90 text-white w-full sm:w-auto font-medium px-8">
+                <Button size="lg" className="bg-chamGold hover:bg-chamGold/90 text-white w-full sm:w-auto font-semibold px-8 py-6 h-auto text-base">
                   Get Started
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/login">
-                <Button size="lg" variant="outline" className="border-white bg-white/10 text-white w-full sm:w-auto font-medium hover:bg-white/20">
+                <Button size="lg" variant="outline" className="border-white bg-white/20 text-white w-full sm:w-auto font-semibold hover:bg-white/30 py-6 h-auto text-base">
                   Sign In
                 </Button>
               </Link>
@@ -76,17 +76,17 @@ const Hero = () => {
               transition={{ delay: 0.7, duration: 0.6 }}
               className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4"
             >
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10">
+              <div className="flex items-center gap-3 bg-white/15 backdrop-blur-sm p-3 rounded-lg border border-white/20">
                 <Plane className="h-5 w-5 text-chamGold" />
-                <span className="text-white text-sm">Global Network</span>
+                <span className="text-white font-medium text-sm">Global Network</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10">
+              <div className="flex items-center gap-3 bg-white/15 backdrop-blur-sm p-3 rounded-lg border border-white/20">
                 <Shield className="h-5 w-5 text-chamGold" />
-                <span className="text-white text-sm">Secure Bookings</span>
+                <span className="text-white font-medium text-sm">Secure Bookings</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10">
+              <div className="flex items-center gap-3 bg-white/15 backdrop-blur-sm p-3 rounded-lg border border-white/20">
                 <Globe className="h-5 w-5 text-chamGold" />
-                <span className="text-white text-sm">24/7 Support</span>
+                <span className="text-white font-medium text-sm">24/7 Support</span>
               </div>
             </motion.div>
           </motion.div>
@@ -97,7 +97,7 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="w-full lg:w-2/5 hidden lg:block"
           >
-            <div className="relative bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl">
+            <div className="relative bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/30 shadow-xl">
               <div className="absolute -top-4 -right-4 bg-chamGold text-white px-4 py-2 rounded-md font-medium">
                 Premium Services
               </div>
@@ -116,19 +116,21 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 + (i * 0.1), duration: 0.5 }}
-                    className="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/10"
+                    className="flex items-center gap-4 bg-white/20 p-4 rounded-xl border border-white/20"
                   >
-                    <div className="bg-chamGold/20 p-3 rounded-full">
+                    <div className="bg-chamGold/30 p-3 rounded-full">
                       <item.icon className="h-6 w-6 text-chamGold" />
                     </div>
-                    <span className="text-white">{item.text}</span>
+                    <span className="text-white font-medium">
+                      {item.text}
+                    </span>
                   </motion.div>
                 ))}
               </div>
               
-              <div className="mt-6 pt-6 border-t border-white/10">
+              <div className="mt-6 pt-6 border-t border-white/20">
                 <Link to="/signup" className="block w-full">
-                  <Button className="w-full bg-white hover:bg-white/90 text-chamDarkBlue font-medium">
+                  <Button className="w-full bg-white hover:bg-white/90 text-chamDarkBlue font-semibold text-base py-6 h-auto">
                     Join Our Network
                   </Button>
                 </Link>

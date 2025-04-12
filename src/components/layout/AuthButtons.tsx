@@ -13,7 +13,7 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
     return (
       <div className="flex flex-col gap-3 w-full">
         <Link to="/login" onClick={onButtonClick} className="w-full">
-          <Button variant="outline" className="w-full border-chamDarkBlue text-chamDarkBlue py-6 h-auto font-medium text-base">
+          <Button variant="outline" className="w-full border-white text-white bg-chamDarkBlue/50 hover:bg-chamDarkBlue/70 py-6 h-auto font-medium text-base">
             Sign In
           </Button>
         </Link>
@@ -31,8 +31,8 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
       <Link to="/login">
         <Button variant="outline" className={
           scrolled 
-            ? 'border-chamDarkBlue text-chamDarkBlue hover:bg-black/10' 
-            : 'border-white text-white bg-chamDarkBlue/30 hover:bg-chamDarkBlue/40'
+            ? 'border-chamDarkBlue text-chamDarkBlue bg-white hover:bg-black/5' 
+            : 'border-white text-white bg-white/20 hover:bg-white/30'
         }>
           Sign In
         </Button>
