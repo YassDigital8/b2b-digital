@@ -31,14 +31,14 @@ export const AuthButtons = ({ scrolled = false, isMobile = false, onButtonClick 
       <Link to="/login">
         <Button variant="outline" className={
           scrolled 
-            ? 'border-chamDarkBlue text-chamDarkBlue bg-white hover:bg-black/5' 
-            : 'border-white text-white bg-white/20 hover:bg-white/30'
+            ? 'border-chamDarkBlue text-chamDarkBlue bg-white hover:bg-black/5 font-semibold' 
+            : 'border-white text-white bg-white/20 hover:bg-white/30 font-semibold'
         }>
           Sign In
         </Button>
       </Link>
       <Link to="/signup">
-        <Button className="bg-chamGold hover:bg-chamGold/90 text-white">
+        <Button className="bg-chamGold hover:bg-chamGold/90 text-white font-semibold">
           Sign Up
         </Button>
       </Link>

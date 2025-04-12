@@ -10,9 +10,19 @@ const Hero = () => {
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/lovable-uploads/be6b5036-ad2d-47ab-a9c4-07b9ce420119.png')] bg-no-repeat bg-center opacity-5 bg-contain"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent"></div>
         <div className="absolute -right-64 top-20 w-96 h-96 bg-chamGold/20 rounded-full blur-3xl"></div>
         <div className="absolute -left-32 top-80 w-80 h-80 bg-chamBlue/20 rounded-full blur-3xl"></div>
+        
+        {/* Background pattern - geometric shapes instead of waves */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <div className="bg-white h-32"></div>
+        </div>
+        
+        {/* Diagonal overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-white" 
+             style={{ 
+               clipPath: "polygon(0 100%, 100% 100%, 100% 0)" 
+             }}></div>
       </div>
       
       <div className="container mx-auto px-4 pt-24 relative z-10">
@@ -138,12 +148,6 @@ const Hero = () => {
             </div>
           </motion.div>
         </div>
-      </div>
-      
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,186.7C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
       </div>
     </section>
   );
