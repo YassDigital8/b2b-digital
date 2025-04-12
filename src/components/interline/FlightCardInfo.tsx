@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 
@@ -29,21 +29,34 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
         <span>{flight.seats} seats left</span>
       </div>
       
-      {/* View details text */}
+      {/* View details button - enhanced for clarity */}
       <div className="text-right">
         {isSelected ? (
           <Button 
-            variant="ghost" 
+            variant="outline" 
             size="sm" 
             onClick={onToggleFlightDetails}
-            className="text-chamBlue hover:text-chamBlue/80 p-0 h-auto font-medium"
+            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium"
           >
-            {showFlightDetails ? "Hide Details" : "View Details"}
+            {showFlightDetails ? (
+              <>
+                Hide Details <ChevronDown className="ml-1 h-4 w-4" />
+              </>
+            ) : (
+              <>
+                View Details <ChevronRight className="ml-1 h-4 w-4" />
+              </>
+            )}
           </Button>
         ) : (
-          <div className="text-xs text-chamBlue cursor-pointer hover:underline" onClick={() => onSelect(flight.id)}>
-            View Details
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onSelect(flight.id)}
+            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium"
+          >
+            <Eye className="mr-1 h-4 w-4" /> View Details
+          </Button>
         )}
       </div>
     </div>
