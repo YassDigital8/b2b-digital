@@ -35,42 +35,19 @@ export const loginOperation = async (
     // Log the response status for debugging
     console.log('Login API response status:', response.status);
     
-    // Check if response is ok
-    if (!response.ok) {
-      // Try to get error message from response
-      let errorMessage;
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || 'Login failed. Please check your credentials.';
-      } catch (e) {
-        errorMessage = `Login failed with status ${response.status}`;
-      }
-      
-      toast.error(errorMessage);
-      throw new Error(errorMessage);
-    }
+    // Instead of checking response.ok, we'll proceed regardless of the API response
+    // This allows login with any credentials entered by the user
     
-    // Parse the successful response
-    const userData = await response.json();
-    console.log('Login API response data:', userData);
-    
-    // Validate received user data
-    if (!userData || !userData.email) {
-      const errorMsg = 'Invalid user data received from server';
-      toast.error(errorMsg);
-      throw new Error(errorMsg);
-    }
-    
-    // Create user object from API response
+    // Create a default user object based on the input email
     const user: User = {
-      id: userData.id || userData.userId || String(Date.now()), // Fallback if ID is not provided
-      name: userData.name || email.split('@')[0],
+      id: String(Date.now()), // Generate a temporary ID
+      name: email.split('@')[0], // Use part of the email as the name
       email: email,
-      role: userData.role || 'agent',
-      agency: userData.agency || userData.agencyName,
-      country: userData.country,
-      phone: userData.phone || userData.phoneNumber,
-      balance: userData.balance || 0,
+      role: 'agent',
+      agency: 'Demo Agency',
+      country: 'Syria',
+      phone: '+963123456789',
+      balance: 5000, // Demo balance
       verified: true
     };
     
@@ -84,7 +61,7 @@ export const loginOperation = async (
     toast.success('Welcome back!');
     
     // Log success for debugging
-    console.log('Login successful with API data');
+    console.log('Login successful with demo data');
     
   } catch (error) {
     console.error('Login error:', error);

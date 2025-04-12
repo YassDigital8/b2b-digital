@@ -20,9 +20,9 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// Define the form schema
+// Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
+  email: z.string().min(1, { message: 'Email is required' }),
   password: z.string().min(1, { message: 'Password is required' }),
 });
 
