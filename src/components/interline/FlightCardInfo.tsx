@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Ticket } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 
@@ -20,29 +20,17 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
   onToggleFlightDetails
 }) => {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-4">
+    <div className="flex flex-col gap-4">
       {/* Flight information */}
-      <div className="flex items-center text-xs text-gray-600 w-full md:w-auto">
+      <div className="flex items-center text-xs text-gray-600">
         <Check className="h-3.5 w-3.5 text-green-600 mr-1" />
         <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
         <span className="mx-2">•</span>
         <span>{flight.seats} seats left</span>
       </div>
       
-      {/* Center aligned Book Now button */}
-      <div className="flex-grow flex justify-center">
-        <Button 
-          variant="default"
-          className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-3 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
-          onClick={() => onSelect(flight.id)}
-        >
-          <Ticket className="h-4 w-4 mr-1.5" />
-          Book Now
-        </Button>
-      </div>
-      
-      {/* View details text on the right */}
-      <div className="text-right w-full md:w-auto">
+      {/* View details text */}
+      <div className="text-right">
         {isSelected ? (
           <Button 
             variant="ghost" 

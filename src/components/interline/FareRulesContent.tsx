@@ -5,19 +5,19 @@ const FareRulesContent: React.FC = () => {
   return (
     <div className="p-5">
       <div className="text-sm text-gray-600 space-y-4 bg-gray-50 p-4 rounded-md border border-gray-100">
-        <p className="pb-2 border-b border-gray-200">
+        <p className="pb-3 border-b border-gray-200">
           <strong className="text-chamDarkBlue">Penalties (Per leg):</strong> Modification before 24 hours: USD 75 + Any fare difference. Refund before departure: USD 170. After departure Non Refundable No Show: USD 210.
         </p>
-        <p className="pb-2 border-b border-gray-200">
+        <p className="pb-3 border-b border-gray-200">
           <strong className="text-chamDarkBlue">Changes:</strong> Changes or refund within 24H not permitted and will consider as No Show.
         </p>
-        <p className="pb-2 border-b border-gray-200">
+        <p className="pb-3 border-b border-gray-200">
           <strong className="text-chamDarkBlue">Infant Policy:</strong> INF fare Non Refundable
         </p>
-        <p className="pb-2 border-b border-gray-200">
+        <p className="pb-3 border-b border-gray-200">
           <strong className="text-chamDarkBlue">Stop over:</strong> Not permitted. Void not permitted on B2B TKT.
         </p>
-        <p className="pb-2 border-b border-gray-200">
+        <p className="pb-3 border-b border-gray-200">
           <strong className="text-chamDarkBlue">Baggage:</strong> Baggage allowance 30 kg // Baggage Allowance for INF 10 kgs on 6Q sector
         </p>
         <p>

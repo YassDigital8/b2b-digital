@@ -84,24 +84,13 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
       <div className="p-6">
         <div className="space-y-6">
           {flights.map((flight) => (
-            <div key={flight.id} className="relative">
-              <FlightCard
-                flight={flight}
-                selectedFlightId={selectedFlightId}
-                onSelect={onSelectFlight}
-                totalPassengers={totalPassengers}
-              />
-              {/* Price display in the top right corner */}
-              <div className="absolute top-5 right-5">
-                <div className="text-right">
-                  <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
-                  <p className="text-xs text-gray-500">per passenger</p>
-                  {totalPassengers.total > 1 && (
-                    <p className="text-xs font-medium text-chamBlue">${(flight.price * totalPassengers.total).toLocaleString()} total</p>
-                  )}
-                </div>
-              </div>
-            </div>
+            <FlightCard
+              key={flight.id}
+              flight={flight}
+              selectedFlightId={selectedFlightId}
+              onSelect={onSelectFlight}
+              totalPassengers={totalPassengers}
+            />
           ))}
         </div>
         

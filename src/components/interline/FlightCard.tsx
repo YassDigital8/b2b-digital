@@ -6,8 +6,9 @@ import FlightSegment from './FlightSegment';
 import AirlineDisplay from './AirlineDisplay';
 import FlightCardInfo from './FlightCardInfo';
 import FlightCardTabs from './FlightCardTabs';
-import { Clock, Plane } from 'lucide-react';
+import { Clock, Plane, Ticket } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface FlightCardProps {
   flight: Flight;
@@ -84,9 +85,14 @@ const FlightCard: React.FC<FlightCardProps> = ({
             </div>
           </div>
         </div>
-        {/* Price moved to FlightResultsList component */}
-        <div className="invisible">
-          {/* This space is intentionally left empty */}
+        
+        {/* Price */}
+        <div className="text-right">
+          <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
+          <p className="text-xs text-gray-500">per passenger</p>
+          {totalPassengers.total > 1 && (
+            <p className="text-xs font-medium text-chamBlue">${(flight.price * totalPassengers.total).toLocaleString()} total</p>
+          )}
         </div>
       </div>
       
@@ -98,14 +104,27 @@ const FlightCard: React.FC<FlightCardProps> = ({
         {/* Airlines operated by */}
         <AirlineDisplay segments={flight.segments} />
         
-        {/* Additional info with Book Now button in the middle */}
-        <FlightCardInfo 
-          flight={flight} 
-          isSelected={isSelected} 
-          showFlightDetails={showFlightDetails}
-          onSelect={onSelect}
-          onToggleFlightDetails={handleToggleFlightDetails}
-        />
+        {/* Main content area with flight info and book now button */}
+        <div className="flex items-center justify-between">
+          {/* Left side - Flight info */}
+          <FlightCardInfo 
+            flight={flight} 
+            isSelected={isSelected} 
+            showFlightDetails={showFlightDetails}
+            onSelect={onSelect}
+            onToggleFlightDetails={handleToggleFlightDetails}
+          />
+          
+          {/* Right side - Book Now button */}
+          <Button 
+            variant="default"
+            className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
+            onClick={() => onSelect(flight.id)}
+          >
+            <Ticket className="h-4 w-4 mr-1.5" />
+            Book Now
+          </Button>
+        </div>
       </div>
 
       {/* Detailed Flight Info - shown when a flight is selected */}
