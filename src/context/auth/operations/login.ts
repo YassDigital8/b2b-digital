@@ -12,86 +12,67 @@ export const loginOperation = async (
   setAuthState(prev => ({ ...prev, isLoading: true }));
   
   try {
-    // Try with a proxy or direct connection depending on what's available
     const apiUrl = 'https://b2b-chamwings.com/api/login';
     
-    // Call the login API endpoint
+    // Call the login API endpoint with proper CORS handling
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({ email, password }),
-      // Using no-cors mode as an alternative approach
-      mode: 'no-cors',
-      credentials: 'omit',
+      // Remove no-cors mode to allow proper response handling
+      credentials: 'include',
     });
     
-    // For demo/development purposes, create a mock successful response
-    // This allows testing the UI flow even if the API is unreachable
-    // Remove this in production or when API is confirmed working
-    console.log('Login attempted for:', email);
+    console.log('Login API response status:', response.status);
     
-    // Mock user data for development testing
-    const mockUserData = {
-      id: '12345',
-      name: email.split('@')[0],
-      email: email,
-      role: 'agent' as const, // Use 'as const' to specify literal type
-      agency: 'Cham Wings Agency',
-      country: 'UAE',
-      phone: '+971501234567',
-      balance: 5000,
-      verified: true
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({
+        message: 'Login failed. Please check your credentials and try again.'
+      }));
+      
+      throw new Error(errorData.message || 'Login failed');
+    }
+    
+    const userData = await response.json().catch(() => null);
+    
+    if (!userData || !userData.id) {
+      throw new Error('Invalid response from server');
+    }
+    
+    // Create user object from API response
+    const user: User = {
+      id: userData.id,
+      name: userData.name || email.split('@')[0],
+      email: userData.email || email,
+      role: userData.role || 'agent',
+      agency: userData.agency || '',
+      country: userData.country || '',
+      phone: userData.phone || '',
+      balance: userData.balance || 0,
+      verified: userData.verified !== false
     };
     
-    // Create user object from mock data
-    const user: User = mockUserData;
-    
-    // Update auth state with mock user data
+    // Update auth state with user data
     setAuthState(prev => ({ ...prev, user }));
     
-    // Save mock user data to storage
+    // Save user data to storage
     saveUserToStorage(user);
     
     // Show success message
     toast.success('Welcome back!');
-    
-    // Log success for debugging
-    console.log('Login successful (mock data)');
+    console.log('Login successful with API data');
     
   } catch (error) {
     console.error('Login error:', error);
     
-    if (error instanceof TypeError && error.message === 'Failed to fetch') {
-      toast.error('API server is currently unreachable. Using mock data for development.');
-      
-      // Create mock user for development testing when API is down
-      const mockUser: User = {
-        id: '12345',
-        name: email.split('@')[0],
-        email: email,
-        role: 'agent' as const, // Use 'as const' to specify literal type
-        agency: 'Cham Wings Agency',
-        country: 'UAE',
-        phone: '+971501234567',
-        balance: 5000,
-        verified: true
-      };
-      
-      // Update auth state with mock user
-      setAuthState(prev => ({ ...prev, user: mockUser }));
-      
-      // Save mock user to storage
-      saveUserToStorage(mockUser);
-      
-      // Show success message for development
-      toast.success('Logged in with mock data for development');
-    } else if (error instanceof Error) {
-      toast.error(error.message);
+    // Don't fall back to mock data anymore
+    if (error instanceof Error) {
+      toast.error(error.message || 'Failed to login');
     } else {
-      toast.error('Failed to login');
+      toast.error('Failed to login. Please try again');
     }
     throw error;
   } finally {

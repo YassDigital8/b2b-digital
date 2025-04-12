@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 // Define the form schema
@@ -32,6 +33,7 @@ interface LoginFormProps {
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -45,6 +47,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { isSubmitting } = formState;
 
   const onSubmit = async (data: LoginFormValues) => {
+    setErrorMessage(null);
     try {
       await login(data);
       if (onSuccess) {
@@ -54,7 +57,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       }
     } catch (error) {
       console.error('Login failed:', error);
-      // Error is already displayed via toast in the login function
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('Failed to login. Please try again.');
+      }
     }
   };
 
@@ -62,6 +69,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-4 pt-4">
+          {errorMessage && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">{errorMessage}</span>
+            </div>
+          )}
+          
           <FormField
             control={form.control}
             name="email"
