@@ -8,7 +8,7 @@ const CtaSection = () => {
   return (
     <section className="py-24 bg-gradient-to-r from-chamDarkBlue to-chamBlue text-white">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10 bg-white/10 backdrop-blur-sm rounded-2xl p-10 border border-white/10 shadow-lg">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 bg-white/10 backdrop-blur-sm rounded-2xl p-10 border border-white/20 shadow-lg">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -50,7 +50,7 @@ const CtaSection = () => {
               </Button>
             </Link>
             <Link to="/contact" className="w-full">
-              <Button size="lg" variant="outline" className="w-full border-white hover:bg-white/10 text-white font-medium text-lg py-6">
+              <Button size="lg" variant="outline" className="w-full border-white bg-white/10 hover:bg-white/20 text-white font-medium text-lg py-6">
                 Contact Our Sales Team
               </Button>
             </Link>

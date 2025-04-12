@@ -43,7 +43,7 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-chamGray/20 relative">
+    <section className="py-24 bg-gradient-to-b from-white to-chamGray/10 relative">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.span 
@@ -51,7 +51,7 @@ const FeaturesSection = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-1 mb-4 bg-chamGold/30 text-chamDarkBlue font-medium rounded-full"
+            className="inline-block px-4 py-1 mb-4 bg-chamGold/20 text-chamDarkBlue font-medium rounded-full"
           >
             Platform Advantages
           </motion.span>
