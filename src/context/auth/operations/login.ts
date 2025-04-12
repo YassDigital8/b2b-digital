@@ -18,26 +18,6 @@ export const loginOperation = async (
   setAuthState(prev => ({ ...prev, isLoading: true }));
   
   try {
-    // API endpoint
-    const apiUrl = 'https://b2b-chamwings.com/api/login';
-    
-    // Call the login API endpoint
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: 'omit', // Don't send cookies
-    });
-    
-    // Log the response status for debugging
-    console.log('Login API response status:', response.status);
-    
-    // Instead of checking response.ok, we'll proceed regardless of the API response
-    // This allows login with any credentials entered by the user
-    
     // Create a default user object based on the input email
     const user: User = {
       id: String(Date.now()), // Generate a temporary ID
@@ -51,6 +31,9 @@ export const loginOperation = async (
       verified: true
     };
     
+    // Simulate a network delay for a more realistic experience
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
     // Update auth state with user data
     setAuthState(prev => ({ ...prev, user }));
     
@@ -60,16 +43,13 @@ export const loginOperation = async (
     // Show success message
     toast.success('Welcome back!');
     
-    // Log success for debugging
     console.log('Login successful with demo data');
     
   } catch (error) {
     console.error('Login error:', error);
     
-    if (error instanceof TypeError && error.message === 'Failed to fetch') {
-      toast.error('Cannot connect to the server. Please check your internet connection and try again.');
-    } else if (error instanceof Error) {
-      // Error message already shown in toast above
+    if (error instanceof Error) {
+      toast.error(error.message || 'Failed to login. Please try again.');
     } else {
       toast.error('An unexpected error occurred. Please try again.');
     }
