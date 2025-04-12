@@ -46,7 +46,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
   return (
     <div>
       {/* Header with sorting options */}
-      <div className="px-6 py-3 flex items-center justify-between bg-white border-b sticky top-0 z-10">
+      <div className="px-6 py-4 flex items-center justify-between bg-white border-b sticky top-0 z-10 shadow-sm">
         <div className="flex items-center">
           <span className="text-sm font-medium text-gray-700 mr-2">Found {flights.length} flights</span>
         </div>
@@ -81,8 +81,8 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         </div>
       </div>
       
-      <div className="p-4">
-        <div className="space-y-4">
+      <div className="p-6">
+        <div className="space-y-6">
           {flights.map((flight) => (
             <div key={flight.id} className="relative">
               <FlightCard
@@ -92,7 +92,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
                 totalPassengers={totalPassengers}
               />
               {/* Price display in the top right corner */}
-              <div className="absolute top-4 right-4">
+              <div className="absolute top-5 right-5">
                 <div className="text-right">
                   <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
                   <p className="text-xs text-gray-500">per passenger</p>
@@ -106,12 +106,12 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         </div>
         
         {selectedFlightData && (
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-chamBlue/5 p-5 rounded-lg">
+          <div className="mt-10 pt-6 border-t border-gray-200">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-gradient-to-r from-chamBlue/10 to-chamGold/10 p-6 rounded-lg shadow-sm">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
                 <div>
-                  <p className="text-lg font-bold text-chamDarkBlue">
+                  <p className="text-xl font-bold text-chamDarkBlue">
                     Total: ${calculateTotalPrice().toLocaleString()}
                   </p>
                   <p className="text-sm text-gray-600">
@@ -123,7 +123,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
               
               <Button
                 onClick={onBook}
-                className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-3 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 min-w-[180px] rounded-full text-base"
+                className="bg-chamGold hover:bg-chamGold/90 text-white text-base px-10 py-6 h-auto font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-w-[200px] rounded-full"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Processing...' : (

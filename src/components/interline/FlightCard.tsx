@@ -46,7 +46,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
       {/* Flight header with price */}
       <div 
         className={cn(
-          "flex justify-between items-center p-4 cursor-pointer",
+          "flex justify-between items-center p-5 cursor-pointer",
           isSelected ? "bg-chamBlue/10" : "bg-gray-50 hover:bg-chamBlue/5"
         )}
         onClick={() => {
@@ -58,12 +58,12 @@ const FlightCard: React.FC<FlightCardProps> = ({
         }}
       >
         <div className="flex items-center gap-3">
-          <div className="p-1.5 bg-white rounded-full border border-gray-100 shadow-sm">
+          <div className="p-2 bg-white rounded-full border border-gray-100 shadow-sm">
             <Plane className="h-5 w-5 text-chamBlue" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-chamDarkBlue">Interline Flight</span>
+              <span className="font-medium text-chamDarkBlue text-base">Interline Flight</span>
               <Badge variant="outline" className="bg-blue-50 text-blue-600 hover:bg-blue-100">
                 {flight.stops} stop
               </Badge>
@@ -91,7 +91,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
       </div>
       
       {/* Flight segments - Simplified view */}
-      <div className="p-4 pt-3 bg-white">
+      <div className="p-5 pt-4 bg-white">
         {/* Flight segments grid */}
         <FlightSegment segments={flight.segments} />
 

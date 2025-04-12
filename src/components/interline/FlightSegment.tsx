@@ -10,10 +10,10 @@ interface FlightSegmentProps {
 
 const FlightSegment: React.FC<FlightSegmentProps> = ({ segments }) => {
   return (
-    <div className="grid grid-cols-7 gap-2 items-center mb-4">
+    <div className="grid grid-cols-7 gap-2 items-center mb-5">
       {/* Departure */}
       <div className="col-span-3">
-        <p className="text-base font-semibold">{format(segments[0].departureTime, "HH:mm")}</p>
+        <p className="text-lg font-semibold text-chamDarkBlue">{format(segments[0].departureTime, "HH:mm")}</p>
         <p className="text-sm font-medium">{segments[0].fromCode}</p>
         <p className="text-xs text-gray-500">{segments[0].from}</p>
       </div>
@@ -42,7 +42,7 @@ const FlightSegment: React.FC<FlightSegmentProps> = ({ segments }) => {
       
       {/* Arrival */}
       <div className="col-span-3 text-right">
-        <p className="text-base font-semibold">{format(segments[segments.length - 1].arrivalTime, "HH:mm")}</p>
+        <p className="text-lg font-semibold text-chamDarkBlue">{format(segments[segments.length - 1].arrivalTime, "HH:mm")}</p>
         <p className="text-sm font-medium">{segments[segments.length - 1].toCode}</p>
         <p className="text-xs text-gray-500">{segments[segments.length - 1].to}</p>
       </div>

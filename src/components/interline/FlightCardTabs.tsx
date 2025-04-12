@@ -20,9 +20,9 @@ const FlightCardTabs: React.FC<FlightCardTabsProps> = ({ flight, totalPassengers
   return (
     <Tabs defaultValue="details" className="w-full">
       <TabsList className="grid w-full grid-cols-3 bg-gray-50 rounded-none border-b">
-        <TabsTrigger value="details" className="text-sm">Flight Details</TabsTrigger>
-        <TabsTrigger value="price" className="text-sm">Price Breakdown</TabsTrigger>
-        <TabsTrigger value="rules" className="text-sm">Fare Rules</TabsTrigger>
+        <TabsTrigger value="details" className="text-sm py-3">Flight Details</TabsTrigger>
+        <TabsTrigger value="price" className="text-sm py-3">Price Breakdown</TabsTrigger>
+        <TabsTrigger value="rules" className="text-sm py-3">Fare Rules</TabsTrigger>
       </TabsList>
       
       <TabsContent value="details">

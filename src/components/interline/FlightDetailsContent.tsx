@@ -10,21 +10,21 @@ interface FlightDetailsContentProps {
 
 const FlightDetailsContent: React.FC<FlightDetailsContentProps> = ({ flight }) => {
   return (
-    <div className="p-4">
+    <div className="p-5">
       {/* Flight segment details */}
       {flight.segments.map((segment, index) => (
         <div key={segment.id} className="mb-6 last:mb-0">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">
+            <div className="w-7 h-7 flex items-center justify-center bg-chamBlue text-white text-xs rounded-full">
               {index + 1}
             </div>
-            <p className="font-medium">{segment.airline} ({segment.airlineCode})</p>
+            <p className="font-medium text-base">{segment.airline} ({segment.airlineCode})</p>
             <p className="text-sm text-gray-600">Flight {segment.flightNumber}</p>
           </div>
           
           <div className="grid grid-cols-7 gap-4 ml-8">
             <div className="col-span-3">
-              <p className="text-lg font-medium">{format(segment.departureTime, "HH:mm")}</p>
+              <p className="text-lg font-medium text-chamDarkBlue">{format(segment.departureTime, "HH:mm")}</p>
               <p className="text-sm font-medium">{format(segment.departureTime, "dd MMM yyyy")}</p>
               <p className="text-sm">{segment.fromCode}</p>
               <p className="text-xs text-gray-500">{segment.from}</p>
@@ -39,7 +39,7 @@ const FlightDetailsContent: React.FC<FlightDetailsContentProps> = ({ flight }) =
             </div>
             
             <div className="col-span-3 text-right">
-              <p className="text-lg font-medium">{format(segment.arrivalTime, "HH:mm")}</p>
+              <p className="text-lg font-medium text-chamDarkBlue">{format(segment.arrivalTime, "HH:mm")}</p>
               <p className="text-sm font-medium">{format(segment.arrivalTime, "dd MMM yyyy")}</p>
               <p className="text-sm">{segment.toCode}</p>
               <p className="text-xs text-gray-500">{segment.to}</p>
@@ -48,7 +48,7 @@ const FlightDetailsContent: React.FC<FlightDetailsContentProps> = ({ flight }) =
 
           {/* Connection info if not the last segment */}
           {index < flight.segments.length - 1 && (
-            <div className="flex items-center justify-center py-2 px-4 bg-orange-50 rounded-md mt-4 mb-6 ml-8">
+            <div className="flex items-center justify-center py-3 px-4 bg-orange-50 rounded-md mt-4 mb-6 ml-8 border border-orange-100">
               <div className="flex items-center gap-2 text-sm text-orange-700">
                 <Info className="h-4 w-4" />
                 <span>Connection Time: {flight.connectionTime} in {segment.to} ({segment.toCode})</span>
@@ -60,7 +60,7 @@ const FlightDetailsContent: React.FC<FlightDetailsContentProps> = ({ flight }) =
 
       {/* Baggage info */}
       <div className="mt-4 pt-4 border-t border-dashed">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-md">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">Baggage Allowance:</span>
             <span className="text-sm text-gray-500">30 kg per adult</span>

@@ -33,7 +33,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
       <div className="flex-grow flex justify-center">
         <Button 
           variant="default"
-          className="bg-chamGold hover:bg-chamGold/90 text-sm px-6 py-2.5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
+          className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-3 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
           onClick={() => onSelect(flight.id)}
         >
           <Ticket className="h-4 w-4 mr-1.5" />
