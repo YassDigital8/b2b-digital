@@ -180,167 +180,169 @@ const Profile = () => {
               className="lg:col-span-3"
             >
               <Card className="border-none shadow-soft">
-                <TabsContent value="profile" className="m-0">
-                  <CardHeader>
-                    <CardTitle className="text-2xl text-chamDarkBlue">Personal Information</CardTitle>
-                    <CardDescription>Update your account details and information</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleProfileUpdate}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="name" className="flex items-center gap-2">
-                            <User className="h-4 w-4 text-chamBlue" />
-                            Full Name *
-                          </Label>
-                          <Input
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Your full name"
-                          />
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <TabsContent value="profile" className="m-0">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-chamDarkBlue">Personal Information</CardTitle>
+                      <CardDescription>Update your account details and information</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handleProfileUpdate}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="name" className="flex items-center gap-2">
+                              <User className="h-4 w-4 text-chamBlue" />
+                              Full Name *
+                            </Label>
+                            <Input
+                              id="name"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              placeholder="Your full name"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="email" className="flex items-center gap-2">
+                              <Mail className="h-4 w-4 text-chamBlue" />
+                              Email Address *
+                            </Label>
+                            <Input
+                              id="email"
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              placeholder="Your email address"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="agency" className="flex items-center gap-2">
+                              <Building className="h-4 w-4 text-chamBlue" />
+                              Travel Agency Name *
+                            </Label>
+                            <Input
+                              id="agency"
+                              value={agency}
+                              onChange={(e) => setAgency(e.target.value)}
+                              placeholder="Your agency name"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="country" className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4 text-chamBlue" />
+                              Country *
+                            </Label>
+                            <Select value={country} onValueChange={setCountry}>
+                              <SelectTrigger id="country">
+                                <SelectValue placeholder="Select your country" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {COUNTRIES.map((c) => (
+                                  <SelectItem key={c} value={c}>
+                                    {c}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="phone" className="flex items-center gap-2">
+                              Phone Number (Optional)
+                            </Label>
+                            <Input
+                              id="phone"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              placeholder="Your contact number"
+                            />
+                          </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <Label htmlFor="email" className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-chamBlue" />
-                            Email Address *
-                          </Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Your email address"
-                          />
+                        <div className="flex justify-end">
+                          <Button
+                            type="submit"
+                            className="bg-chamBlue hover:bg-chamBlue/90"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
+                          </Button>
+                        </div>
+                      </form>
+                    </CardContent>
+                  </TabsContent>
+                  
+                  <TabsContent value="security" className="m-0">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-chamDarkBlue">Security Settings</CardTitle>
+                      <CardDescription>Update your password and security preferences</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handlePasswordUpdate}>
+                        <div className="space-y-6 mb-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="current-password" className="flex items-center gap-2">
+                              <KeyRound className="h-4 w-4 text-chamBlue" />
+                              Current Password *
+                            </Label>
+                            <Input
+                              id="current-password"
+                              type="password"
+                              value={currentPassword}
+                              onChange={(e) => setCurrentPassword(e.target.value)}
+                              placeholder="Your current password"
+                            />
+                          </div>
+                          
+                          <Separator />
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="new-password" className="flex items-center gap-2">
+                              <KeyRound className="h-4 w-4 text-chamBlue" />
+                              New Password *
+                            </Label>
+                            <Input
+                              id="new-password"
+                              type="password"
+                              value={newPassword}
+                              onChange={(e) => setNewPassword(e.target.value)}
+                              placeholder="Enter new password"
+                            />
+                            <p className="text-xs text-gray-500">
+                              Password must be at least 8 characters long
+                            </p>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="confirm-password" className="flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-chamBlue" />
+                              Confirm New Password *
+                            </Label>
+                            <Input
+                              id="confirm-password"
+                              type="password"
+                              value={confirmPassword}
+                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              placeholder="Confirm new password"
+                            />
+                          </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <Label htmlFor="agency" className="flex items-center gap-2">
-                            <Building className="h-4 w-4 text-chamBlue" />
-                            Travel Agency Name *
-                          </Label>
-                          <Input
-                            id="agency"
-                            value={agency}
-                            onChange={(e) => setAgency(e.target.value)}
-                            placeholder="Your agency name"
-                          />
+                        <div className="flex justify-end">
+                          <Button
+                            type="submit"
+                            className="bg-chamBlue hover:bg-chamBlue/90"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? 'Updating Password...' : 'Update Password'}
+                          </Button>
                         </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="country" className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4 text-chamBlue" />
-                            Country *
-                          </Label>
-                          <Select value={country} onValueChange={setCountry}>
-                            <SelectTrigger id="country">
-                              <SelectValue placeholder="Select your country" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {COUNTRIES.map((c) => (
-                                <SelectItem key={c} value={c}>
-                                  {c}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="phone" className="flex items-center gap-2">
-                            Phone Number (Optional)
-                          </Label>
-                          <Input
-                            id="phone"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="Your contact number"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-end">
-                        <Button
-                          type="submit"
-                          className="bg-chamBlue hover:bg-chamBlue/90"
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
-                        </Button>
-                      </div>
-                    </form>
-                  </CardContent>
-                </TabsContent>
-                
-                <TabsContent value="security" className="m-0">
-                  <CardHeader>
-                    <CardTitle className="text-2xl text-chamDarkBlue">Security Settings</CardTitle>
-                    <CardDescription>Update your password and security preferences</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handlePasswordUpdate}>
-                      <div className="space-y-6 mb-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="current-password" className="flex items-center gap-2">
-                            <KeyRound className="h-4 w-4 text-chamBlue" />
-                            Current Password *
-                          </Label>
-                          <Input
-                            id="current-password"
-                            type="password"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            placeholder="Your current password"
-                          />
-                        </div>
-                        
-                        <Separator />
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="new-password" className="flex items-center gap-2">
-                            <KeyRound className="h-4 w-4 text-chamBlue" />
-                            New Password *
-                          </Label>
-                          <Input
-                            id="new-password"
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            placeholder="Enter new password"
-                          />
-                          <p className="text-xs text-gray-500">
-                            Password must be at least 8 characters long
-                          </p>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="confirm-password" className="flex items-center gap-2">
-                            <CheckCircle2 className="h-4 w-4 text-chamBlue" />
-                            Confirm New Password *
-                          </Label>
-                          <Input
-                            id="confirm-password"
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            placeholder="Confirm new password"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-end">
-                        <Button
-                          type="submit"
-                          className="bg-chamBlue hover:bg-chamBlue/90"
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? 'Updating Password...' : 'Update Password'}
-                        </Button>
-                      </div>
-                    </form>
-                  </CardContent>
-                </TabsContent>
+                      </form>
+                    </CardContent>
+                  </TabsContent>
+                </Tabs>
               </Card>
             </motion.div>
           </div>

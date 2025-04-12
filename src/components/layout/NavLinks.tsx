@@ -3,6 +3,7 @@ import { MobileNavLinks } from './MobileNavLinks';
 import { DesktopNavLinks } from './DesktopNavLinks';
 import { NavLink } from './navData';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 interface NavLinksProps {
   scrolled: boolean;
@@ -22,5 +23,13 @@ export const NavLinks = ({ scrolled, isMobile = false, onLinkClick }: NavLinksPr
     return <MobileNavLinks onLinkClick={onLinkClick} />;
   }
 
-  return <DesktopNavLinks scrolled={scrolled} onLinkClick={onLinkClick} />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <DesktopNavLinks scrolled={scrolled} onLinkClick={onLinkClick} />
+    </motion.div>
+  );
 };
