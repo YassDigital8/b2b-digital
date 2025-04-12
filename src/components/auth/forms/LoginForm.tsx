@@ -17,7 +17,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
+import { useState } from 'react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 // Define the form schema
 const formSchema = z.object({
@@ -32,6 +34,7 @@ interface LoginFormProps {
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -46,6 +49,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
+      setLoginError(null); // Clear any previous errors
       await login(data);
       if (onSuccess) {
         onSuccess();
@@ -54,7 +58,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       }
     } catch (error) {
       console.error('Login failed:', error);
-      // Error is already displayed via toast in the login function
+      if (error instanceof Error) {
+        setLoginError(error.message);
+      } else {
+        setLoginError('Failed to login. Please try again.');
+      }
     }
   };
 
@@ -62,6 +70,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-4 pt-4">
+          {loginError && (
+            <Alert variant="destructive" className="mb-4">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertDescription>{loginError}</AlertDescription>
+            </Alert>
+          )}
+          
           <FormField
             control={form.control}
             name="email"
