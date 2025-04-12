@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
@@ -34,6 +35,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -67,10 +69,10 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4 pt-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <CardContent className={`space-y-4 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
           {loginError && (
-            <Alert variant="destructive" className="mb-4">
+            <Alert variant="destructive" className="mb-4 text-sm">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>{loginError}</AlertDescription>
             </Alert>
@@ -83,9 +85,17 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="your@email.com" {...field} />
+                  <Input 
+                    placeholder="your@email.com" 
+                    {...field} 
+                    className="w-full"
+                    type="email"
+                    inputMode="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -97,19 +107,34 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <Input 
+                    type="password" 
+                    placeholder="••••••••" 
+                    {...field}
+                    className="w-full" 
+                    autoComplete="current-password"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
 
-          <Button type="button" variant="link" className="px-0 text-chamBlue hover:text-chamGold" onClick={() => navigate('/forgot-password')}>
+          <Button 
+            type="button" 
+            variant="link" 
+            className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto" 
+            onClick={() => navigate('/forgot-password')}
+          >
             Forgot your password?
           </Button>
         </CardContent>
-        <CardFooter className="flex-col">
-          <Button type="submit" className="w-full bg-chamBlue hover:bg-chamBlue/90" disabled={isSubmitting}>
+        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-4' : ''}`}>
+          <Button 
+            type="submit" 
+            className="w-full bg-chamBlue hover:bg-chamBlue/90 py-5 h-auto font-medium" 
+            disabled={isSubmitting}
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

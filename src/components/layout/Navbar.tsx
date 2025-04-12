@@ -9,12 +9,14 @@ import { NavLinks } from './NavLinks';
 import { UserMenu } from './UserMenu';
 import { AuthButtons } from './AuthButtons';
 import { MobileMenu } from './MobileMenu';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const isMobile = useIsMobile();
   
   const closeMenu = () => setIsOpen(false);
   
@@ -54,7 +56,7 @@ const Navbar = () => {
   }, [location]);
   
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-3'}`}>
       <nav className="container mx-auto px-4 flex justify-between items-center">
         <NavLogo scrolled={scrolled} />
         
@@ -72,8 +74,9 @@ const Navbar = () => {
         {/* Mobile menu button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`lg:hidden p-2 ${scrolled ? 'text-chamBlue' : 'text-white'}`}
+          className={`lg:hidden p-2 rounded-md ${scrolled ? 'text-chamBlue hover:bg-chamBlue/5' : 'text-white hover:bg-white/10'}`}
           aria-label="Toggle menu"
+          aria-expanded={isOpen}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

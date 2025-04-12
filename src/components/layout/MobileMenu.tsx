@@ -20,16 +20,18 @@ export const MobileMenu = ({ isOpen, isAuthenticated, scrolled, onClose }: Mobil
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="lg:hidden bg-white overflow-hidden"
+      className="lg:hidden bg-white overflow-hidden shadow-md"
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-6">
         <NavLinks scrolled={scrolled} isMobile={true} onLinkClick={onClose} />
         
-        {isAuthenticated ? (
-          <UserMenu isMobile={true} onLogout={onClose} />
-        ) : (
-          <AuthButtons isMobile={true} onButtonClick={onClose} />
-        )}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          {isAuthenticated ? (
+            <UserMenu isMobile={true} onLogout={onClose} />
+          ) : (
+            <AuthButtons isMobile={true} onButtonClick={onClose} />
+          )}
+        </div>
       </div>
     </motion.div>
   );
