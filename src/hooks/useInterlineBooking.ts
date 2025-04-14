@@ -80,9 +80,22 @@ export const useInterlineBooking = () => {
       setIsSearching(false);
       
       if (sortedResults.length === 0) {
-        toast.error('No flights found for the selected criteria');
+        toast.error('No flights found for the selected criteria', {
+          description: 'Try adjusting your search parameters and try again.'
+        });
       } else {
-        toast.success(`Found ${sortedResults.length} interline flights for your search`);
+        // Enhanced toast with more useful information
+        toast.success(`Found ${sortedResults.length} interline flights`, {
+          description: `${data.fromCity} to ${data.toCity} on ${data.departureDate.toLocaleDateString()}`
+        });
+        
+        // Smooth scroll to results
+        setTimeout(() => {
+          document.querySelector('.search-results')?.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }, 100);
       }
     }, 2000);
   };
@@ -106,26 +119,50 @@ export const useInterlineBooking = () => {
       (selectedFlightData.price * passengers.infants * 0.1);
     
     if (user.balance < totalPrice) {
-      toast.error('Insufficient balance. Please top up your account');
+      toast.error('Insufficient balance', {
+        description: 'Please top up your account to continue with this booking.'
+      });
       return;
     }
     
     setIsSubmitting(true);
     
-    // Simulate API call
+    // Simulate API call with progress toast
+    toast.loading('Processing your booking request...', {
+      id: 'booking-process'
+    });
+    
     setTimeout(() => {
-      toast.success('Flight booked successfully!');
-      setIsSubmitting(false);
+      toast.success('Flight booked successfully!', {
+        description: 'Your ticket details have been sent to your email.',
+        id: 'booking-process'
+      });
       
+      setIsSubmitting(false);
       setSearchResults([]);
       setSelectedFlight(null);
-    }, 1500);
+      
+      // Reset form and redirect to confirmation page after short delay
+      setTimeout(() => {
+        // In a real app, this would navigate to a confirmation page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1000);
+    }, 2500);
   };
 
   // Handle sorting change
   const handleSortChange = (newSortBy: 'price' | 'departure' | 'arrival') => {
     setSortBy(newSortBy);
-    setSearchResults(sortFlights(searchResults, newSortBy));
+    const sorted = sortFlights(searchResults, newSortBy);
+    setSearchResults(sorted);
+    
+    const sortMessages = {
+      price: 'Flights sorted by lowest price',
+      departure: 'Flights sorted by earliest departure',
+      arrival: 'Flights sorted by earliest arrival'
+    };
+    
+    toast.info(sortMessages[newSortBy]);
   };
 
   return {

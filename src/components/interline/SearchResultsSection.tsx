@@ -34,7 +34,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="mb-8"
+      className="mb-8 search-results"
     >
       <Card className="border-none shadow-soft overflow-hidden">
         <CardContent className="p-0">
