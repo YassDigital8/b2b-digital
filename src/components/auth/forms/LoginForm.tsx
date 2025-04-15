@@ -20,6 +20,13 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTravelAgentService, logInService } from '@/redux/services/authService';
+import { AppDispatch } from '@/redux/store';
+import { useAppSelector } from '@/redux/useAppSelector';
+import { useAuthContext } from '@/context/auth';
+import { loginFormSchema } from '../hooks/form/loginFormSchema';
 
 // Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
@@ -31,119 +38,107 @@ interface LoginFormProps {
   onSuccess?: () => void;
 }
 
+
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  // const auth = useAuthContext();
+
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isLoading } = useAppSelector(state => state.auth);
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+  const formik = useFormik({
+    initialValues: {
       email: '',
       password: '',
     },
+    validationSchema:loginFormSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true)
+      console.log(values);
+      const data = values
+      dispatch(logInService(data)).then((action) => {
+        if (logInService.fulfilled.match(action)) {
+
+          const data = action.payload
+          const { code, token } = data
+          dispatch(getTravelAgentService({ code }))
+        }
+      })
+    },
   });
 
-  const { formState } = form;
-  const { isSubmitting } = formState;
-
-  const onSubmit = async (data: LoginFormValues) => {
-    try {
-      setLoginError(null); // Clear any previous errors
-      await login(data);
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      if (error instanceof Error) {
-        setLoginError(error.message);
-      } else {
-        setLoginError('Failed to login. Please try again.');
-      }
-    }
-  };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <CardContent className={`space-y-4 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
-          {loginError && (
-            <Alert variant="destructive" className="mb-4 text-sm">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>{loginError}</AlertDescription>
-            </Alert>
-          )}
-          
-          <FormField
-            control={form.control}
+    <form onSubmit={formik.handleSubmit} className="w-full">
+      <CardContent className={`space-y-4 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
+        {loginError && (
+          <Alert variant="destructive" className="mb-4 text-sm">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>{loginError}</AlertDescription>
+          </Alert>
+        )}
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium">Email</label>
+          <Input
+            id="email"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="your@email.com" 
-                    {...field} 
-                    className="w-full"
-                    type="email"
-                    inputMode="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
+            type="email"
+            inputMode="email"
+            placeholder="your@email.com"
+            autoCapitalize="none"
+            autoComplete="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+            className="w-full"
           />
+          {formik.touched.email && formik.errors.email && (
+            <p className="text-xs text-red-500">{formik.errors.email}</p>
+          )}
+        </div>
 
-          <FormField
-            control={form.control}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium">Password</label>
+          <Input
+            id="password"
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••••" 
-                    {...field}
-                    className="w-full" 
-                    autoComplete="current-password"
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
+            type="password"
+            placeholder="••••••••"
+            autoComplete="current-password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            className="w-full"
           />
+          {formik.touched.password && formik.errors.password && (
+            <p className="text-xs text-red-500">{formik.errors.password}</p>
+          )}
+        </div>
 
-          <Button 
-            type="button" 
-            variant="link" 
-            className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto" 
-            onClick={() => navigate('/forgot-password')}
-          >
-            Forgot your password?
-          </Button>
-        </CardContent>
-        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-4' : ''}`}>
-          <Button 
-            type="submit" 
-            className="w-full bg-chamBlue hover:bg-chamBlue/90 py-5 h-auto font-medium" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : 'Sign In'}
-          </Button>
-        </CardFooter>
-      </form>
-    </Form>
+        <Button
+          type="button"
+          variant="link"
+          className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto"
+          onClick={() => navigate('/forgot-password')}
+        >
+          Forgot your password?
+        </Button>
+      </CardContent>
+
+      <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-4' : ''}`}>
+        <Button
+          type="submit"
+          className="w-full bg-chamBlue hover:bg-chamBlue/90 py-5 h-auto font-medium"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Sign In'}
+
+        </Button>
+      </CardFooter>
+    </form>
   );
 };

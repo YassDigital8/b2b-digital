@@ -10,11 +10,14 @@ import { UserMenu } from './UserMenu';
 import { AuthButtons } from './AuthButtons';
 import { MobileMenu } from './MobileMenu';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAppSelector } from '@/redux/useAppSelector';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { token } = useAppSelector(state => state.auth);
+
+  const isAuthenticated = !!token;
   const location = useLocation();
   const isMobile = useIsMobile();
   

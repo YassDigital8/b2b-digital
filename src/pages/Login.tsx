@@ -6,20 +6,27 @@ import Footer from '@/components/layout/Footer';
 import AuthModal from '@/components/auth/AuthModal';
 import { useAuth } from '@/hooks/useAuth';
 import { motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { getPosService } from '@/redux/services/posService';
 
 const Login = () => {
   const { redirectIfAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('login');
-  
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     redirectIfAuthenticated('/dashboard');
     window.scrollTo(0, 0);
   }, [redirectIfAuthenticated]);
-  
+  useEffect(() => {
+    dispatch(getPosService())
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow flex items-center justify-center py-20 bg-gradient-to-b from-chamGray to-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-center gap-12">
@@ -37,7 +44,7 @@ const Login = () => {
                     Sign in to access your travel agent dashboard and manage your services.
                     New to the platform? <Link to="/signup" className="text-chamBlue hover:text-chamGold">Create an account</Link>.
                   </p>
-                  
+
                   <div className="space-y-4 text-gray-600">
                     <div className="flex items-start gap-3">
                       <div className="bg-chamBlue/10 p-2 rounded-full mt-1">
@@ -48,7 +55,7 @@ const Login = () => {
                         <p>Book transportation, top up your account, and manage interline bookings.</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <div className="bg-chamBlue/10 p-2 rounded-full mt-1">
                         <span className="text-chamBlue font-bold">2</span>
@@ -58,7 +65,7 @@ const Login = () => {
                         <p>Monitor your transactions and booking history in real-time.</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <div className="bg-chamBlue/10 p-2 rounded-full mt-1">
                         <span className="text-chamBlue font-bold">3</span>
@@ -77,12 +84,12 @@ const Login = () => {
                       Join Cham Wings Travel Hub
                     </span>
                   </h1>
-                  
+
                   <p className="text-gray-600 mb-8 leading-relaxed">
                     Create your travel agent account to access our exclusive B2B services.
                     Already have an account? <Link to="/login" className="text-chamBlue font-medium hover:text-chamGold transition-colors underline underline-offset-4">Sign in</Link>.
                   </p>
-                  
+
                   <div className="space-y-4 bg-white/50 p-6 rounded-xl shadow-sm backdrop-blur-sm border border-gray-100">
                     <h3 className="text-lg font-semibold text-chamDarkBlue mb-3">Business Benefits</h3>
                     {[
@@ -113,12 +120,12 @@ const Login = () => {
                 </>
               )}
             </motion.div>
-            
+
             <AuthModal defaultTab="login" onTabChange={setActiveTab} />
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

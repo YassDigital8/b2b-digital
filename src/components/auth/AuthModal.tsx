@@ -32,18 +32,18 @@ const AuthModal = ({
   }, [defaultTab]);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{
         opacity: 0,
         y: 20
-      }} 
+      }}
       animate={{
         opacity: 1,
         y: 0
-      }} 
+      }}
       transition={{
         duration: 0.4
-      }} 
+      }}
       className="w-full max-w-md"
     >
       <Card className="border-none shadow-soft">
@@ -52,8 +52,8 @@ const AuthModal = ({
             {activeTab === 'login' ? 'Welcome Back' : 'Create an Account'}
           </CardTitle>
           <CardDescription>
-            {activeTab === 'login' 
-              ? 'Sign in to access the Cham Wings Travel Hub' 
+            {activeTab === 'login'
+              ? 'Sign in to access the Cham Wings Travel Hub'
               : 'Register to join the Cham Wings Travel Hub'
             }
           </CardDescription>
@@ -65,11 +65,11 @@ const AuthModal = ({
               <TabsTrigger value="register">Sign Up</TabsTrigger>
             </TabsList>
           </div>
-          
+
           <TabsContent value="login" className="m-0">
             <LoginForm />
           </TabsContent>
-          
+
           <TabsContent value="register" className="m-0">
             <SignUpForm />
           </TabsContent>

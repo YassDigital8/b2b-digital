@@ -1,15 +1,33 @@
-import { z } from 'zod';
-import { employeeSchema } from './employeeSchema';
+import * as yup from 'yup';
 
-// Define schema for the form
-export const signUpFormSchema = z.object({
-  name: z.string().min(1, { message: 'Agency name is required' }),
-  email: z.string().email({ message: 'Valid email is required' }),
-  agency: z.string().min(1, { message: 'AccelAero username is required' }),
-  country: z.string().min(1, { message: 'Country is required' }),
-  phoneCode: z.string().min(1, { message: 'Country code is required' }),
-  phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+export const employeeSchema = yup.object({
+  email: yup
+    .string()
+    .email('Valid employee email is required')
+    .required('Employee email is required'),
+  role: yup.string().required('Employee role is required'),
+  phoneCode: yup.string().required('Phone code is required'),
+  phoneNumber: yup.string().required('Phone number is required'),
 });
 
-// Make sure to export this type
-export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
+export const signUpFormSchema = yup.object({
+  name: yup.string().required('Agency name is required'),
+  email: yup.string().email('Valid email is required').required('Email is required'),
+  agency: yup.string().required('AccelAero username is required'),
+  country: yup.string().required('Country is required'),
+  phoneCode: yup.string().required('Country code is required'),
+  phoneNumber: yup.string().required('Phone number is required'),
+  hasEmployees: yup.boolean().required(),
+  employees: yup.lazy((value, context) => {
+    const hasEmployees = context.parent.hasEmployees;  // Access the parent object for hasEmployees
+
+    if (hasEmployees) {
+      return yup
+        .array()
+        .of(employeeSchema)
+        .min(1, 'At least one employee is required');
+    }
+    return yup.mixed().notRequired();
+  }),
+});
+;

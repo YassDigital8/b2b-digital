@@ -12,22 +12,25 @@ import { SignUpFormValues } from '../../hooks/useSignUpForm';
 interface EmployeeFormProps {
   employee: EmployeeData;
   index: number;
-  errors: FieldErrors<SignUpFormValues>;
+  formik: any;  // Add formik here if you're passing the formik object directly
+
   onUpdate: (index: number, field: keyof EmployeeData, value: string) => void;
   onRemove: (index: number) => void;
 }
-
-export const EmployeeForm = ({ 
-  employee, 
-  index, 
-  errors, 
-  onUpdate, 
-  onRemove 
+export const EmployeeForm = ({
+  employee,
+  index,
+  formik,
+  onUpdate,
+  onRemove,
 }: EmployeeFormProps) => {
-  
   const handleEmployeeCountryCodeChange = (value: string) => {
     onUpdate(index, 'phoneCode', value);
   };
+
+  const employeeErrors = formik.errors.employees?.[index] || {};
+  const employeeTouched = formik.touched.employees?.[index] || {};
+  console.log('employeeTouched', employeeTouched);
 
   return (
     <div className="border rounded-md p-4 mb-4 relative">
@@ -40,8 +43,9 @@ export const EmployeeForm = ({
       >
         <X className="h-4 w-4" />
       </Button>
-      
+
       <div className="space-y-4">
+        {/* Email Field */}
         <div className="space-y-2">
           <Label htmlFor={`employee-${index}-email`}>Employee Email</Label>
           <Input
@@ -50,20 +54,28 @@ export const EmployeeForm = ({
             value={employee.email}
             onChange={(e) => onUpdate(index, 'email', e.target.value)}
             placeholder="employee@example.com"
-            className={errors[`employee-${index}-email`] ? "border-red-500" : ""}
+            onBlur={() => formik.setFieldTouched(`employees[${index}].email`)}
+            className={employeeTouched.email && employeeErrors.email ? 'border-red-500' : ''}
           />
-          {errors[`employee-${index}-email`] && (
-            <p className="text-red-500 text-sm">{errors[`employee-${index}-email`]}</p>
+          {employeeTouched.email && employeeErrors.email && (
+            <p className="text-red-500 text-sm">{employeeErrors.email}</p>
           )}
         </div>
-        
+
+        {/* Role Field */}
         <div className="space-y-2">
           <Label htmlFor={`employee-${index}-role`}>Role</Label>
           <Select
             value={employee.role}
-            onValueChange={(value) => onUpdate(index, 'role', value)}
+            onValueChange={(value) => {
+              onUpdate(index, 'role', value);
+              formik.setFieldTouched(`employees[${index}].role`);
+            }}
           >
-            <SelectTrigger id={`employee-${index}-role`}>
+            <SelectTrigger
+              id={`employee-${index}-role`}
+              className={employeeTouched.role && employeeErrors.role ? 'border-red-500' : ''}
+            >
               <SelectValue placeholder="Select role" />
             </SelectTrigger>
             <SelectContent>
@@ -74,24 +86,29 @@ export const EmployeeForm = ({
               ))}
             </SelectContent>
           </Select>
+          {employeeTouched.role && employeeErrors.role && (
+            <p className="text-red-500 text-sm">{employeeErrors.role}</p>
+          )}
         </div>
 
+        {/* Phone Number Field */}
         <div className="space-y-2">
           <Label htmlFor={`employee-${index}-phone`}>Phone Number</Label>
           <div className="flex gap-2">
             <div className="w-1/3">
-              <Select 
-                value={employee.phoneCode} 
-                onValueChange={(value) => handleEmployeeCountryCodeChange(value)}
+              <Select
+                value={employee.phoneCode}
+                onValueChange={handleEmployeeCountryCodeChange}
+                // onBlur={() => formik.setFieldTouched(`employees[${index}].phoneCode`)}
               >
-                <SelectTrigger 
-                  id={`employee-${index}-phone-code`} 
-                  className={errors[`employee-${index}-phoneCode`] ? "border-red-500" : ""}
+                <SelectTrigger
+                  id={`employee-${index}-phone-code`}
+                  className={employeeTouched.phoneCode && employeeErrors.phoneCode ? 'border-red-500' : ''}
                 >
                   <SelectValue placeholder="Code" />
                 </SelectTrigger>
                 <SelectContent enableSearch={true}>
-                  {COUNTRY_CODES.map(c => (
+                  {COUNTRY_CODES.map((c) => (
                     <SelectItem key={c.code} value={c.code}>
                       {c.code} - {c.country}
                     </SelectItem>
@@ -100,19 +117,22 @@ export const EmployeeForm = ({
               </Select>
             </div>
             <div className="w-2/3">
-              <Input 
+              <Input
                 id={`employee-${index}-phone-number`}
-                type="tel" 
+                type="tel"
                 placeholder="Phone number"
                 value={employee.phoneNumber}
-                onChange={(e) => onUpdate(index, 'phoneNumber', e.target.value.replace(/\D/g, ''))}
-                className={errors[`employee-${index}-phoneNumber`] ? "border-red-500" : ""}
+                onChange={(e) =>
+                  onUpdate(index, 'phoneNumber', e.target.value.replace(/\D/g, ''))
+                }
+                onBlur={() => formik.setFieldTouched(`employees[${index}].phoneNumber`)}
+                className={employeeTouched.phoneNumber && employeeErrors.phoneNumber ? 'border-red-500' : ''}
               />
             </div>
           </div>
-          {(errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]) && (
+          {(employeeTouched.phoneCode || employeeTouched.phoneNumber) && (
             <p className="text-red-500 text-sm">
-              {errors[`employee-${index}-phoneCode`] || errors[`employee-${index}-phoneNumber`]}
+              {employeeErrors.phoneCode || employeeErrors.phoneNumber}
             </p>
           )}
         </div>
@@ -120,3 +140,4 @@ export const EmployeeForm = ({
     </div>
   );
 };
+

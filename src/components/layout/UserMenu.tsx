@@ -11,6 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from '@/hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, store } from '@/redux/store';
+import { setToken } from '@/redux/slices/authSlice';
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -19,10 +22,13 @@ interface UserMenuProps {
 
 export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
   const { user, logout } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = () => {
-    logout();
-    if (onLogout) onLogout();
+    dispatch(setToken(null));
+    // localStorage.removeItem('token');
+    // logout();
+    // if (onLogout) onLogout();
   };
 
   if (isMobile) {
@@ -69,8 +75,10 @@ export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem 
-          onClick={logout}
+        <DropdownMenuItem
+          onClick={handleLogout}
+
+          // onClick={logout}
           className="cursor-pointer text-red-500 focus:text-red-500"
         >
           <LogOut className="mr-2 h-4 w-4" />

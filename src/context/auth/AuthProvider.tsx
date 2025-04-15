@@ -3,12 +3,16 @@ import React, { createContext, useContext } from 'react';
 import { AuthContextType } from './types';
 import { useAuthState } from './useAuthState';
 import { useAuthOperations } from './useAuthOperations';
+import { useAppSelector } from '@/redux/useAppSelector';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useAuthState();
   const operations = useAuthOperations(state, setState);
+  const { token } = useAppSelector(state => state.auth);
+
+  console.log("Redux token:", token); // Verify token exists
 
   // Derive computed properties
   const isAuthenticated = !!state.user && !!state.user.verified;
