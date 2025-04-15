@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, store } from '@/redux/store';
 import { setToken } from '@/redux/slices/authSlice';
+import { FaUserCircle } from 'react-icons/fa';
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -53,11 +54,12 @@ export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chamBlue text-white">
-            {user?.name.charAt(0).toUpperCase()}
+        <Button variant="ghost" className="relative rounded-full hover:outline-none hover:bg-transparent">
+          <div className="flex items-center justify-center rounded-full text-white">
+            <FaUserCircle size={40} color="#00559A" />
           </div>
         </Button>
+
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
