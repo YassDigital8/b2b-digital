@@ -1,23 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
+import { Collapsible } from "@/components/ui/collapsible";
 import FlightCard from './FlightCard';
-import { CheckCircle2, Ticket, Search, Filter, Clock, ChevronUp, ChevronDown, Sliders } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from '@/components/ui/pagination';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import FlightSearchBar from './FlightSearchBar';
+import FlightSortControls from './FlightSortControls';
+import FlightFilterPanel from './FlightFilterPanel';
+import NoFlightsFound from './NoFlightsFound';
+import FlightPagination from './FlightPagination';
+import FlightBookingSummary from './FlightBookingSummary';
 
 interface FlightResultsListProps {
   flights: Flight[];
@@ -108,15 +99,12 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
     setCurrentPage(pageNumber);
   };
   
-  // Calculate total price
-  const calculateTotalPrice = () => {
-    if (!selectedFlightData) return 0;
-    
-    return selectedFlightData.price * totalPassengers.adults + 
-      selectedFlightData.price * totalPassengers.children + 
-      (selectedFlightData.price * totalPassengers.infants * 0.1);
+  // Reset filters handler
+  const resetFilters = () => {
+    setSearchTerm('');
+    setPriceRange({ min: 0, max: 9999 });
   };
-
+  
   return (
     <div className="flex flex-col">
       {/* Header with sorting and filter options */}
@@ -133,105 +121,24 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
         </div>
         
         {/* Search bar for quick filtering */}
-        <div className="flex-1 mx-4 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input 
-              type="text"
-              placeholder="Search by airline, airport or flight number..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 text-sm bg-gray-50 border-gray-200 focus-visible:ring-chamBlue"
-            />
-          </div>
-        </div>
+        <FlightSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600 mr-1 whitespace-nowrap">Sort by:</span>
-          <div className="flex bg-gray-100 rounded-md p-0.5">
-            <Button 
-              variant={sortBy === 'price' ? 'secondary' : 'ghost'} 
-              size="sm" 
-              onClick={() => onSortChange('price')}
-              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'price' ? 'bg-white shadow-sm' : ''}`}
-            >
-              Price
-            </Button>
-            <Button 
-              variant={sortBy === 'departure' ? 'secondary' : 'ghost'} 
-              size="sm"
-              onClick={() => onSortChange('departure')}
-              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'departure' ? 'bg-white shadow-sm' : ''}`}
-            >
-              <Clock className="h-3 w-3 mr-1" /> Departure
-            </Button>
-            <Button 
-              variant={sortBy === 'arrival' ? 'secondary' : 'ghost'} 
-              size="sm"
-              onClick={() => onSortChange('arrival')}
-              className={`text-xs h-7 px-3 rounded-md ${sortBy === 'arrival' ? 'bg-white shadow-sm' : ''}`}
-            >
-              Arrival
-            </Button>
-          </div>
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => setShowFilters(!showFilters)}
-            className="ml-1 flex items-center gap-1 h-7 text-xs border-gray-200 hover:bg-gray-50"
-          >
-            <Sliders className="h-3 w-3" />
-            Filters
-            {showFilters ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-          </Button>
-        </div>
+        <FlightSortControls 
+          sortBy={sortBy} 
+          onSortChange={onSortChange} 
+          showFilters={showFilters} 
+          setShowFilters={setShowFilters} 
+        />
       </div>
       
       {/* Advanced filters */}
       <Collapsible open={showFilters} className="bg-gray-50 border-b">
-        <CollapsibleContent className="px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="price-range" className="block text-sm font-medium text-gray-700 mb-2">
-              Price Range
-            </label>
-            <div className="flex items-center gap-2">
-              <Input 
-                type="number"
-                id="min-price"
-                placeholder="Min"
-                min={0}
-                value={priceRange.min}
-                onChange={(e) => setPriceRange({...priceRange, min: parseInt(e.target.value) || 0})}
-                className="w-24 text-sm"
-              />
-              <span className="text-gray-500">to</span>
-              <Input 
-                type="number"
-                id="max-price"
-                placeholder="Max"
-                min={0}
-                value={priceRange.max}
-                onChange={(e) => setPriceRange({...priceRange, max: parseInt(e.target.value) || 9999})}
-                className="w-24 text-sm"
-              />
-            </div>
-          </div>
-          
-          <div className="flex items-end">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => {
-                setSearchTerm('');
-                setPriceRange({min: 0, max: 9999});
-              }}
-              className="ml-auto text-xs h-9 border-gray-300"
-            >
-              Reset Filters
-            </Button>
-          </div>
-        </CollapsibleContent>
+        <FlightFilterPanel 
+          showFilters={showFilters}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          resetFilters={resetFilters}
+        />
       </Collapsible>
       
       <div className="p-6 bg-white">
@@ -248,80 +155,23 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
             ))}
           </div>
         ) : (
-          <div className="py-10 text-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
-            <Search className="mx-auto h-10 w-10 text-gray-400 mb-2" />
-            <h3 className="text-lg font-medium text-gray-700">No flights found</h3>
-            <p className="text-gray-500 mt-1">Try adjusting your search filters</p>
-          </div>
+          <NoFlightsFound />
         )}
         
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="mt-6">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <PaginationItem key={page}>
-                    <PaginationLink 
-                      isActive={currentPage === page} 
-                      onClick={() => handlePageChange(page)}
-                      className="cursor-pointer"
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} 
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        )}
+        <FlightPagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
         
         {/* Selected flight summary */}
-        {selectedFlightData && (
-          <div className="mt-10 pt-6 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-gradient-to-r from-chamBlue/10 to-chamGold/10 p-6 rounded-lg shadow-sm">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
-                <div>
-                  <p className="text-xl font-bold text-chamDarkBlue">
-                    Total: ${calculateTotalPrice().toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    for {totalPassengers.total} passenger{totalPassengers.total !== 1 ? 's' : ''}
-                    {totalPassengers.adults > 0 && ` (${totalPassengers.adults} adult${totalPassengers.adults !== 1 ? 's' : ''}${totalPassengers.children > 0 ? `, ${totalPassengers.children} child${totalPassengers.children !== 1 ? 'ren' : ''}` : ''}${totalPassengers.infants > 0 ? `, ${totalPassengers.infants} infant${totalPassengers.infants !== 1 ? 's' : ''}` : ''})`}
-                  </p>
-                </div>
-              </div>
-              
-              <Button
-                onClick={onBook}
-                className="bg-chamGold hover:bg-chamGold/90 text-white text-base px-10 py-6 h-auto font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-w-[200px] rounded-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Processing...' : (
-                  <div className="flex items-center justify-center gap-2">
-                    <Ticket className="h-5 w-5" />
-                    <span>Book Now</span>
-                  </div>
-                )}
-              </Button>
-            </div>
-          </div>
-        )}
+        <FlightBookingSummary 
+          flight={selectedFlightData}
+          passengers={totalPassengers}
+          onBook={onBook}
+          isSubmitting={isSubmitting}
+        />
       </div>
     </div>
   );
