@@ -15,15 +15,16 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
   
   return (
     <Card className={cn(
-      "border-none shadow-soft overflow-hidden",
-      "bg-gradient-to-r from-chamDarkBlue/5 to-chamGold/5"
+      "border-none overflow-hidden rounded-2xl shadow-lg",
+      "bg-gradient-to-br from-blue-500/[0.02] via-white to-purple-500/[0.03]"
     )}>
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 relative">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-blue-300 to-purple-300 opacity-10 rounded-full blur-3xl -z-10"></div>
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-chamGold/20 rounded-full">
-            <Wallet className="h-5 w-5 text-chamGold" />
+          <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full shadow-md">
+            <Wallet className="h-5 w-5 text-blue-600" />
           </div>
-          <CardTitle className="text-xl text-chamDarkBlue">Account Balance</CardTitle>
+          <CardTitle className="text-xl bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">Account Balance</CardTitle>
         </div>
         <CardDescription>Available funds for interline bookings</CardDescription>
       </CardHeader>
@@ -31,7 +32,9 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-baseline gap-1.5">
             <DollarSign className="h-5 w-5 text-green-600 mb-1" />
-            <p className="text-3xl font-bold text-chamDarkBlue">{balance.toLocaleString()}</p>
+            <p className="text-3xl font-bold bg-gradient-to-br from-blue-700 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {balance.toLocaleString()}
+            </p>
             <p className="text-sm text-green-600 font-medium flex items-center">
               <TrendingUp className="h-3 w-3 mr-1" /> Active
             </p>
@@ -40,11 +43,11 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
           <motion.div 
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
-            className="bg-gradient-to-r from-chamGold/10 to-chamBlue/10 px-4 py-2.5 rounded-lg border border-chamGold/10"
+            className="bg-gradient-to-r from-blue-50 to-purple-50 px-5 py-3 rounded-xl border border-blue-100/30 shadow-sm"
           >
-            <div className="flex items-center gap-2">
-              <RefreshCcw className="h-4 w-4 text-chamBlue" />
-              <p className="text-sm font-medium text-chamDarkBlue">
+            <div className="flex items-center gap-2.5">
+              <RefreshCcw className="h-4 w-4 text-blue-600" />
+              <p className="text-sm font-medium text-gray-700">
                 Use your balance to book interline tickets with Cham Wings and partner airlines
               </p>
             </div>

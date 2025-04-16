@@ -11,13 +11,15 @@ interface FlightSearchBarProps {
 const FlightSearchBar: React.FC<FlightSearchBarProps> = ({ searchTerm, setSearchTerm }) => {
   return (
     <div className="relative flex-1 mx-4 max-w-md">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 flex items-center justify-center">
+        <Search className="h-4 w-4 text-blue-500" />
+      </div>
       <Input 
         type="text"
         placeholder="Search by airline, airport or flight number..." 
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="pl-10 text-sm bg-gray-50 border-gray-200 focus-visible:ring-chamBlue"
+        className="pl-10 text-sm bg-white/70 backdrop-blur-sm border-blue-200/50 focus-visible:ring-blue-500/60 rounded-full shadow-sm transition-all duration-300 hover:shadow-md hover:border-blue-300/70"
       />
     </div>
   );

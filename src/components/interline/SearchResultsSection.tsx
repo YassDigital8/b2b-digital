@@ -35,26 +35,27 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
       className="mb-8"
     >
       {/* Header section with count and animation */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="bg-gradient-to-r from-chamGold/20 to-chamBlue/20 p-2 rounded-full">
-          <Plane className="h-5 w-5 text-chamBlue" />
+        <div className="bg-gradient-to-r from-purple-100 to-blue-100 p-2 rounded-full shadow-sm">
+          <Plane className="h-5 w-5 text-purple-600" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-chamDarkBlue">Available Flights</h2>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">Available Flights</h2>
           <p className="text-sm text-gray-600">
             Found {searchResults.length} interline flights for your search
           </p>
         </div>
       </div>
       
-      <Card className="border-none shadow-soft overflow-hidden rounded-xl">
-        <CardContent className="p-0">
+      <Card className="border-none shadow-lg overflow-hidden rounded-2xl bg-gradient-to-br from-white to-blue-50/30 backdrop-blur-sm">
+        <CardContent className="p-0 relative">
+          <div className="absolute top-0 left-0 w-60 h-60 bg-gradient-to-br from-purple-200 to-blue-200 opacity-10 rounded-full blur-3xl -z-10"></div>
           <FlightResultsList 
             flights={searchResults}
             selectedFlightId={selectedFlight}
