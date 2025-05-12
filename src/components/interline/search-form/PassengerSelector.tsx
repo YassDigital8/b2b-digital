@@ -1,12 +1,11 @@
 
 import { useState } from 'react';
-import { Plus, Minus, AlertTriangle, Baby, User } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { UseFormReturn } from 'react-hook-form';
 import { BookingFormValues } from './schema';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface PassengerSelectorProps {
   form: UseFormReturn<BookingFormValues>;
@@ -45,10 +44,6 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
     form.setValue(type, newValue);
   };
 
-  const totalPassengers = form.watch('adults') + form.watch('children') + form.watch('infants');
-  const isNearMaximum = totalPassengers >= 7;
-  const isAtMaximum = totalPassengers === 9;
-
   return (
     <div>
       <Label>Passengers</Label>
@@ -77,7 +72,6 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
                 variant="outline"
                 className="h-7 w-7"
                 onClick={() => adjustPassenger('adults', true)}
-                disabled={isAtMaximum}
               >
                 <Plus className="h-3 w-3" />
               </Button>
@@ -109,7 +103,6 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
                 variant="outline"
                 className="h-7 w-7"
                 onClick={() => adjustPassenger('children', true)}
-                disabled={isAtMaximum}
               >
                 <Plus className="h-3 w-3" />
               </Button>
@@ -141,7 +134,6 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
                 variant="outline"
                 className="h-7 w-7"
                 onClick={() => adjustPassenger('infants', true)}
-                disabled={isAtMaximum || form.watch('infants') >= form.watch('adults')}
               >
                 <Plus className="h-3 w-3" />
               </Button>
@@ -149,30 +141,11 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
           </div>
         </div>
       </div>
-      
-      <div className="mt-2">
-        <p className="text-xs text-muted-foreground">
-          Total passengers: {totalPassengers}
+      {(form.watch('adults') + form.watch('children') + form.watch('infants')) > 0 && (
+        <p className="text-xs text-muted-foreground mt-2">
+          Total passengers: {form.watch('adults') + form.watch('children') + form.watch('infants')}
         </p>
-        
-        {isNearMaximum && !isAtMaximum && (
-          <Alert variant="default" className="mt-2 py-2 bg-amber-50 border-amber-200">
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-            <AlertDescription className="text-xs text-amber-700 ml-2">
-              Approaching passenger limit. Maximum of 9 passengers allowed per booking.
-            </AlertDescription>
-          </Alert>
-        )}
-        
-        {isAtMaximum && (
-          <Alert variant="default" className="mt-2 py-2 bg-red-50 border-red-200">
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-            <AlertDescription className="text-xs text-red-700 ml-2">
-              Maximum passenger limit reached (9). No more passengers can be added.
-            </AlertDescription>
-          </Alert>
-        )}
-      </div>
+      )}
     </div>
   );
 };
