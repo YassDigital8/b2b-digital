@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -88,8 +89,8 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
   const tripType = form.watch('tripType');
   const fromCity = form.watch('fromCity');
   
-  const [departureDateOpen, setDepartureDateOpen] = React.useState(false);
-  const [returnDateOpen, setReturnDateOpen] = React.useState(false);
+  const [departureDateOpen, setDepartureDateOpen] = useState(false);
+  const [returnDateOpen, setReturnDateOpen] = useState(false);
   
   useEffect(() => {
     if (tripType === 'round-trip') {
@@ -109,7 +110,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
       form.setValue('children', initialValues.children);
       form.setValue('infants', initialValues.infants);
     }
-  }, [initialValues, form.setValue]);
+  }, [initialValues, form]);
   
   const adjustPassenger = (type: 'adults' | 'children' | 'infants', increment: boolean) => {
     const currentValue = form.getValues(type);
