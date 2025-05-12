@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { Plus, Minus, AlertTriangle, Users, Baby, Child } from 'lucide-react';
+import { Plus, Minus, AlertTriangle, Users, Baby } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
@@ -133,7 +132,7 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
             <div className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-md">
               <div className="flex items-start gap-3">
                 <div className="bg-green-50 p-2 rounded-full">
-                  <Child className="h-5 w-5 text-green-600" />
+                  <Users className="h-5 w-5 text-green-600" />
                 </div>
                 <div>
                   <p className="font-medium">Children</p>
