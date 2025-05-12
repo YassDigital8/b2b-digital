@@ -88,6 +88,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
   const tripType = form.watch('tripType');
   const fromCity = form.watch('fromCity');
   
+  const [departureDateOpen, setDepartureDateOpen] = React.useState(false);
+  const [returnDateOpen, setReturnDateOpen] = React.useState(false);
+  
   useEffect(() => {
     if (tripType === 'round-trip') {
       form.register('returnDate', { required: "Return date is required for round trips" });
@@ -262,7 +265,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Departure Date *</FormLabel>
-                <Popover>
+                <Popover open={departureDateOpen} onOpenChange={setDepartureDateOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -281,7 +284,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setDepartureDateOpen(false);
+                      }}
                       initialFocus
                       disabled={(date) => date < new Date()}
                     />
@@ -300,7 +306,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                 <FormLabel className={tripType === 'one-way' ? 'text-gray-400' : ''}>
                   Return Date {tripType === 'round-trip' ? '*' : ''}
                 </FormLabel>
-                <Popover>
+                <Popover open={returnDateOpen} onOpenChange={setReturnDateOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -321,7 +327,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <Calendar
                       mode="single"
                       selected={field.value || undefined}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setReturnDateOpen(false);
+                      }}
                       initialFocus
                       disabled={(date) => {
                         const departureDate = form.getValues("departureDate");

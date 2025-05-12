@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -44,6 +43,10 @@ const TransportationBooking = () => {
   const [dropoffLocation, setDropoffLocation] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [businessClass, setBusinessClass] = useState(false);
+  
+  // Add state for controlling popover open/close
+  const [travelDateOpen, setTravelDateOpen] = useState(false);
+  const [arrivalDateOpen, setArrivalDateOpen] = useState(false);
   
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
@@ -215,7 +218,7 @@ const TransportationBooking = () => {
                             
                             <div className="space-y-2">
                               <Label htmlFor="travel-date">Travel Date *</Label>
-                              <Popover>
+                              <Popover open={travelDateOpen} onOpenChange={setTravelDateOpen}>
                                 <PopoverTrigger asChild>
                                   <Button
                                     variant="outline"
@@ -232,7 +235,10 @@ const TransportationBooking = () => {
                                   <Calendar
                                     mode="single"
                                     selected={travelDate}
-                                    onSelect={setTravelDate}
+                                    onSelect={(date) => {
+                                      setTravelDate(date);
+                                      setTravelDateOpen(false);
+                                    }}
                                     initialFocus
                                     disabled={(date) => date < new Date()}
                                   />
@@ -358,7 +364,7 @@ const TransportationBooking = () => {
                             
                             <div className="space-y-2">
                               <Label htmlFor="arrival-date">Arrival Date *</Label>
-                              <Popover>
+                              <Popover open={arrivalDateOpen} onOpenChange={setArrivalDateOpen}>
                                 <PopoverTrigger asChild>
                                   <Button
                                     variant="outline"
@@ -375,7 +381,10 @@ const TransportationBooking = () => {
                                   <Calendar
                                     mode="single"
                                     selected={arrivalDate}
-                                    onSelect={setArrivalDate}
+                                    onSelect={(date) => {
+                                      setArrivalDate(date);
+                                      setArrivalDateOpen(false);
+                                    }}
                                     initialFocus
                                     disabled={(date) => date < new Date()}
                                   />
