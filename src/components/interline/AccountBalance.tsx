@@ -1,17 +1,15 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, CreditCard, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
-
 interface AccountBalanceProps {
   balance: number;
 }
-
-const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
-  return (
-    <Card className="border-none shadow-soft overflow-hidden">
-      <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-50 to-transparent"></div>
+const AccountBalance: React.FC<AccountBalanceProps> = ({
+  balance
+}) => {
+  return <Card className="border-none shadow-soft overflow-hidden">
+      
       <CardHeader className="pb-2 relative z-10">
         <div className="flex items-center justify-between">
           <div>
@@ -21,12 +19,15 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
             </CardTitle>
             <CardDescription>Available funds for interline bookings</CardDescription>
           </div>
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="hidden md:block bg-gradient-to-r from-chamBlue/10 to-chamGold/10 rounded-lg p-1"
-          >
+          <motion.div initial={{
+          scale: 0.9,
+          opacity: 0
+        }} animate={{
+          scale: 1,
+          opacity: 1
+        }} transition={{
+          delay: 0.3
+        }} className="hidden md:block bg-gradient-to-r from-chamBlue/10 to-chamGold/10 rounded-lg p-1">
             <div className="bg-white rounded-md px-3 py-1 text-xs text-chamBlue flex items-center gap-1 shadow-sm">
               <TrendingUp className="h-3 w-3" />
               <span>Balance History</span>
@@ -51,8 +52,6 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default AccountBalance;
