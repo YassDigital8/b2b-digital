@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -48,7 +47,7 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
     <div>
       <Label>Passengers</Label>
       <div className="grid grid-cols-3 gap-4 mt-2">
-        <div className="border rounded-md p-3 relative">
+        <div className="border rounded-md p-3 bg-blue-50/30 border-blue-100">
           <div className="flex justify-between items-center">
             <div>
               <p className="font-medium">Adults</p>
@@ -79,7 +78,7 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
           </div>
         </div>
         
-        <div className="border rounded-md p-3">
+        <div className="border rounded-md p-3 bg-green-50/30 border-green-100">
           <div className="flex justify-between items-center">
             <div>
               <p className="font-medium">Children</p>
@@ -110,7 +109,7 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
           </div>
         </div>
         
-        <div className="border rounded-md p-3">
+        <div className="border rounded-md p-3 bg-amber-50/30 border-amber-100">
           <div className="flex justify-between items-center">
             <div>
               <p className="font-medium">Infants</p>
@@ -141,6 +140,7 @@ const PassengerSelector = ({ form }: PassengerSelectorProps) => {
           </div>
         </div>
       </div>
+      
       {(form.watch('adults') + form.watch('children') + form.watch('infants')) > 0 && (
         <p className="text-xs text-muted-foreground mt-2">
           Total passengers: {form.watch('adults') + form.watch('children') + form.watch('infants')}

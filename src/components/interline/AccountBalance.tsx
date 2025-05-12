@@ -1,37 +1,33 @@
+
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, CreditCard, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+
 interface AccountBalanceProps {
   balance: number;
 }
-const AccountBalance: React.FC<AccountBalanceProps> = ({
-  balance
-}) => {
-  return <Card className="border-none shadow-soft overflow-hidden">
-      
+
+const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
+  return (
+    <Card className="border-none shadow-md overflow-hidden">
       <CardHeader className="pb-2 relative z-10">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl text-chamDarkBlue flex items-center gap-2">
+            <CardTitle className="text-lg text-chamDarkBlue flex items-center gap-2">
               <CreditCard className="h-5 w-5 text-chamBlue" />
               Account Balance
             </CardTitle>
-            <CardDescription>Available funds for interline bookings</CardDescription>
+            <p className="text-sm text-gray-500">Available funds for interline bookings</p>
           </div>
-          <motion.div initial={{
-          scale: 0.9,
-          opacity: 0
-        }} animate={{
-          scale: 1,
-          opacity: 1
-        }} transition={{
-          delay: 0.3
-        }} className="hidden md:block bg-gradient-to-r from-chamBlue/10 to-chamGold/10 rounded-lg p-1">
-            <div className="bg-white rounded-md px-3 py-1 text-xs text-chamBlue flex items-center gap-1 shadow-sm">
-              <TrendingUp className="h-3 w-3" />
-              <span>Balance History</span>
-            </div>
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="hidden md:flex items-center gap-1.5 text-sm text-chamBlue bg-blue-50 px-3 py-1.5 rounded-md"
+          >
+            <TrendingUp className="h-3.5 w-3.5" />
+            <span>Balance History</span>
           </motion.div>
         </div>
       </CardHeader>
@@ -39,19 +35,21 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <p className="text-sm text-gray-500 mb-1">Available Balance</p>
-            <p className="text-3xl font-bold text-chamDarkBlue flex items-center gap-1">
-              <DollarSign className="h-6 w-6 text-green-500" />
+            <p className="text-2xl font-semibold text-chamDarkBlue flex items-center gap-1">
+              <DollarSign className="h-5 w-5 text-green-500" />
               {balance.toLocaleString()}
             </p>
           </div>
           
-          <div className="bg-gradient-to-r from-chamGold/20 to-chamGold/10 px-4 py-2 rounded-lg border border-chamGold/20">
-            <p className="text-sm text-chamDarkBlue/90 font-medium">
-              Use your balance to book interline tickets with Cham Wings and partner airlines
+          <div className="bg-blue-50 px-4 py-2 rounded-md border border-blue-100">
+            <p className="text-sm text-chamDarkBlue">
+              Use your balance to book interline tickets
             </p>
           </div>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export default AccountBalance;
