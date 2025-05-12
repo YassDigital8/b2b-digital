@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Flight } from '@/types/flight';
-import { BookingFormValues } from '@/components/interline/search-form/schema';
+import { BookingFormValues } from '@/components/interline/SearchForm';
 import { generateInterlineFlights, getCityCodeFromName, sortFlights } from '@/utils/flightUtils';
 import { useAuth } from '@/hooks/useAuth';
 
