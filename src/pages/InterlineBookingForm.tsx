@@ -9,7 +9,7 @@ import ContactInformationForm from '@/components/interline/booking-form/ContactI
 import BookingConfirmation from '@/components/interline/booking-form/BookingConfirmation';
 import { useBookingForm } from '@/hooks/useBookingForm';
 
-// Re-export types from the new types file
+// Re-export types from the types file
 export { type Passenger, type ContactInformation } from '@/components/interline/booking-form/types';
 
 const InterlineBookingForm = () => {
