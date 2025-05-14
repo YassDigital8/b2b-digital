@@ -14,18 +14,18 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
   ];
 
   return (
-    <div className="px-6 py-6 border-b">
+    <div className="px-6 py-6 border-b bg-gradient-to-r from-white to-blue-50">
       <div className="flex items-center justify-between">
         {steps.map((step, index) => (
           <div key={step.id} className="flex-1 flex flex-col items-center">
             <div className="flex items-center">
               <motion.div 
-                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 
+                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 shadow-md
                   ${currentStep > step.id 
-                    ? 'bg-green-600 border-green-600' 
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 border-green-600' 
                     : currentStep === step.id 
-                      ? 'border-chamBlue text-chamBlue' 
-                      : 'border-gray-300 text-gray-400'}`}
+                      ? 'border-chamBlue text-chamBlue bg-blue-50' 
+                      : 'border-gray-300 text-gray-400 bg-gray-50'}`}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ 
@@ -47,7 +47,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
                     <Check className="h-6 w-6 text-white" />
                   </motion.div>
                 ) : (
-                  <span className="font-semibold">{step.id}</span>
+                  <span className="font-semibold font-display">{step.id}</span>
                 )}
               </motion.div>
               
@@ -55,7 +55,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
                 <motion.div 
                   className={`h-0.5 w-full flex-1 mx-2 ${
                     currentStep > step.id + 1 
-                      ? 'bg-green-600' 
+                      ? 'bg-gradient-to-r from-green-500 to-green-600' 
                       : 'bg-gray-300'
                   }`}
                   initial={{ scaleX: 0, opacity: 0 }}
@@ -68,7 +68,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
               )}
             </div>
             <motion.span 
-              className={`mt-2 text-sm font-medium ${
+              className={`mt-2 text-sm font-medium font-display ${
                 currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
               }`}
               initial={{ y: 10, opacity: 0 }}

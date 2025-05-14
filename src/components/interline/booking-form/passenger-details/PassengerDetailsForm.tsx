@@ -29,10 +29,10 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
   };
 
   return (
-    <Card className="shadow-md bg-white">
+    <Card className="shadow-lg bg-white rounded-lg overflow-hidden">
       <div className="p-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-chamDarkBlue mb-2">Passenger Details</h2>
+          <h2 className="text-2xl font-semibold gradient-text mb-2 font-display">Passenger Details</h2>
           <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
         </div>
         
@@ -60,13 +60,13 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
             <Button 
               type="button" 
               variant="outline"
-              className="border-gray-300 hover:bg-gray-50"
+              className="border-gray-300 hover:bg-gray-50 rounded-full"
             >
               Cancel
             </Button>
             <Button 
               type="submit"
-              className="bg-chamBlue hover:bg-chamBlue/90 text-white gap-2"
+              className="bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 text-white gap-2 rounded-full shadow-button"
             >
               Continue
               <ArrowRight size={16} />

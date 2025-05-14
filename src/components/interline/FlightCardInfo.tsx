@@ -24,7 +24,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
       {/* Flight information */}
       <div className="flex items-center text-xs text-gray-600">
         <Check className="h-3.5 w-3.5 text-green-600 mr-1" />
-        <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
+        <span className="font-medium">{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
         <span className="mx-2">•</span>
         <span>{flight.seats} seats left</span>
       </div>

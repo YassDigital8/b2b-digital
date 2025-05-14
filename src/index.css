@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -35,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 39 60% 51%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -93,7 +93,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-montserrat;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -119,6 +119,18 @@
 
   .glass-effect {
     @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-chamDarkBlue to-blue-500 bg-clip-text text-transparent;
+  }
+  
+  .btn-gradient {
+    @apply bg-gradient-to-r from-chamBlue to-blue-400 hover:from-blue-600 hover:to-blue-500 text-white transition-all;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-blue-50;
   }
 }
 

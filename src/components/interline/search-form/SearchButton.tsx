@@ -16,7 +16,7 @@ const SearchButton = ({ isSearching }: SearchButtonProps) => {
     >
       <Button
         type="submit"
-        className="w-full bg-chamBlue hover:bg-chamBlue/90 relative overflow-hidden group"
+        className="w-full bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 relative overflow-hidden group shadow-md"
         disabled={isSearching}
       >
         {isSearching ? (

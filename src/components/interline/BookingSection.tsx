@@ -17,7 +17,7 @@ const BookingSection = ({ onSearch, isSearching, lastSearchCriteria }: BookingSe
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.4 }}
     >
-      <Card className="border-none shadow-md mb-6 overflow-visible">
+      <Card className="border-none shadow-lg mb-6 overflow-visible bg-white rounded-xl">
         <CardContent className="pt-6">
           <SearchForm 
             onSearch={onSearch} 
