@@ -1,3 +1,3 @@
 
 export { default } from './PassengerDetailsForm';
-export * from './types';
+export * from '@/components/interline/booking-form/types';

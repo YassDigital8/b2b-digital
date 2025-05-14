@@ -1,5 +1,5 @@
 
-import { Passenger } from '@/pages/InterlineBookingForm';
+import { Passenger } from '@/components/interline/booking-form/types';
 
 export interface PassengerDetailsFormProps {
   passengers: Passenger[];
