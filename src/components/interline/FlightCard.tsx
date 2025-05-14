@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Flight } from '@/types/flight';
@@ -8,6 +9,7 @@ import FlightCardTabs from './FlightCardTabs';
 import { Clock, Plane, Ticket } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
 interface FlightCardProps {
   flight: Flight;
   selectedFlightId: string | null;
@@ -19,6 +21,7 @@ interface FlightCardProps {
     total: number;
   };
 }
+
 const FlightCard: React.FC<FlightCardProps> = ({
   flight,
   selectedFlightId,
@@ -27,9 +30,16 @@ const FlightCard: React.FC<FlightCardProps> = ({
 }) => {
   const [showFlightDetails, setShowFlightDetails] = useState(false);
   const isSelected = selectedFlightId === flight.id;
+  
   const handleToggleFlightDetails = () => {
     setShowFlightDetails(!showFlightDetails);
   };
+
+  const handleBookNow = () => {
+    // First ensure this flight is selected
+    onSelect(flight.id);
+  };
+  
   return <div className={cn("border rounded-lg transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md", isSelected ? "border-chamBlue bg-chamBlue/5" : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50")}>
       {/* Flight header with price */}
       <div className={cn("flex justify-between items-center p-5 cursor-pointer", isSelected ? "bg-chamBlue/10" : "bg-gray-50 hover:bg-chamBlue/5")} onClick={() => {
@@ -67,7 +77,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
         
         {/* Price */}
         <div className="text-right">
-          
+          <p className="text-xl font-semibold text-chamDarkBlue">${flight.price.toLocaleString()}</p>
           
           {totalPassengers.total > 1 && <p className="text-xs font-medium text-chamBlue">${(flight.price * totalPassengers.total).toLocaleString()} total</p>}
         </div>
@@ -87,7 +97,11 @@ const FlightCard: React.FC<FlightCardProps> = ({
           <FlightCardInfo flight={flight} isSelected={isSelected} showFlightDetails={showFlightDetails} onSelect={onSelect} onToggleFlightDetails={handleToggleFlightDetails} />
           
           {/* Right side - Book Now button */}
-          <Button variant="default" className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full" onClick={() => onSelect(flight.id)}>
+          <Button 
+            variant="default" 
+            className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full" 
+            onClick={handleBookNow}
+          >
             <Ticket className="h-4 w-4 mr-1.5" />
             Book Now
           </Button>
@@ -100,4 +114,5 @@ const FlightCard: React.FC<FlightCardProps> = ({
         </div>}
     </div>;
 };
+
 export default FlightCard;
