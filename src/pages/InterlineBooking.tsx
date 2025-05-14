@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
@@ -9,6 +10,7 @@ import SearchResultsSection from '@/components/interline/SearchResultsSection';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { Plane } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const InterlineBooking = () => {
   const navigate = useNavigate();
@@ -32,12 +34,14 @@ const InterlineBooking = () => {
   // Handle booking button click - navigates to booking form
   const handleBooking = () => {
     if (!selectedFlight) {
+      toast.error('Please select a flight first');
       return;
     }
     
     const selectedFlightData = searchResults.find(f => f.id === selectedFlight);
     
     if (!selectedFlightData) {
+      toast.error('Flight data not found');
       return;
     }
     

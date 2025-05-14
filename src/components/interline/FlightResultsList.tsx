@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
@@ -244,6 +243,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
                 selectedFlightId={selectedFlightId}
                 onSelect={onSelectFlight}
                 totalPassengers={totalPassengers}
+                onBook={onBook}
               />
             ))}
           </div>

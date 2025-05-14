@@ -20,13 +20,15 @@ interface FlightCardProps {
     infants: number;
     total: number;
   };
+  onBook?: () => void; // Add optional onBook prop
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({
   flight,
   selectedFlightId,
   onSelect,
-  totalPassengers
+  totalPassengers,
+  onBook
 }) => {
   const [showFlightDetails, setShowFlightDetails] = useState(false);
   const isSelected = selectedFlightId === flight.id;
@@ -38,6 +40,11 @@ const FlightCard: React.FC<FlightCardProps> = ({
   const handleBookNow = () => {
     // First ensure this flight is selected
     onSelect(flight.id);
+    
+    // If there's an onBook handler, call it to proceed with booking
+    if (onBook) {
+      onBook();
+    }
   };
   
   return <div className={cn("border rounded-lg transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md", isSelected ? "border-chamBlue bg-chamBlue/5" : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50")}>
