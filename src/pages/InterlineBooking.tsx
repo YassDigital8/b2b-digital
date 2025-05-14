@@ -9,8 +9,10 @@ import BookingInfo from '@/components/interline/BookingInfo';
 import SearchResultsSection from '@/components/interline/SearchResultsSection';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { Plane } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const InterlineBooking = () => {
+  const navigate = useNavigate();
   const {
     user,
     searchResults,
@@ -22,11 +24,31 @@ const InterlineBooking = () => {
     lastSearchCriteria,
     setSelectedFlight,
     handleSearch,
-    handleBooking,
     handleSortChange
   } = useInterlineBooking();
   
   if (!user) return null;
+  
+  // Handle booking button click - now navigates to booking form
+  const handleBooking = () => {
+    if (!selectedFlight) {
+      return;
+    }
+    
+    const selectedFlightData = searchResults.find(f => f.id === selectedFlight);
+    
+    if (!selectedFlightData) {
+      return;
+    }
+    
+    // Navigate to booking form with flight and passenger data
+    navigate('/interline-booking', {
+      state: {
+        flightData: selectedFlightData,
+        passengers: passengers
+      }
+    });
+  };
   
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

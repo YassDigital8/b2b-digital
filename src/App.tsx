@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import TransportationBooking from "./pages/TransportationBooking";
 import TopUp from "./pages/TopUp";
 import InterlineBooking from "./pages/InterlineBooking";
+import InterlineBookingForm from "./pages/InterlineBookingForm";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/transportation" element={<TransportationBooking />} />
               <Route path="/top-up" element={<TopUp />} />
               <Route path="/interline" element={<InterlineBooking />} />
+              <Route path="/interline-booking" element={<InterlineBookingForm />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/reports" element={<NotFound />} />
               <Route path="/about" element={<NotFound />} />

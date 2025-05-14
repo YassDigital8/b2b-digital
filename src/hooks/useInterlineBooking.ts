@@ -99,56 +99,6 @@ export const useInterlineBooking = () => {
       }
     }, 2000);
   };
-  
-  const handleBooking = () => {
-    if (!selectedFlight) {
-      toast.error('Please select a flight to book');
-      return;
-    }
-    
-    const selectedFlightData = searchResults.find(f => f.id === selectedFlight);
-    
-    if (!selectedFlightData) {
-      toast.error('Selected flight data not found');
-      return;
-    }
-    
-    // Calculate total price based on actual passenger counts
-    const totalPrice = selectedFlightData.price * passengers.adults + 
-      selectedFlightData.price * passengers.children + 
-      (selectedFlightData.price * passengers.infants * 0.1);
-    
-    if (user.balance < totalPrice) {
-      toast.error('Insufficient balance', {
-        description: 'Please top up your account to continue with this booking.'
-      });
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    // Simulate API call with progress toast
-    toast.loading('Processing your booking request...', {
-      id: 'booking-process'
-    });
-    
-    setTimeout(() => {
-      toast.success('Flight booked successfully!', {
-        description: 'Your ticket details have been sent to your email.',
-        id: 'booking-process'
-      });
-      
-      setIsSubmitting(false);
-      setSearchResults([]);
-      setSelectedFlight(null);
-      
-      // Reset form and redirect to confirmation page after short delay
-      setTimeout(() => {
-        // In a real app, this would navigate to a confirmation page
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 1000);
-    }, 2500);
-  };
 
   // Handle sorting change
   const handleSortChange = (newSortBy: 'price' | 'departure' | 'arrival') => {
@@ -176,7 +126,7 @@ export const useInterlineBooking = () => {
     lastSearchCriteria,
     setSelectedFlight,
     handleSearch,
-    handleBooking,
-    handleSortChange
+    handleSortChange,
+    setIsSubmitting
   };
 };
