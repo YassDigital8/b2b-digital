@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -6,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BookingSteps from '@/components/interline/booking-form/BookingSteps';
-import PassengerDetailsForm from '@/components/interline/booking-form/PassengerDetailsForm';
+import PassengerDetailsForm from '@/components/interline/booking-form/passenger-details';
 import ContactInformationForm from '@/components/interline/booking-form/ContactInformationForm';
 import BookingConfirmation from '@/components/interline/booking-form/BookingConfirmation';
 import { useAuth } from '@/hooks/useAuth';
