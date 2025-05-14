@@ -1,5 +1,6 @@
 
 import { Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface BookingStepsProps {
   currentStep: number;
@@ -18,33 +19,67 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
         {steps.map((step, index) => (
           <div key={step.id} className="flex-1 flex flex-col items-center">
             <div className="flex items-center">
-              <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 
-                ${currentStep > step.id 
-                  ? 'bg-green-600 border-green-600' 
-                  : currentStep === step.id 
-                    ? 'border-chamBlue text-chamBlue' 
-                    : 'border-gray-300 text-gray-400'}`}
+              <motion.div 
+                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 
+                  ${currentStep > step.id 
+                    ? 'bg-green-600 border-green-600' 
+                    : currentStep === step.id 
+                      ? 'border-chamBlue text-chamBlue' 
+                      : 'border-gray-300 text-gray-400'}`}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ 
+                  duration: 0.3,
+                  delay: index * 0.15 + 0.2
+                }}
               >
                 {currentStep > step.id ? (
-                  <Check className="h-6 w-6 text-white" />
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.1
+                    }}
+                  >
+                    <Check className="h-6 w-6 text-white" />
+                  </motion.div>
                 ) : (
                   <span className="font-semibold">{step.id}</span>
                 )}
-              </div>
+              </motion.div>
               
               {index < steps.length - 1 && (
-                <div className={`h-0.5 w-full flex-1 mx-2 ${
-                  currentStep > step.id + 1 
-                    ? 'bg-green-600' 
-                    : 'bg-gray-300'
-                }`} />
+                <motion.div 
+                  className={`h-0.5 w-full flex-1 mx-2 ${
+                    currentStep > step.id + 1 
+                      ? 'bg-green-600' 
+                      : 'bg-gray-300'
+                  }`}
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  transition={{ 
+                    duration: 0.5,
+                    delay: index * 0.15 + 0.4
+                  }}
+                />
               )}
             </div>
-            <span className={`mt-2 text-sm font-medium ${
-              currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
-            }`}>
+            <motion.span 
+              className={`mt-2 text-sm font-medium ${
+                currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
+              }`}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ 
+                duration: 0.3,
+                delay: index * 0.15 + 0.3
+              }}
+            >
               {step.name}
-            </span>
+            </motion.span>
           </div>
         ))}
       </div>
