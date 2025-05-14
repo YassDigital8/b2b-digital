@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
@@ -24,12 +23,13 @@ const InterlineBooking = () => {
     lastSearchCriteria,
     setSelectedFlight,
     handleSearch,
-    handleSortChange
+    handleSortChange,
+    setIsSubmitting
   } = useInterlineBooking();
   
   if (!user) return null;
   
-  // Handle booking button click - now navigates to booking form
+  // Handle booking button click - navigates to booking form
   const handleBooking = () => {
     if (!selectedFlight) {
       return;
@@ -40,6 +40,9 @@ const InterlineBooking = () => {
     if (!selectedFlightData) {
       return;
     }
+    
+    // Set loading state while preparing navigation
+    setIsSubmitting(true);
     
     // Navigate to booking form with flight and passenger data
     navigate('/interline-booking', {
