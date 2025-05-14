@@ -1,5 +1,5 @@
 
-import { Passenger } from '@/pages/InterlineBookingForm';
+import { Passenger } from '@/components/interline/booking-form/types';
 import { toast } from 'sonner';
 
 export const getPassengerTitle = (passenger: Passenger) => {
