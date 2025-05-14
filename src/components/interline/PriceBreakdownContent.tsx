@@ -89,7 +89,7 @@ const PriceBreakdownContent: React.FC<PriceBreakdownContentProps> = ({ flight, t
                 <TableCell className="text-right py-3 px-4 text-sm font-medium">$ {(baseFare * 0.1 * totalPassengers.infants).toFixed(2)}</TableCell>
                 <TableCell className="text-right py-3 px-4 text-sm font-medium">$ {(taxes * 0.1 * totalPassengers.infants).toFixed(2)}</TableCell>
                 <TableCell className="text-right py-3 px-4 text-sm font-medium">$ 0.00</TableCell>
-                <TableCell className="text-right py-3 px-4 text-sm font-medium">$ {((baseFare * 0.1) + (taxes * 0.1)).toFixed(2) * totalPassengers.infants}</TableCell>
+                <TableCell className="text-right py-3 px-4 text-sm font-medium">$ {(((baseFare * 0.1) + (taxes * 0.1)) * totalPassengers.infants).toFixed(2)}</TableCell>
               </TableRow>
             )}
             
