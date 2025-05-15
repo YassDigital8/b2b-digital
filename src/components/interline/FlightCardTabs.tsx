@@ -20,39 +20,39 @@ interface FlightCardTabsProps {
 const FlightCardTabs: React.FC<FlightCardTabsProps> = ({ flight, totalPassengers }) => {
   return (
     <Tabs defaultValue="details" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 rounded-none border-b bg-gradient-to-r from-slate-50 to-violet-50/20">
-        <TabsTrigger 
-          value="details" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-violet-50/30 data-[state=active]:text-violet-800 data-[state=active]:border-b-2 data-[state=active]:border-violet-500"
+      <TabsList className="grid w-full grid-cols-3 rounded-md bg-gradient-to-r from-slate-50 to-slate-100 border-b shadow-sm overflow-hidden">
+        <TabsTrigger
+          value="details"
+          className="flex gap-1.5 py-3.5 text-sm font-medium relative"
         >
           <FileText className="h-4 w-4" />
           Flight Details
         </TabsTrigger>
-        <TabsTrigger 
-          value="price" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-amber-50/30 data-[state=active]:text-amber-600 data-[state=active]:border-b-2 data-[state=active]:border-amber-400"
+        <TabsTrigger
+          value="price"
+          className="flex gap-1.5 py-3.5 text-sm font-medium relative"
         >
           <DollarSign className="h-4 w-4" />
           Price Breakdown
         </TabsTrigger>
-        <TabsTrigger 
-          value="rules" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-orange-50/30 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-400"
+        <TabsTrigger
+          value="rules"
+          className="flex gap-1.5 py-3.5 text-sm font-medium relative"
         >
           <Info className="h-4 w-4" />
           Fare Rules
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="details" className="mt-0 border-t-0 focus-visible:outline-none">
+      <TabsContent value="details" className="mt-0 bg-white rounded-b-md shadow-sm p-4 border border-t-0">
         <FlightDetailsContent flight={flight} />
       </TabsContent>
 
-      <TabsContent value="price" className="mt-0 border-t-0 focus-visible:outline-none">
+      <TabsContent value="price" className="mt-0 bg-white rounded-b-md shadow-sm p-4 border border-t-0">
         <PriceBreakdownContent pricingData={flight?.pricing_info} totalPassengers={totalPassengers} />
       </TabsContent>
 
-      <TabsContent value="rules" className="mt-0 border-t-0 focus-visible:outline-none">
+      <TabsContent value="rules" className="mt-0 bg-white rounded-b-md shadow-sm p-4 border border-t-0">
         <FareRulesContent fareRulesData={flight?.pricing_info[0]?.FareRuleReference} />
       </TabsContent>
     </Tabs>
