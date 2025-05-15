@@ -35,7 +35,7 @@ const InterlineBookingForm = () => {
       <Navbar />
       
       {/* Header */}
-      <div className="h-32 bg-gradient-to-r from-violet-900 to-indigo-700 relative overflow-hidden">
+      <div className="h-32 bg-gradient-to-r from-chamDarkBlue to-chamBlue relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6Ii8+PHBhdGggZD0iTTMwIDMwaDMwdjMwSDMweiIvPjwvZz48L2c+PC9zdmc+')]"></div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -64,9 +64,9 @@ const InterlineBookingForm = () => {
             <Card className="border-none shadow-xl overflow-visible rounded-xl">
               <CardContent className="p-0">
                 {/* Booking Header */}
-                <div className="bg-gradient-to-r from-violet-700 to-indigo-600 py-6 px-6 rounded-t-xl">
+                <div className="bg-gradient-to-r from-chamDarkBlue to-chamBlue py-6 px-6 rounded-t-xl">
                   <h2 className="text-2xl font-bold text-white font-display">Complete Your Booking</h2>
-                  <p className="text-indigo-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
+                  <p className="text-blue-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
                 </div>
               
                 <BookingSteps currentStep={currentStep} />

@@ -22,7 +22,7 @@ const HeaderFeatures = () => {
           key={index} 
           className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30"
         >
-          <feature.icon className="h-4 w-4 text-amber-300" />
+          <feature.icon className="h-4 w-4 text-chamGold" />
           <span className="text-sm font-medium text-white">{feature.text}</span>
         </div>
       ))}

@@ -12,7 +12,7 @@ const HeaderTitle = () => {
         transition={{ duration: 0.5 }}
         whileHover={{ scale: 1.03, backgroundColor: "rgba(255,255,255,0.2)" }}
       >
-        <Plane className="h-5 w-5 text-amber-300" />
+        <Plane className="h-5 w-5 text-chamGold" />
         <span className="text-2xl md:text-3xl font-semibold font-display text-white drop-shadow-md">Interline Booking</span>
       </motion.div>
       
@@ -22,7 +22,7 @@ const HeaderTitle = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white drop-shadow-lg"
       >
-        Connect Your <span className="text-amber-300">Journey</span><br />
+        Connect Your <span className="text-chamGold">Journey</span><br />
         Across the World
       </motion.h2>
       
@@ -30,7 +30,7 @@ const HeaderTitle = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="max-w-md text-lg text-white bg-violet-900/50 backdrop-blur-sm px-5 py-3 rounded-lg border border-violet-300/30 shadow-lg"
+        className="max-w-md text-lg text-white bg-chamBlue/50 backdrop-blur-sm px-5 py-3 rounded-lg border border-white/30 shadow-lg"
       >
         Book seamless connections with Cham Wings and our trusted airline partners for your global travel needs.
       </motion.p>

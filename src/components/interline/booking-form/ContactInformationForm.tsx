@@ -64,7 +64,7 @@ const ContactInformationForm = ({
 
   return (
     <div className="px-6 py-4 pb-6">
-      <h2 className="text-xl font-semibold mb-4 text-violet-900">Contact Information</h2>
+      <h2 className="text-xl font-semibold mb-4 text-chamDarkBlue">Contact Information</h2>
       <p className="text-gray-600 text-sm mb-6">
         Please provide contact details for booking confirmation and updates
       </p>
@@ -78,7 +78,7 @@ const ContactInformationForm = ({
             value={contactInformation.email}
             onChange={(e) => updateContactInformation({ email: e.target.value })}
             placeholder="e.g. name@example.com"
-            className="mt-1 border-violet-200 focus:border-violet-500"
+            className="mt-1 border-chamBlue/20 focus:border-chamBlue"
           />
         </div>
         
@@ -89,7 +89,7 @@ const ContactInformationForm = ({
               value={contactInformation.phoneCode}
               onValueChange={(value) => updateContactInformation({ phoneCode: value })}
             >
-              <SelectTrigger id="phoneCode" className="w-full mt-1 border-violet-200 focus:border-violet-500">
+              <SelectTrigger id="phoneCode" className="w-full mt-1 border-chamBlue/20 focus:border-chamBlue">
                 <SelectValue placeholder="Select Code" />
               </SelectTrigger>
               <SelectContent>
@@ -110,7 +110,7 @@ const ContactInformationForm = ({
               value={contactInformation.phoneNumber}
               onChange={(e) => updateContactInformation({ phoneNumber: e.target.value })}
               placeholder="e.g. 9XXXXXXXX"
-              className="mt-1 border-violet-200 focus:border-violet-500"
+              className="mt-1 border-chamBlue/20 focus:border-chamBlue"
             />
           </div>
         </div>
@@ -129,7 +129,7 @@ const ContactInformationForm = ({
           
           <Button
             type="button"
-            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-6 rounded-full shadow-md"
+            className="bg-gradient-to-r from-chamGold to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-6 rounded-full shadow-md"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >

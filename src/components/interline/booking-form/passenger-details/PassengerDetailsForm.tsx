@@ -1,10 +1,8 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
 import PassengerFormItem from './PassengerFormItem';
 import { Button } from '@/components/ui/button';
-import { Passenger } from '@/components/interline/booking-form/types';
 import { validateAllPassengers } from './validatePassengers';
 import { toast } from 'sonner';
 import { ArrowRight } from 'lucide-react';
@@ -33,7 +31,7 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-violet-900 mb-2 font-display">Passenger Details</h2>
+        <h2 className="text-xl font-semibold text-chamDarkBlue mb-2 font-display">Passenger Details</h2>
         <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
       </div>
       
@@ -72,7 +70,7 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
           </Button>
           <Button 
             type="submit"
-            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white gap-2 rounded-full shadow-md"
+            className="bg-gradient-to-r from-chamGold to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white gap-2 rounded-full shadow-md"
           >
             Continue
             <ArrowRight size={16} />

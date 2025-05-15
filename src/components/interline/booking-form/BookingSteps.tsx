@@ -24,7 +24,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
                   ${currentStep > step.id 
                     ? 'bg-gradient-to-r from-green-500 to-green-600 border-green-600' 
                     : currentStep === step.id 
-                      ? 'border-violet-500 text-violet-700 bg-violet-50' 
+                      ? 'border-chamBlue text-chamBlue bg-blue-50' 
                       : 'border-gray-300 text-gray-400 bg-gray-50'}`}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
