@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Search, Sliders, ChevronUp, ChevronDown, Clock } from 'lucide-react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -15,7 +14,7 @@ interface FilterBarProps {
   totalFlightCount: number;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const FilterBar = ({
   searchTerm,
   setSearchTerm,
   showFilters,
@@ -24,73 +23,67 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onSortChange,
   filteredFlightCount,
   totalFlightCount
-}) => {
+}: FilterBarProps) => {
   return (
-    <div className="px-6 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white border-b sticky top-0 z-10 shadow-md rounded-t-lg">
-      <div className="flex items-center">
-        <span className="text-sm font-medium text-gray-700 mr-2">
-          Found {filteredFlightCount} flights
-        </span>
-        {filteredFlightCount !== totalFlightCount && (
-          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-            Filtered
-          </span>
-        )}
-      </div>
-      
-      {/* Search bar for quick filtering */}
-      <div className="flex-1 mx-4 max-w-md">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <Input 
-            type="text"
-            placeholder="Search by airline, airport or flight number..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 text-sm bg-gray-50 border-gray-200 focus-visible:ring-chamBlue"
-          />
+    <div className="bg-gradient-to-r from-violet-600 to-indigo-700 text-white p-4">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex-1 w-full md:w-auto">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+            <Input
+              placeholder="Search by airline, airport or flight number"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 pr-4 py-2 w-full bg-white text-gray-900 border-0 rounded-full shadow-inner"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="text-sm text-violet-100">
+            <span className="font-medium">{filteredFlightCount}</span> flights found
+            {filteredFlightCount !== totalFlightCount && (
+              <> (filtered from <span className="font-medium">{totalFlightCount}</span>)</>
+            )}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="ml-auto bg-white/10 hover:bg-white/20 text-white border-white/20 rounded-full"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <SlidersHorizontal className="mr-1.5 h-3.5 w-3.5" />
+            Filters
+          </Button>
         </div>
       </div>
-      
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600 mr-1 whitespace-nowrap">Sort by:</span>
-        <div className="flex bg-gray-100 rounded-md p-0.5">
+      <div className="flex items-center gap-4 mt-4">
+        <div className="text-sm font-medium">Sort by:</div>
+        <div className="flex gap-2">
           <Button 
-            variant={sortBy === 'price' ? 'secondary' : 'ghost'} 
             size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'price' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
             onClick={() => onSortChange('price')}
-            className={`text-xs h-7 px-3 rounded-md ${sortBy === 'price' ? 'bg-white shadow-sm' : ''}`}
           >
             Price
           </Button>
           <Button 
-            variant={sortBy === 'departure' ? 'secondary' : 'ghost'} 
-            size="sm"
+            size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'departure' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
             onClick={() => onSortChange('departure')}
-            className={`text-xs h-7 px-3 rounded-md ${sortBy === 'departure' ? 'bg-white shadow-sm' : ''}`}
           >
-            <Clock className="h-3 w-3 mr-1" /> Departure
+            Departure Time
           </Button>
           <Button 
-            variant={sortBy === 'arrival' ? 'secondary' : 'ghost'} 
-            size="sm"
+            size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'arrival' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
             onClick={() => onSortChange('arrival')}
-            className={`text-xs h-7 px-3 rounded-md ${sortBy === 'arrival' ? 'bg-white shadow-sm' : ''}`}
           >
-            Arrival
+            Arrival Time
           </Button>
         </div>
-        
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => setShowFilters(!showFilters)}
-          className="ml-1 flex items-center gap-1 h-7 text-xs border-gray-200 hover:bg-gray-50"
-        >
-          <Sliders className="h-3 w-3" />
-          Filters
-          {showFilters ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, ChevronDown, ChevronRight, Eye } from 'lucide-react';
+import { Check, ChevronDown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 
@@ -36,7 +36,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
             variant="outline" 
             size="sm" 
             onClick={onToggleFlightDetails}
-            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
+            className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             Hide Details <ChevronDown className="ml-1 h-4 w-4" />
           </Button>
@@ -44,8 +44,8 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight?.id)}
-            className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
+            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight.id)}
+            className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details
           </Button>

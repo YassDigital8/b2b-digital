@@ -1,5 +1,5 @@
 
-import { Passenger } from '@/components/interline/booking-form/types';
+import { Passenger } from "../types";
 
 export interface PassengerDetailsFormProps {
   passengers: Passenger[];
@@ -12,5 +12,5 @@ export interface PassengerFormItemProps {
   index: number;
   updatePassenger: (index: number, data: Partial<Passenger>) => void;
   openAccordion: string;
-  setOpenAccordion: (id: string) => void;
+  setOpenAccordion: (value: string) => void;
 }

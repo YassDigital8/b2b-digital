@@ -33,8 +33,8 @@ export const validateAllPassengers = (
       return false;
     }
     
-    if (!p.passportIssueDate || !p.passportExpiryDate) {
-      toast.error(`Please enter passport issue and expiry dates for ${getPassengerTitle(p)}`);
+    if (!p.passportExpiryDate) {
+      toast.error(`Please enter passport expiry date for ${getPassengerTitle(p)}`);
       setOpenAccordion(`passenger-${i}`);
       return false;
     }

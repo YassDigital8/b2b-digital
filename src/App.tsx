@@ -15,7 +15,6 @@ import TransportationBooking from "./pages/TransportationBooking";
 import TopUp from "./pages/TopUp";
 import InterlineBooking from "./pages/InterlineBooking";
 import InterlineBookingForm from "./pages/InterlineBookingForm";
-import FlightSearch from "./pages/FlightSearch"; // Import the new page
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { Provider } from 'react-redux';

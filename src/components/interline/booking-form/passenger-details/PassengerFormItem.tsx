@@ -36,15 +36,15 @@ const PassengerFormItem = ({
       value={`passenger-${index}`}
       className="border rounded-xl overflow-hidden shadow-sm mb-3 transition-all duration-300 hover:shadow-md"
     >
-      <AccordionTrigger className="px-4 py-3 hover:no-underline bg-gradient-to-r from-white to-gray-50">
+      <AccordionTrigger className="px-4 py-3 hover:no-underline bg-gradient-to-r from-white to-slate-50">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
             <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full mr-3 text-xs font-medium
               ${passenger.type === 'adult' 
-                ? 'bg-blue-100 text-blue-700' 
+                ? 'bg-chamBlue/10 text-chamBlue' 
                 : passenger.type === 'child' 
                   ? 'bg-green-100 text-green-700' 
-                  : 'bg-purple-100 text-purple-700'
+                  : 'bg-pink-100 text-pink-700'
               }`}>
               {passenger.type === 'adult' ? 'A' : passenger.type === 'child' ? 'C' : 'I'}
             </span>
@@ -72,7 +72,7 @@ const PassengerFormItem = ({
                   gender: value as 'male' | 'female' 
                 })}
               >
-                <SelectTrigger id={`${passenger.id}-gender`} className="w-full mt-1 border-blue-200 focus:border-blue-400">
+                <SelectTrigger id={`${passenger.id}-gender`} className="w-full mt-1 border-chamBlue/20 focus:border-chamBlue">
                   <SelectValue placeholder="Select Gender" />
                 </SelectTrigger>
                 <SelectContent>
@@ -91,7 +91,7 @@ const PassengerFormItem = ({
                 id={`${passenger.id}-firstName`}
                 value={passenger.firstName}
                 onChange={(e) => updatePassenger(index, { firstName: e.target.value })}
-                className="mt-1 border-blue-200 focus:border-blue-400"
+                className="mt-1 border-chamBlue/20 focus:border-chamBlue"
                 placeholder="As in passport"
               />
             </div>
@@ -102,7 +102,7 @@ const PassengerFormItem = ({
                 id={`${passenger.id}-lastName`}
                 value={passenger.lastName}
                 onChange={(e) => updatePassenger(index, { lastName: e.target.value })}
-                className="mt-1 border-blue-200 focus:border-blue-400"
+                className="mt-1 border-chamBlue/20 focus:border-chamBlue"
                 placeholder="As in passport"
               />
             </div>
@@ -127,7 +127,7 @@ const PassengerFormItem = ({
           
           {/* Passport Information */}
           <div className="mt-6 mb-2">
-            <h3 className="text-md font-medium gradient-text font-display">Passport Information</h3>
+            <h3 className="text-md font-medium text-chamBlue font-display">Passport Information</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -137,20 +137,10 @@ const PassengerFormItem = ({
                 id={`${passenger.id}-passport`}
                 value={passenger.passportNumber}
                 onChange={(e) => updatePassenger(index, { passportNumber: e.target.value })}
-                className="mt-1 border-blue-200 focus:border-blue-400"
+                className="mt-1 border-chamBlue/20 focus:border-chamBlue"
                 placeholder="Enter passport number"
               />
             </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DatePickerField 
-              label="Issue Date"
-              id={`${passenger.id}-issue-date`}
-              date={passenger.passportIssueDate}
-              onSelect={(date) => updatePassenger(index, { passportIssueDate: date })}
-              disableFuture={true}
-            />
             
             <DatePickerField 
               label="Expiry Date"
