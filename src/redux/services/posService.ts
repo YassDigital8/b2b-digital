@@ -1,70 +1,82 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { b2bAPi, BASE_URL, GetFlightsWithPrice, POS } from '@/axios/urls';
-import { apiClient } from '@/axios/axioxConfig';
-import { getHeadres } from '@/axios/headres';
 
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { Flight, FlightSearchData, Pos } from "@/types/flight";
 
-const sliceName = `pos`;
-
-export interface AgentRequest {
-  // code: string;
-}
-export interface Pos {
-  id: number;
-  key: string;
-  arabicName: string;
-  englishName: string;
-  createdDate: string;
-  createdBy: string;
-  modifiedDate: string;
-  modifiedBy: string;
-}
-interface FlightSearchData {
-  origin: string;
-  destination: string;
-  date: string;
-  date_return: string;
-  adults: number;
-  children: number;
-  infants: number;
-  flightclass: string;
-  flighttype: string;
-  pos: string;
-}
-
-export type AgentResponse = Pos[];
-
-
-export const getPosService = createAsyncThunk<
-  Pos[],
-  void,
-  { rejectValue: any }
->(
-  `${sliceName}/getPosService`,
-  async (_, thunkAPI) => {
+export const getPosService = createAsyncThunk(
+  "pos/get",
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await apiClient.get(`${BASE_URL}/${POS}`);
-      return response.data;
-    } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.response?.data?.message || 'Something went wrong');
+      // Mocked response for demonstration
+      return [
+        { id: "1", key: "ae", englishName: "UAE" },
+        { id: "2", key: "sy", englishName: "Syria" },
+      ];
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
-export const getFlightsWithPriceService = createAsyncThunk<
-  Pos[],
-  FlightSearchData,
-  { rejectValue: any }
->(
-  `${sliceName}/getFlightsWithPriceService`,
-  async ({ data }, thunkAPI) => {
+
+export const getFlightsWithPriceService = createAsyncThunk(
+  "pos/getFlightsWithPrice",
+  async ({ data }: { data: any }, { rejectWithValue }) => {
     try {
-      const response = await apiClient.post(
-        `${b2bAPi}/${GetFlightsWithPrice}`,
-        data
-      );
-      return response.data;
-    } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.response?.data?.message || 'Something went wrong');
+      // Mocked flight data for demonstration
+      return [
+        {
+          id: "flight-1",
+          segments: [
+            {
+              id: "segment-1",
+              airline: "Cham Wings",
+              flightNumber: "CW101",
+              from: "Damascus",
+              to: "Dubai",
+              fromCode: "DAM",
+              toCode: "DXB",
+              departureTime: new Date(),
+              arrivalTime: new Date(),
+              duration: "2h 30m",
+              airport: "DAM",
+              FlightNumber: "CW101",
+              departure_time: "10:00",
+              departure_date: "2025-05-30",
+              origin_code: "DAM",
+              origin_name: "Damascus",
+              arrival_time: "12:30",
+              arrival_date: "2025-05-30",
+              destination_code: "DXB",
+              destination_name: "Dubai",
+              Duration: "2h 30m"
+            }
+          ],
+          stops: 0,
+          price: 500,
+          seats: 20,
+          cabin: "economy",
+          flight_class: "Y",
+          Duration: "2h 30m",
+          total_fare_with_additional: 550,
+          departure_time: "10:00",
+          origin_code: "DAM",
+          origin_name: "Damascus",
+          arrival_time: "12:30",
+          destination_code: "DXB",
+          destination_name: "Dubai",
+          pricing_info: [
+            {
+              FareRuleReference: {
+                "Cancellation": "Non-refundable",
+                "Change": "Allowed with fee"
+              }
+            }
+          ],
+          connection_time: []
+        }
+      ];
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );

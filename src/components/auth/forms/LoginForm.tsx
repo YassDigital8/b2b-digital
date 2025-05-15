@@ -7,7 +7,6 @@ import { CardContent, CardFooter } from '@/components/ui/card';
 import { Loader2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { LoginFormValues } from '@/context/auth/types';
 import {
   Form,
   FormControl,
@@ -21,12 +20,13 @@ import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getTravelAgentService, logInService } from '@/redux/services/authService';
 import { AppDispatch } from '@/redux/store';
 import { useAppSelector } from '@/redux/useAppSelector';
 import { useAuthContext } from '@/context/auth';
 import { loginFormSchema } from '../hooks/form/loginFormSchema';
+import { LoginResponse } from '@/types/flight';
 
 // Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
@@ -38,11 +38,7 @@ interface LoginFormProps {
   onSuccess?: () => void;
 }
 
-
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  // const { login } = useAuth();
-  // const auth = useAuthContext();
-
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const isMobile = useIsMobile();
@@ -60,20 +56,18 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       const data = values
       dispatch(logInService(data)).then((action) => {
         if (logInService.fulfilled.match(action)) {
-
-          const data = action.payload
-          const { code, token } = data
-          dispatch(getTravelAgentService({ code })).then((action) => {
-            if (getTravelAgentService.fulfilled.match(action)) {
-              navigate('/')
-            }
-          })
-
+          const data = action.payload as LoginResponse;
+          if (data && data.token) {
+            dispatch(getTravelAgentService({ code: data.code || '' })).then((action) => {
+              if (getTravelAgentService.fulfilled.match(action)) {
+                navigate('/')
+              }
+            })
+          }
         }
       })
     },
   });
-
 
   return (
     <form onSubmit={formik.handleSubmit} className="w-full">
@@ -140,7 +134,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           disabled={isLoading}
         >
           {isLoading ? 'Loading...' : 'Sign In'}
-
         </Button>
       </CardFooter>
     </form>

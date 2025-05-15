@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import * as Tooltip from '@radix-ui/react-tooltip';  // Radix UI Tooltip
+import * as Tooltip from '@radix-ui/react-tooltip';
 import { useAppSelector } from '@/redux/useAppSelector';
 import { useDispatch } from 'react-redux';
 import { getFlightsWithPriceService } from '@/redux/services/posService';
@@ -22,10 +23,14 @@ const DateNavigator = () => {
         setSelectedFlight,
         handleSearch,
         handleBooking,
-        handleSortChange, setSearchResults
+        handleSortChange, 
+        setSearchResults
     } = useInterlineBooking();
-    const [currentDate, setCurrentDate] = useState(new Date(searchInfo.date));  // Get initial date from searchInfo
-    const dispatch = useDispatch()
+    
+    // Use a default date if searchInfo.date is not defined
+    const initialDate = searchInfo && searchInfo.date ? new Date(searchInfo.date) : new Date();
+    const [currentDate, setCurrentDate] = useState(initialDate);
+    const dispatch = useDispatch();
 
     // Function to format the date to match the required format
     const formatDate = (date: Date) => {
@@ -66,24 +71,22 @@ const DateNavigator = () => {
             ...searchInfo,  // Keep all other values intact
             date: formattedDate,  // Override the `date` key with the updated date
         };
+        
         if (isLoadingSrarchFlights) {
             toast.error('Please wait for current result');
             return;
         }
-        dispatch(getFlightsWithPriceService({ data: updatedSearchInfo })).then((action) => {
-            if (getFlightsWithPriceService.fulfilled.match(action)) {
-                const data = action.payload
-                setSearchResults(data);
-
-            }
-        })
-        console.log('Updated searchInfo:', updatedSearchInfo);  // You can send this data via API call here
+        
+        dispatch(getFlightsWithPriceService({ data: updatedSearchInfo }));
+        console.log('Updated searchInfo:', updatedSearchInfo);
     };
 
     useEffect(() => {
         // Update currentDate when searchInfo.date changes
-        setCurrentDate(new Date(searchInfo.date));
-    }, [searchInfo.date]);
+        if (searchInfo && searchInfo.date) {
+            setCurrentDate(new Date(searchInfo.date));
+        }
+    }, [searchInfo]);
 
     return (
         <div className="flex items-center justify-center space-x-6 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 p-4 rounded-lg shadow-md">

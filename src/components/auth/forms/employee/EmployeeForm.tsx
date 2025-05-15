@@ -6,17 +6,15 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { COUNTRY_CODES, EMPLOYEE_ROLES, EmployeeData } from '../../utils/authConstants';
-import { FieldErrors } from 'react-hook-form';
-import { SignUpFormValues } from '../../hooks/useSignUpForm';
 
 interface EmployeeFormProps {
   employee: EmployeeData;
   index: number;
   formik: any;  // Add formik here if you're passing the formik object directly
-
   onUpdate: (index: number, field: keyof EmployeeData, value: string) => void;
   onRemove: (index: number) => void;
 }
+
 export const EmployeeForm = ({
   employee,
   index,
@@ -99,7 +97,6 @@ export const EmployeeForm = ({
               <Select
                 value={employee.phoneCode}
                 onValueChange={handleEmployeeCountryCodeChange}
-                // onBlur={() => formik.setFieldTouched(`employees[${index}].phoneCode`)}
               >
                 <SelectTrigger
                   id={`employee-${index}-phone-code`}
@@ -140,4 +137,3 @@ export const EmployeeForm = ({
     </div>
   );
 };
-

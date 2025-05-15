@@ -1,25 +1,9 @@
 
 import React from 'react';
-import { UseformikReturn, FieldErrors } from 'react-hook-formik';
-import { SignUpformikValues } from '../../hooks/useSignUpformik';
-import { formikField, formikItem, formikLabel, formikControl, formikMessage } from '@/components/ui/formik';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { COUNTRIES, COUNTRY_CODES } from '../../utils/authConstants';
 import { useAppSelector } from '@/redux/useAppSelector';
-
-
-
-interface formikValues {
-  name: string;
-  email: string;
-  agency: string;
-  country: string;
-  phoneCode: string;
-  phoneNumber: string;
-}
-
-
 
 interface FormValues {
   name: string;
@@ -31,7 +15,7 @@ interface FormValues {
 }
 
 interface Props {
-  form: FormikProps<FormValues>;
+  form: any;
 }
 
 export const AgencyInfoForm: React.FC<Props> = ({ form }) => {
@@ -39,10 +23,6 @@ export const AgencyInfoForm: React.FC<Props> = ({ form }) => {
 
   const handleCountryChange = (value: string) => {
     form.setFieldValue('country', value);
-    // const countryData = posArray.find(c => c.key === value);
-    // if (countryData) {
-    //   form.setFieldValue('phoneCode', countryData.code);
-    // }
   };
 
   return (

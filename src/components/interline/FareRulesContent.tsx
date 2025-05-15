@@ -1,15 +1,14 @@
+
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AlertCircle, Baby, CreditCard, Info, Luggage, Plane } from 'lucide-react';
 
 interface FareRulesContentProps {
-  fareRulesData?: {
-    FareRuleReference?: Record<string, string>;
-  };
+  fareRulesData?: any;
 }
 
 const FareRulesContent: React.FC<FareRulesContentProps> = ({ fareRulesData }) => {
-  console.log('fareRulesData',fareRulesData);
+  console.log('fareRulesData', fareRulesData);
   
   if (!fareRulesData || Object.keys(fareRulesData).length === 0) {
     return (
@@ -36,7 +35,7 @@ const FareRulesContent: React.FC<FareRulesContentProps> = ({ fareRulesData }) =>
     if (!categorizedRules[category]) {
       categorizedRules[category] = [];
     }
-    categorizedRules[category].push({ key: cleanKey, value });
+    categorizedRules[category].push({ key: cleanKey, value: value as string });
   });
 
   // Icons mapping for common categories

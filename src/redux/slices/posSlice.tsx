@@ -1,17 +1,19 @@
+
 import { createSlice } from '@reduxjs/toolkit';
 import { getFlightsWithPriceService, getPosService, Pos } from '../services/posService';
-import { flights } from '@/data';
+import { Flight } from '@/types/flight';
 
 interface posState {
     isLoading: boolean;
     isLoadingSrarchFlights: boolean;
     posArray: Pos[];
+    flights: Flight[];
 }
 const initialState: posState = {
     isLoading: false,
     isLoadingSrarchFlights: false,
     posArray: [],
-    filghts: []
+    flights: []
 };
 const posSlice = createSlice({
     name: 'pos',
@@ -44,7 +46,7 @@ const posSlice = createSlice({
                 state.isLoadingSrarchFlights = false;
 
                 const data = action.payload;
-                state.filghts = data
+                state.flights = data
             })
             .addCase(getFlightsWithPriceService.rejected, (state) => {
                 state.isLoadingSrarchFlights = false;
