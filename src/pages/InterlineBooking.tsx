@@ -1,5 +1,4 @@
 
-
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -68,4 +67,3 @@ const InterlineBooking = () => {
 };
 
 export default InterlineBooking;
-
