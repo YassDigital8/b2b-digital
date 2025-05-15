@@ -87,6 +87,7 @@ export const useInterlineBooking = () => {
       flightclass: cabinClass,
       flighttype: tripType === 'one-way' ? 'OneWay' : 'Return',
       pos: travelAgent?.value?.pos,
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjNjY2ZhMGI4LTZjYjQtNDQxYS1iNTg5LTVlMTljMjA0M2Q2OSIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJtYW5hZ2VyQ29kZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3NDczMDg1NzIsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.Oqy9gF0c44-1HydBebmNzJ54mNPg5_AmYQ5usFq2Qgo'
     };
     console.log('dataToSend', dataToSend);
 

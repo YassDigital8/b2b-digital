@@ -60,10 +60,7 @@ export const getFlightsWithPriceService = createAsyncThunk<
     try {
       const response = await apiClient.post(
         `${b2bAPi}/${GetFlightsWithPrice}`,
-        data,
-        {
-          headers: getHeadres(),
-        }
+        data
       );
       return response.data;
     } catch (e: any) {
