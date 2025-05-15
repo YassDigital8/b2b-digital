@@ -15,7 +15,6 @@ import TransportationBooking from "./pages/TransportationBooking";
 import TopUp from "./pages/TopUp";
 import InterlineBooking from "./pages/InterlineBooking";
 import InterlineBookingForm from "./pages/InterlineBookingForm";
-import FlightSearch from "./pages/FlightSearch"; // Import the new page
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -39,7 +38,6 @@ const App = () => (
               <Route path="/top-up" element={<TopUp />} />
               <Route path="/interline" element={<InterlineBooking />} />
               <Route path="/interline-booking" element={<InterlineBookingForm />} />
-              <Route path="/flight-search" element={<FlightSearch />} /> {/* Add the new route */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/reports" element={<NotFound />} />
               <Route path="/about" element={<NotFound />} />
