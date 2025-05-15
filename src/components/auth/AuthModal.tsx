@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
 import { LoginForm } from './forms/LoginForm';
 import { SignUpForm } from './forms/SignUpForm';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface AuthModalProps {
   defaultTab?: string;
@@ -46,12 +47,19 @@ const AuthModal = ({
       }} 
       className="w-full max-w-md"
     >
-      <Card className="border-none shadow-soft">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl text-chamBlue mb-2">
+      <Card className="border-none shadow-lg overflow-hidden bg-white/95 backdrop-blur-lg">
+        <AspectRatio ratio={16/3} className="bg-gradient-to-r from-chamBlue to-chamDarkBlue h-20 flex items-center justify-center">
+          <div className="text-white text-center">
+            <h3 className="text-xl font-semibold">Cham Wings</h3>
+            <p className="text-xs opacity-80">Travel Hub Portal</p>
+          </div>
+        </AspectRatio>
+        
+        <CardHeader className="text-center pt-6 pb-2">
+          <CardTitle className="text-2xl text-chamDarkBlue mb-2 font-bold">
             {activeTab === 'login' ? 'Welcome Back' : 'Create an Account'}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-500">
             {activeTab === 'login' 
               ? 'Sign in to access the Cham Wings Travel Hub' 
               : 'Register to join the Cham Wings Travel Hub'
@@ -60,9 +68,19 @@ const AuthModal = ({
         </CardHeader>
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="px-6">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="login">Sign In</TabsTrigger>
-              <TabsTrigger value="register">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/80 p-1.5 rounded-lg">
+              <TabsTrigger 
+                value="login" 
+                className="data-[state=active]:bg-white data-[state=active]:text-chamBlue data-[state=active]:shadow-md rounded-md py-2.5 font-medium"
+              >
+                Sign In
+              </TabsTrigger>
+              <TabsTrigger 
+                value="register"
+                className="data-[state=active]:bg-white data-[state=active]:text-chamBlue data-[state=active]:shadow-md rounded-md py-2.5 font-medium"
+              >
+                Sign Up
+              </TabsTrigger>
             </TabsList>
           </div>
           

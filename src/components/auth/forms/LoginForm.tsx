@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { LoginFormValues } from '@/context/auth/types';
@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 // Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
@@ -35,6 +36,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const isMobile = useIsMobile();
 
   const form = useForm<LoginFormValues>({
@@ -67,10 +69,20 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     }
   };
 
+  const formAnimation = {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.4 }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <CardContent className={`space-y-4 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
+        <CardContent className={`space-y-6 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
           {loginError && (
             <Alert variant="destructive" className="mb-4 text-sm">
               <AlertTriangle className="h-4 w-4" />
@@ -78,70 +90,105 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             </Alert>
           )}
           
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="your@email.com" 
-                    {...field} 
-                    className="w-full"
-                    type="email"
-                    inputMode="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••••" 
-                    {...field}
-                    className="w-full" 
-                    autoComplete="current-password"
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
-          <Button 
-            type="button" 
-            variant="link" 
-            className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto" 
-            onClick={() => navigate('/forgot-password')}
+          <motion.div 
+            {...formAnimation} 
+            transition={{ delay: 0.1 }}
           >
-            Forgot your password?
-          </Button>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium text-gray-700">Email</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="your@email.com" 
+                      {...field} 
+                      className="w-full h-12 border-gray-200 shadow-sm focus-visible:ring-chamBlue"
+                      type="email"
+                      inputMode="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </motion.div>
+
+          <motion.div 
+            {...formAnimation} 
+            transition={{ delay: 0.2 }}
+          >
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium text-gray-700">Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input 
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••" 
+                        {...field}
+                        className="w-full h-12 border-gray-200 shadow-sm pr-10 focus-visible:ring-chamBlue" 
+                        autoComplete="current-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={toggleShowPassword}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </motion.div>
+
+          <motion.div 
+            {...formAnimation} 
+            transition={{ delay: 0.3 }}
+          >
+            <Button 
+              type="button" 
+              variant="link" 
+              className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto" 
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgot your password?
+            </Button>
+          </motion.div>
         </CardContent>
-        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-4' : ''}`}>
-          <Button 
-            type="submit" 
-            className="w-full bg-chamBlue hover:bg-chamBlue/90 py-5 h-auto font-medium" 
-            disabled={isSubmitting}
+        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-6' : 'pb-6'}`}>
+          <motion.div 
+            {...formAnimation} 
+            className="w-full" 
+            transition={{ delay: 0.4 }}
           >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : 'Sign In'}
-          </Button>
+            <Button 
+              type="submit" 
+              className="w-full bg-chamBlue hover:bg-chamBlue/90 py-6 h-auto font-semibold text-base rounded-lg transition-all duration-300"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Signing in...
+                </>
+              ) : 'Sign In'}
+            </Button>
+          </motion.div>
         </CardFooter>
       </form>
     </Form>
