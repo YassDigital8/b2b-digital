@@ -29,12 +29,19 @@ const NationalitySelect = ({ passengerId, value, onChange }: NationalitySelectPr
         value={value}
         onValueChange={onChange}
       >
-        <SelectTrigger id={`${passengerId}-nationality`} className="w-full mt-1">
+        <SelectTrigger 
+          id={`${passengerId}-nationality`} 
+          className="w-full mt-1.5 border-chamBlue/20 shadow-sm hover:border-chamBlue/40 transition-colors"
+        >
           <SelectValue placeholder="Select Nationality" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-h-[280px] overflow-y-auto border-chamBlue/20 shadow-lg">
           {nationalities.map((nation) => (
-            <SelectItem key={nation.value} value={nation.value}>
+            <SelectItem 
+              key={nation.value} 
+              value={nation.value}
+              className="hover:bg-blue-50/50 cursor-pointer"
+            >
               {nation.label}
             </SelectItem>
           ))}
