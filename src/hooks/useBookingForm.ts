@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -27,7 +26,8 @@ export const useBookingForm = () => {
   const [contactInformation, setContactInformation] = useState<ContactInformation>({
     email: user?.email || '',
     phoneCode: '+963',
-    phoneNumber: ''
+    phoneNumber: '',
+    nationality: ''
   });
   
   // Initialize from state passed from search page

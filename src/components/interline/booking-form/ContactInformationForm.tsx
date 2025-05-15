@@ -12,6 +12,7 @@ import {
 import { ChevronLeft, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { ContactInformation } from '@/pages/InterlineBookingForm';
+import { nationalities } from '@/components/interline/booking-form/passenger-details/NationalitySelect';
 
 interface ContactInformationFormProps {
   contactInformation: ContactInformation;
@@ -55,6 +56,11 @@ const ContactInformationForm = ({
     
     if (!contactInformation.phoneNumber) {
       toast.error('Please enter a phone number');
+      return;
+    }
+    
+    if (!contactInformation.nationality) {
+      toast.error('Please select your nationality');
       return;
     }
     
@@ -113,6 +119,26 @@ const ContactInformationForm = ({
               className="mt-1 border-chamBlue/20 focus:border-chamBlue"
             />
           </div>
+        </div>
+        
+        {/* Nationality Selector */}
+        <div>
+          <Label htmlFor="nationality">Nationality</Label>
+          <Select
+            value={contactInformation.nationality}
+            onValueChange={(value) => updateContactInformation({ nationality: value })}
+          >
+            <SelectTrigger id="nationality" className="w-full mt-1 border-chamBlue/20 focus:border-chamBlue">
+              <SelectValue placeholder="Select Nationality" />
+            </SelectTrigger>
+            <SelectContent>
+              {nationalities.map((nation) => (
+                <SelectItem key={nation.value} value={nation.value}>
+                  {nation.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
         <div className="pt-6 flex items-center justify-between gap-4">

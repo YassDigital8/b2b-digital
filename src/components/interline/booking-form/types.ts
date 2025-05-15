@@ -16,6 +16,7 @@ export interface ContactInformation {
   email: string;
   phoneCode: string;
   phoneNumber: string;
+  nationality: string;
 }
 
 export interface PassengerDetailsFormProps {
