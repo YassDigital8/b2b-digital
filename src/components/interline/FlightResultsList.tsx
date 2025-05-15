@@ -260,6 +260,7 @@ const FlightResultsList: React.FC<FlightResultsListProps> = ({
                 flight={flight}
                 selectedFlightId={selectedFlightId}
                 onSelect={onSelect}
+                onBook={onBook}
                 totalPassengers={totalPassengers}
               />
             ))}

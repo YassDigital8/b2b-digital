@@ -49,11 +49,11 @@ const FlightCardTabs: React.FC<FlightCardTabsProps> = ({ flight, totalPassengers
       </TabsContent>
 
       <TabsContent value="price" className="mt-0 bg-white rounded-b-md shadow-sm p-4 border border-t-0">
-        <PriceBreakdownContent pricingData={flight?.pricingData} totalPassengers={totalPassengers} />
+        <PriceBreakdownContent pricingData={flight?.pricing_info} totalPassengers={totalPassengers} />
       </TabsContent>
 
       <TabsContent value="rules" className="mt-0 bg-white rounded-b-md shadow-sm p-4 border border-t-0">
-        <FareRulesContent fareRulesData={flight?.pricingData[0]?.FareRuleReference ?? null} />
+        <FareRulesContent fareRulesData={flight?.pricing_info[0]?.FareRuleReference} />
       </TabsContent>
     </Tabs>
   );
