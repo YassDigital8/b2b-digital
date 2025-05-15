@@ -2,25 +2,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Plane, Info, Shield, Globe, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Plane, Info, Shield, Globe } from 'lucide-react';
 
 const BookingInfo: React.FC = () => {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   return (
     <Card className="border-none shadow-md overflow-hidden bg-white">      
       <CardHeader className="relative z-10 bg-gradient-to-r from-violet-50 to-white">
@@ -30,7 +14,7 @@ const BookingInfo: React.FC = () => {
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="space-y-6 relative z-10">
+      <CardContent className="space-y-5 relative z-10">
         <div>
           <h3 className="font-medium text-violet-900 mb-2 flex items-center gap-1.5">
             <Info className="h-4 w-4 text-violet-600" />
@@ -43,7 +27,7 @@ const BookingInfo: React.FC = () => {
           </p>
         </div>
         
-        <Separator className="bg-gradient-to-r from-chamBlue/20 via-chamGold/20 to-transparent" />
+        <Separator className="bg-gray-200" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-violet-50 rounded-lg p-4 border border-violet-100">
@@ -51,7 +35,7 @@ const BookingInfo: React.FC = () => {
               <Plane className="h-4 w-4 text-violet-600" />
               Partner Airlines
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <div className="w-1 h-1 rounded-full bg-violet-600 mt-2"></div>
                 <div>
@@ -74,7 +58,7 @@ const BookingInfo: React.FC = () => {
                 </div>
               </li>
             </ul>
-          </motion.div>
+          </div>
           
           <div className="bg-amber-50 rounded-lg p-4 border border-amber-100">
             <h3 className="font-medium text-amber-800 mb-3 flex items-center gap-1.5">
@@ -99,8 +83,8 @@ const BookingInfo: React.FC = () => {
                 <span>E-tickets will be sent to your registered email address</span>
               </li>
             </ul>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
         
         <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-md">
           <div className="flex items-start gap-2">
