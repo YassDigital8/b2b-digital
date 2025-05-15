@@ -12,10 +12,10 @@ const SignUp = () => {
   const { redirectIfAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('register');
   
-  useEffect(() => {
-    redirectIfAuthenticated('/dashboard');
-    window.scrollTo(0, 0);
-  }, [redirectIfAuthenticated]);
+  // useEffect(() => {
+  //   redirectIfAuthenticated('/dashboard');
+  //   window.scrollTo(0, 0);
+  // }, [redirectIfAuthenticated]);
   
   const benefits = [
     'Exclusive access to Cham Wings B2B services',

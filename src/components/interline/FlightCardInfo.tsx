@@ -24,9 +24,9 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
       {/* Flight information */}
       <div className="flex items-center text-xs text-gray-600">
         <Check className="h-3.5 w-3.5 text-green-600 mr-1" />
-        <span>{flight.cabin === 'business' ? 'Business Class' : 'Economy Class'}</span>
-        <span className="mx-2">•</span>
-        <span>{flight.seats} seats left</span>
+        <span>{flight?.flight_class === 'C' ? 'Business Class' : 'Economy Class'}</span>
+        {/* <span className="mx-2">•</span> */}
+        {/* <span>{flight?.seats} seats left</span> */}
       </div>
       
       {/* View details button - softened edges and improved style */}
@@ -44,7 +44,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight.id)}
+            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight?.id)}
             className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/10 hover:text-chamBlue font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -27,6 +27,7 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { useSelector } from 'react-redux';
 
 export const bookingFormSchema = z.object({
   tripType: z.enum(['one-way', 'round-trip']),
@@ -49,45 +50,49 @@ export interface SearchFormProps {
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialValues }) => {
+  const { isLoadingSrarchFlights } = useSelector(state => state.pos)
   const allCities = [
     { city: 'Damascus', code: 'DAM' },
     { city: 'Aleppo', code: 'ALP' },
     { city: 'Latakia', code: 'LTK' },
     { city: 'Beirut', code: 'BEY' },
-    { city: 'Dubai', code: 'DXB' },
+    // { city: 'Dubai', code: 'DXB' },
     { city: 'Abu Dhabi', code: 'AUH' },
-    { city: 'Cairo', code: 'CAI' }, 
+    { city: 'Cairo', code: 'CAI' },
     { city: 'Alexandria', code: 'ALY' },
     { city: 'Baghdad', code: 'BGW' },
     { city: 'Tehran', code: 'IKA' },
     { city: 'Khartoum', code: 'KRT' },
     { city: 'Kuwait City', code: 'KWI' },
     { city: 'Doha', code: 'DOH' },
-    { city: 'Riyadh', code: 'RUH' }, 
+    { city: 'Riyadh', code: 'RUH' },
     { city: 'Jeddah', code: 'JED' },
     { city: 'Amman', code: 'AMM' },
     { city: 'Sharjah', code: 'SHJ' },
     { city: 'Basra', code: 'BSR' }
   ];
-  
+
   const form = useForm<BookingFormValues>({
-    resolver: zodResolver(bookingFormSchema),
+    // resolver: zodResolver(bookingFormSchema),
     defaultValues: {
       tripType: 'one-way',
       fromCity: '',
       toCity: '',
       departureDate: undefined,
       returnDate: undefined,
-      cabinClass: 'economy',
-      adults: 1,
+      cabinClass: 'Y',
+      adults: 0,
       children: 0,
       infants: 0,
     },
   });
-  
+  const adults = useWatch({ control: form.control, name: "adults" });
+  const children = useWatch({ control: form.control, name: "children" });
+  const infants = useWatch({ control: form.control, name: "infants" });
+
   const tripType = form.watch('tripType');
   const fromCity = form.watch('fromCity');
-  
+
   useEffect(() => {
     if (tripType === 'round-trip') {
       form.register('returnDate', { required: "Return date is required for round trips" });
@@ -95,7 +100,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
       form.setValue('returnDate', null);
     }
   }, [tripType, form]);
-  
+
   useEffect(() => {
     if (initialValues) {
       form.setValue('fromCity', initialValues.fromCity);
@@ -107,35 +112,36 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
       form.setValue('infants', initialValues.infants);
     }
   }, [initialValues, form.setValue]);
-  
+
   const adjustPassenger = (type: 'adults' | 'children' | 'infants', increment: boolean) => {
     const currentValue = form.getValues(type);
     const newValue = increment ? currentValue + 1 : Math.max(type === 'adults' ? 1 : 0, currentValue - 1);
-    
+    console.log('type', type);
+
     if (type === 'adults' && newValue > 9) {
       toast.error('Maximum 9 adults allowed per booking');
       return;
     }
-    
+
     if (type === 'children' && newValue > 9) {
       toast.error('Maximum 9 children allowed per booking');
       return;
     }
-    
+
     if (type === 'infants' && newValue > form.getValues('adults')) {
       toast.error('Number of infants cannot exceed number of adults');
       return;
     }
-    
-    const totalPassengers = (type === 'adults' ? newValue : form.getValues('adults')) + 
-                           (type === 'children' ? newValue : form.getValues('children')) + 
-                           (type === 'infants' ? newValue : form.getValues('infants'));
-    
+
+    const totalPassengers = (type === 'adults' ? newValue : form.getValues('adults')) +
+      (type === 'children' ? newValue : form.getValues('children')) +
+      (type === 'infants' ? newValue : form.getValues('infants'));
+
     if (increment && totalPassengers > 9) {
       toast.error('Maximum 9 passengers allowed per booking');
       return;
     }
-    
+
     form.setValue(type, newValue);
   };
 
@@ -144,23 +150,24 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
       toast.error('Departure and destination cities cannot be the same');
       return;
     }
-    
+
     if (data.tripType === 'round-trip' && data.returnDate && data.departureDate > data.returnDate) {
       toast.error('Return date must be after departure date');
       return;
     }
-    
-    const totalPassengers = data.adults + data.children + data.infants;
-    if (totalPassengers > 9) {
-      toast.error('Maximum 9 passengers allowed per booking');
-      return;
-    }
-    
+
+    // const totalPassengers = data.adults + data.children + data.infants;
+
+
     if (data.infants > data.adults) {
       toast.error('Number of infants cannot exceed number of adults');
       return;
     }
-    
+    if (data.adults < 1 && data.children < 1) {
+      toast.error('At least one adult or one child must be selected');
+      return;
+    }
+
     onSearch(data);
   };
 
@@ -194,7 +201,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
             )}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -213,7 +220,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                   </FormControl>
                   <SelectContent enableSearch>
                     {allCities.map((city) => (
-                      <SelectItem key={city.code} value={city.city}>
+                      <SelectItem key={city.code} value={city.code}>
                         {city.city} ({city.code})
                       </SelectItem>
                     ))}
@@ -223,7 +230,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="toCity"
@@ -243,7 +250,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     {allCities
                       .filter(city => city.city !== fromCity)
                       .map((city) => (
-                        <SelectItem key={city.code} value={city.city}>
+                        <SelectItem key={city.code} value={city.code}>
                           {city.city} ({city.code})
                         </SelectItem>
                       ))}
@@ -254,7 +261,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
             )}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -281,8 +288,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
+                      onSelect={(date) => {
+                        console.log('Selected Date:', date);
+                        field.onChange(date);
+                      }} initialFocus
                       disabled={(date) => date < new Date()}
                     />
                   </PopoverContent>
@@ -291,7 +300,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="returnDate"
@@ -321,8 +330,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <Calendar
                       mode="single"
                       selected={field.value || undefined}
-                      onSelect={field.onChange}
-                      initialFocus
+                      onSelect={(date) => {
+                        console.log('Selected Date:', date);
+                        field.onChange(date);
+                      }} initialFocus
                       disabled={(date) => {
                         const departureDate = form.getValues("departureDate");
                         return !departureDate || date < departureDate;
@@ -335,7 +346,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
             )}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -353,15 +364,15 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="economy">Economy Class</SelectItem>
-                    <SelectItem value="business">Business Class</SelectItem>
+                    <SelectItem value="Y">Economy Class</SelectItem>
+                    <SelectItem value="C">Business Class</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-          
+
           <div>
             <Label>Passengers</Label>
             <div className="grid grid-cols-3 gap-4 mt-2">
@@ -372,7 +383,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <p className="text-xs text-muted-foreground">12+ years</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -383,7 +394,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                       <Minus className="h-3 w-3" />
                     </Button>
                     <span className="w-5 text-center">{form.watch('adults')}</span>
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -395,7 +406,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                   </div>
                 </div>
               </div>
-              
+
               <div className="border rounded-md p-3">
                 <div className="flex justify-between items-center">
                   <div>
@@ -403,7 +414,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <p className="text-xs text-muted-foreground">2-11 years</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -414,7 +425,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                       <Minus className="h-3 w-3" />
                     </Button>
                     <span className="w-5 text-center">{form.watch('children')}</span>
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -426,7 +437,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                   </div>
                 </div>
               </div>
-              
+
               <div className="border rounded-md p-3">
                 <div className="flex justify-between items-center">
                   <div>
@@ -434,7 +445,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                     <p className="text-xs text-muted-foreground">0-23 months</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -445,7 +456,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
                       <Minus className="h-3 w-3" />
                     </Button>
                     <span className="w-5 text-center">{form.watch('infants')}</span>
-                    <Button 
+                    <Button
                       type="button"
                       size="icon"
                       variant="outline"
@@ -465,13 +476,13 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
             )}
           </div>
         </div>
-        
+
         <Button
           type="submit"
           className="w-full bg-chamBlue hover:bg-chamBlue/90"
-          disabled={isSearching}
+          disabled={isLoadingSrarchFlights}
         >
-          {isSearching ? (
+          {isLoadingSrarchFlights ? (
             <>
               <Search className="mr-2 h-4 w-4 animate-pulse" />
               Searching Flights...

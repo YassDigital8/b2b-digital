@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,9 +24,11 @@ interface UserMenuProps {
 export const UserMenu = ({ isMobile = false, onLogout }: UserMenuProps) => {
   const { user, logout } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigat = useNavigate()
   const handleLogout = () => {
+    localStorage.removeItem('token ')
     dispatch(setToken(null));
+    navigat('/login')
     // localStorage.removeItem('token');
     // logout();
     // if (onLogout) onLogout();

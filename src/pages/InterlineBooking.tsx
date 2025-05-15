@@ -9,6 +9,8 @@ import BookingInfo from '@/components/interline/BookingInfo';
 import SearchResultsSection from '@/components/interline/SearchResultsSection';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { Plane, ChevronDown } from 'lucide-react';
+import DateNavigator from '@/components/interline/DateNavigator';
+import withGuard from '@/utils/withGaurd';
 
 const InterlineBooking = () => {
   const {
@@ -25,13 +27,13 @@ const InterlineBooking = () => {
     handleBooking,
     handleSortChange
   } = useInterlineBooking();
-  
-  if (!user) return null;
-  
+
+  // if (!user) return null;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       {/* Enhanced header background */}
       <div className="h-56 bg-gradient-to-r from-chamDarkBlue to-chamBlue relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5 mix-blend-overlay"></div>
@@ -40,7 +42,7 @@ const InterlineBooking = () => {
             <path fill="#f9fafb" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,186.7C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
           <div className="text-white">
             <div className="flex items-center gap-3 mb-2">
@@ -53,7 +55,7 @@ const InterlineBooking = () => {
           </div>
         </div>
       </div>
-      
+
       <main className="flex-grow bg-gradient-to-b from-gray-50 to-white pb-12">
         <div className="container mx-auto px-4 -mt-20">
           <motion.div
@@ -62,26 +64,26 @@ const InterlineBooking = () => {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="mb-8"
           >
-            <AccountBalance balance={user.balance} />
+            <AccountBalance balance={5000} />
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
+
             <Card className="border-none shadow-soft mb-8 overflow-visible">
               <CardContent className="pt-6">
-                <SearchForm 
-                  onSearch={handleSearch} 
+                <SearchForm
+                  onSearch={handleSearch}
                   isSearching={isSearching}
                   initialValues={lastSearchCriteria || undefined}
                 />
               </CardContent>
             </Card>
-            
             {/* Flight Search Results */}
-            <SearchResultsSection 
+            <SearchResultsSection
               searchResults={searchResults}
               selectedFlight={selectedFlight}
               setSelectedFlight={setSelectedFlight}
@@ -90,8 +92,9 @@ const InterlineBooking = () => {
               isSubmitting={isSubmitting}
               sortBy={sortBy}
               onSortChange={handleSortChange}
+              isSearching={isSearching}
             />
-            
+
             {/* Only show the booking info if there are no search results */}
             {searchResults.length === 0 && (
               <motion.div
@@ -103,25 +106,25 @@ const InterlineBooking = () => {
                 <BookingInfo />
               </motion.div>
             )}
-            
+
             {/* Scroll down indicator when there are search results */}
-            {searchResults.length > 0 && (
-              <motion.div 
+            {/* {searchResults.length > 0 && (
+              <motion.div
                 className="flex justify-center mt-6 mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
               >
-                <a 
-                  href="#booking-info" 
+                <a
+                  href="#booking-info"
                   className="flex flex-col items-center text-chamBlue/60 hover:text-chamBlue transition-colors"
                 >
                   <span className="text-sm mb-1">More Information</span>
                   <ChevronDown className="h-5 w-5 animate-bounce" />
                 </a>
               </motion.div>
-            )}
-            
+            )} */}
+
             {/* Additional booking info section with ID for scroll */}
             {searchResults.length > 0 && (
               <motion.div
@@ -137,10 +140,10 @@ const InterlineBooking = () => {
           </motion.div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
 };
 
-export default InterlineBooking;
+export default withGuard(InterlineBooking);

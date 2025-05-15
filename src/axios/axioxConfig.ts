@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { NavigateFunction } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { baseUrl } from './urls';
+import { BASE_URL } from './urls';
 
 const apiClient = axios.create({
-    baseURL: baseUrl,
+    baseURL: BASE_URL,
 });
 
 // Define toast mixin

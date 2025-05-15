@@ -13,8 +13,8 @@ const AirlineDisplay: React.FC<AirlineDisplayProps> = ({ segments }) => {
         <div key={segment.id} className="flex items-center gap-1.5">
           {index > 0 && <span className="text-gray-300">→</span>}
           <div className="flex items-center gap-1">
-            <span className="text-sm font-medium">{segment.airlineCode}</span>
-            <span className="text-xs text-gray-500">{segment.flightNumber}</span>
+            <span className="text-sm font-medium">airlineCode</span>
+            <span className="text-xs text-gray-500">flightNumber</span>
           </div>
         </div>
       ))}

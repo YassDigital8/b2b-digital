@@ -39,7 +39,7 @@ const AccountSection = ({ user }: AccountSectionProps) => {
                 <Button className="bg-chamBlue hover:bg-chamBlue/90">Top Up Account</Button>
               </Link>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Monthly Spending Limit</span>
@@ -50,7 +50,7 @@ const AccountSection = ({ user }: AccountSectionProps) => {
           </CardContent>
         </Card>
       </motion.div>
-      
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

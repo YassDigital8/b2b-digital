@@ -16,12 +16,12 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    redirectIfAuthenticated('/dashboard');
+    // redirectIfAuthenticated('/dashboard');
     window.scrollTo(0, 0);
   }, [redirectIfAuthenticated]);
-  useEffect(() => {
-    dispatch(getPosService())
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getPosService())
+  // }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

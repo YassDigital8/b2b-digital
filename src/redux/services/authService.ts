@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiClient } from '../../axios/axioxConfig';
-import { authenticationAPi, b2bBaseUrl, baseUrl, login, TravelAgentApplication, TravelAgentOffice } from '@/axios/urls';
+import { authenticationAPi, b2bBaseUrl, BASE_URL, login, TravelAgentApplication, TravelAgentOffice, TravelAgentOfficeDetails } from '@/axios/urls';
+import { getHeadres } from '@/axios/headres';
 
 const sliceName = `auth`;
 interface LoginRequest {
@@ -88,13 +89,26 @@ export const createTravelAgentService = createAsyncThunk<
 
 // ======================== getTravelAgentService =======================
 
-export const getTravelAgentService = createAsyncThunk<AgentResponse, AgentRequest, { rejectValue: any }>(`${sliceName}/getTravelAgentService`, async ({ code }, thunkAPI) => {
-    try {
-        const response = await apiClient.get(`${b2bBaseUrl}/${TravelAgentOffice}/${code}`);
-        return response.data;
-    } catch (e: any) {
-        return thunkAPI.rejectWithValue(e.response?.data?.message || 'Something went wrong');
+export const getTravelAgentService = createAsyncThunk<
+    AgentResponse,
+    AgentRequest,
+    { rejectValue: any }
+>(
+    `${sliceName}/getTravelAgentService`,
+    async ({ code }, thunkAPI) => {
+        try {
+            const response = await apiClient.get(
+                `${BASE_URL}:7288/${TravelAgentOffice}/${TravelAgentOfficeDetails}`,
+                {
+                    headers: getHeadres()
+                }
+            );
+            return response.data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(
+                e.response?.data?.message || 'Something went wrong'
+            );
+        }
     }
-});
-
+);
 

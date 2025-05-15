@@ -1,5 +1,8 @@
-// utils/headers.ts or wherever it fits in your structure
-export const getHeadres = () => ({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-});
+export const getHeadres = () => {
+    const token = localStorage.getItem('token'); 
+    return {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+    };
+};

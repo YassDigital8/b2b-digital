@@ -11,7 +11,7 @@ interface AccountBalanceProps {
 const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
   return (
     <Card className="border-none shadow-soft overflow-hidden">
-      <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-50 to-transparent"></div>
+      {/* <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-50 to-transparent"></div> */}
       <CardHeader className="pb-2 relative z-10">
         <div className="flex items-center justify-between">
           <div>

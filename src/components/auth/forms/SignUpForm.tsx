@@ -35,7 +35,7 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     name: '',
     email: '',
     agency: '',
-    country: '',
+    country: 'sy',
     phoneCode: '',
     phoneNumber: '',
     employees: [
@@ -56,7 +56,7 @@ export const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         travelAgencyName: values.name,
         email: values.email,
         accelAeroUserName: values.agency,
-        pos: values.country,
+        pos: 'sy',
         phoneNumber: `${values.phoneCode}${values.phoneNumber}`,
         employees: values.hasEmployees
           ? values.employees.map(emp => ({

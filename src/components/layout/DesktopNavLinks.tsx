@@ -1,5 +1,5 @@
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navLinks } from './navData';
 import {
   NavigationMenu,
@@ -16,8 +16,10 @@ interface DesktopNavLinksProps {
 }
 
 export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps) => {
-  const location = useLocation();
+  console.log('scrolled', scrolled);
 
+  const location = useLocation();
+  const navigate = useNavigate()
   return (
     <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList className="gap-6">
@@ -26,10 +28,9 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
           if (link.isDropdown && link.dropdownItems) {
             return (
               <NavigationMenuItem key={link.path}>
-                <NavigationMenuTrigger 
-                  className={`font-medium transition-colors duration-300 hover:text-chamGold ${
-                    scrolled ? 'text-chamDarkBlue' : 'text-white'
-                  } ${location.pathname.includes('/services') ? 'text-chamGold' : ''} bg-transparent hover:bg-transparent focus:bg-transparent`}
+                <NavigationMenuTrigger
+                  className={`font-medium transition-colors duration-300 hover:text-chamGold ${scrolled ? 'text-chamDarkBlue' : 'text-white'
+                    } ${location.pathname.includes('/services') ? 'text-chamGold' : ''} bg-transparent hover:bg-transparent focus:bg-transparent`}
                 >
                   <div className="flex items-center gap-1">
                     {link.icon && <link.icon size={16} />}
@@ -44,7 +45,7 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
                           <Link
                             to={item.path}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            onClick={onLinkClick}
+                            onClick={() => navigate('/transportation')}
                           >
                             <div className="flex items-center gap-2 text-sm font-medium leading-none">
                               {item.icon && <item.icon size={18} className="text-chamGold" />}
@@ -66,11 +67,10 @@ export const DesktopNavLinks = ({ scrolled, onLinkClick }: DesktopNavLinksProps)
           // Regular menu items
           return (
             <NavigationMenuItem key={link.path}>
-              <Link 
+              <Link
                 to={link.path}
-                className={`font-medium transition-colors duration-300 hover:text-chamGold flex items-center gap-2 px-2 py-1.5 ${
-                  scrolled ? 'text-chamDarkBlue' : 'text-white'
-                } ${location.pathname === link.path ? 'text-chamGold' : ''}`}
+                className={`font-medium transition-colors duration-300 hover:text-chamGold flex items-center gap-2 px-2 py-1.5 ${scrolled ? 'text-chamDarkBlue' : 'text-white'
+                  } ${location.pathname === link.path ? 'text-chamGold' : ''}`}
                 onClick={onLinkClick}
               >
                 {link.icon && <link.icon size={16} />}

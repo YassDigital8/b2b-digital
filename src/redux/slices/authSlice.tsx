@@ -7,14 +7,18 @@ interface AuthState {
     token: string;
     mode: string;
     numberOfLogin: number | null;
+    travelAgent: {};
+    searchInfo: {}
 }
 
 const initialState: AuthState = {
-    isLoggedIn: false,
+    isLoggedIn: true,
     isLoading: false,
     token: '',
     mode: '',
     numberOfLogin: null,
+    travelAgent: {},
+    searchInfo: {}
 };
 
 const authSlice = createSlice({
@@ -23,6 +27,9 @@ const authSlice = createSlice({
     reducers: {
         setToken: (state, action) => {
             state.token = action.payload;
+        },
+        setSeachInfo: (state, action) => {
+            state.searchInfo = action.payload;
         }
     },
 
@@ -45,9 +52,11 @@ const authSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(getTravelAgentService.pending, (state) => {
+
                 state.isLoading = true;
             })
             .addCase(getTravelAgentService.fulfilled, (state, action) => {
+                state.travelAgent = action.payload
                 state.isLoading = false;
 
             })
@@ -66,6 +75,6 @@ const authSlice = createSlice({
             })
     },
 });
-export const {  setToken} = authSlice.actions;
+export const { setToken, setSeachInfo } = authSlice.actions;
 
 export default authSlice.reducer;

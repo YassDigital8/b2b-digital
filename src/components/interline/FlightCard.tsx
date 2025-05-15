@@ -9,6 +9,8 @@ import FlightCardTabs from './FlightCardTabs';
 import { Clock, Plane, Ticket } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAppSelector } from '@/redux/useAppSelector';
+import curr7encies from '@/utils/currencies';
 
 interface FlightCardProps {
   flight: Flight;
@@ -28,12 +30,19 @@ const FlightCard: React.FC<FlightCardProps> = ({
   onSelect,
   totalPassengers
 }) => {
+  const { travelAgent } = useAppSelector(state => state.auth);
+  const pos = travelAgent?.value?.pos
+
   const [showFlightDetails, setShowFlightDetails] = useState(false);
   const isSelected = selectedFlightId === flight.id;
-  
+
   const handleToggleFlightDetails = () => {
     setShowFlightDetails(!showFlightDetails);
   };
+
+  const getCurrency = (pos) => {
+    return (curr7encies?.find((c) => c.code === pos)?.symbol)
+  }
 
   return (
     <div
@@ -45,13 +54,13 @@ const FlightCard: React.FC<FlightCardProps> = ({
       )}
     >
       {/* Flight header with price */}
-      <div 
+      <div
         className={cn(
           "flex justify-between items-center p-5 cursor-pointer",
           isSelected ? "bg-chamBlue/10" : "bg-gray-50 hover:bg-chamBlue/5"
         )}
         onClick={() => {
-          onSelect(flight.id);
+          onSelect(flight?.id);
           // Automatically show details when selecting a flight
           if (!isSelected) {
             setShowFlightDetails(true);
@@ -66,60 +75,55 @@ const FlightCard: React.FC<FlightCardProps> = ({
             <div className="flex items-center gap-2">
               <span className="font-medium text-chamDarkBlue text-base">Interline Flight</span>
               <Badge variant="outline" className="bg-blue-50 text-blue-600 hover:bg-blue-100">
-                {flight.stops} stop
+                {flight?.
+                  segments
+                  ?.length - 1} stop
               </Badge>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
               <Clock className="h-3.5 w-3.5" />
               <span>Total journey: {
-                (() => {
-                  const startTime = flight.segments[0].departureTime;
-                  const endTime = flight.segments[flight.segments.length - 1].arrivalTime;
-                  const durationMs = endTime.getTime() - startTime.getTime();
-                  const durationMins = Math.floor(durationMs / (1000 * 60));
-                  return `${Math.floor(durationMins / 60)}h ${durationMins % 60}m`;
-                })()
+                flight?.Duration
               }</span>
               <span>•</span>
-              <span>{flight.cabin === 'business' ? 'Business' : 'Economy'}</span>
+              <span>{flight?.flight_class === 'C' ? 'Business Class' : 'Economy Class'}</span>
             </div>
           </div>
         </div>
-        
+
         {/* Price */}
         <div className="text-right">
-          <p className="font-bold text-xl text-chamDarkBlue">${flight.price}</p>
-          <p className="text-xs text-gray-500">per passenger</p>
+          {flight?.total_fare_with_additional &&
+            <p className="font-bold text-xl text-chamDarkBlue">{getCurrency(pos)} {flight?.total_fare_with_additional}</p>
+          }
+          {/* <p className="text-xs text-gray-500">per passenger</p> */}
           {totalPassengers.total > 1 && (
-            <p className="text-xs font-medium text-chamBlue">${(flight.price * totalPassengers.total).toLocaleString()} total</p>
+            <p className="text-xs font-medium text-chamBlue">${(flight?.price * totalPassengers?.total).toLocaleString()} total</p>
           )}
         </div>
       </div>
-      
+
       {/* Flight segments - Simplified view */}
       <div className="p-5 pt-4 bg-white">
         {/* Flight segments grid */}
-        <FlightSegment segments={flight.segments} />
+        <FlightSegment flight={flight} />
 
         {/* Airlines operated by */}
-        <AirlineDisplay segments={flight.segments} />
-        
+        {/* <AirlineDisplay segments={flight.segments} /> */}
+
         {/* Main content area with flight info and book now button */}
         <div className="flex items-center justify-between">
-          {/* Left side - Flight info */}
-          <FlightCardInfo 
-            flight={flight} 
-            isSelected={isSelected} 
+          <FlightCardInfo
+            flight={flight}
+            isSelected={isSelected}
             showFlightDetails={showFlightDetails}
             onSelect={onSelect}
             onToggleFlightDetails={handleToggleFlightDetails}
           />
-          
-          {/* Right side - Book Now button */}
-          <Button 
+          <Button
             variant="default"
             className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
-            onClick={() => onSelect(flight.id)}
+            onClick={() => onSelect(flight?.id)}
           >
             <Ticket className="h-4 w-4 mr-1.5" />
             Book Now

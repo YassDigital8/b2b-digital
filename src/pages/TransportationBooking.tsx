@@ -128,7 +128,7 @@ const TransportationBooking = () => {
     'Umm Al Quwain'
   ];
   
-  if (!user) return null;
+  // if (!user) return null;
   
   return (
     <div className="min-h-screen flex flex-col">

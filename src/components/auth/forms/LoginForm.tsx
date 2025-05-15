@@ -48,13 +48,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const isMobile = useIsMobile();
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useAppSelector(state => state.auth);
-
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
-    validationSchema:loginFormSchema,
+    validationSchema: loginFormSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true)
       console.log(values);
@@ -64,7 +63,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
           const data = action.payload
           const { code, token } = data
-          dispatch(getTravelAgentService({ code }))
+          dispatch(getTravelAgentService({ code })).then((action) => {
+            if (getTravelAgentService.fulfilled.match(action)) {
+              navigate('/')
+            }
+          })
+
         }
       })
     },
