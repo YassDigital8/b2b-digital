@@ -14,8 +14,8 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
   ];
 
   return (
-    <div className="px-6 py-6 border-b bg-gradient-to-r from-white to-violet-50">
-      <div className="flex items-center justify-between">
+    <div className="px-6 py-5 border-b bg-white">
+      <div className="flex items-center justify-between max-w-3xl mx-auto">
         {steps.map((step, index) => (
           <div key={step.id} className="flex-1 flex flex-col items-center">
             <div className="flex items-center">

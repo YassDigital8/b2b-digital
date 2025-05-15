@@ -63,6 +63,12 @@ const InterlineBookingForm = () => {
           >
             <Card className="border-none shadow-xl overflow-visible rounded-xl">
               <CardContent className="p-0">
+                {/* Booking Header */}
+                <div className="bg-gradient-to-r from-violet-700 to-indigo-600 py-6 px-6 rounded-t-xl">
+                  <h2 className="text-2xl font-bold text-white font-display">Complete Your Booking</h2>
+                  <p className="text-indigo-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
+                </div>
+              
                 <BookingSteps currentStep={currentStep} />
                 
                 {currentStep === 1 && (
