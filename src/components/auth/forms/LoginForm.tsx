@@ -170,7 +170,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             </Button>
           </motion.div>
         </CardContent>
-        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-6' : 'pb-6'}`}>
+        <CardFooter className={`flex-col ${isMobile ? 'px-6 pb-8' : 'px-6 pb-8'}`}>
           <motion.div 
             {...formAnimation} 
             className="w-full" 
@@ -178,7 +178,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           >
             <Button 
               type="submit" 
-              className="w-full bg-chamBlue hover:bg-chamBlue/90 py-6 h-auto font-semibold text-base rounded-lg transition-all duration-300"
+              className="w-full bg-chamBlue hover:bg-chamBlue/90 py-6 h-auto font-semibold text-base rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
