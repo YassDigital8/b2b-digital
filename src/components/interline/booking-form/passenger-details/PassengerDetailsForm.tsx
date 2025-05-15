@@ -21,7 +21,7 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate the passenger details
     if (validateAllPassengers(passengers, setOpenAccordion)) {
       onNext();
@@ -35,10 +35,10 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
           <h2 className="text-2xl font-semibold gradient-text mb-2 font-display">Passenger Details</h2>
           <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-8">
           <Accordion type="single" value={openAccordion} onValueChange={setOpenAccordion} collapsible>
-            {passengers.map((passenger, index) => (
+            {passengers?.map((passenger, index) => (
               <motion.div
                 key={`passenger-${index}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -55,16 +55,16 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
               </motion.div>
             ))}
           </Accordion>
-          
+
           <div className="flex justify-between pt-6 border-t">
-            <Button 
-              type="button" 
+            <Button
+              type="button"
               variant="outline"
               className="border-gray-300 hover:bg-gray-50 rounded-full"
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               type="submit"
               className="bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 text-white gap-2 rounded-full shadow-button"
             >

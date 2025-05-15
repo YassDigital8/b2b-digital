@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import InterceptorSetup from '@/axios/InterceptorSetup';
 import { PersistGate } from "redux-persist/integration/react";
 import 'sweetalert2/dist/sweetalert2.min.css';
+import PassengerDetailsForm from "./components/interline/booking-form/passenger-details";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/transportation" element={<TransportationBooking />} />
                     <Route path="/top-up" element={<TopUp />} />
                     <Route path="/interline" element={<InterlineBooking />} />
+                    <Route path="/book-form" element={<PassengerDetailsForm />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/reports" element={<NotFound />} />
                     <Route path="/about" element={<NotFound />} />

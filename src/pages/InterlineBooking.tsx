@@ -10,6 +10,11 @@ import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { Plane, ChevronDown } from 'lucide-react';
 import DateNavigator from '@/components/interline/DateNavigator';
 import withGuard from '@/utils/withGaurd';
+import { Card, CardContent } from '@/components/ui/card';
+import SearchForm from '@/components/interline/SearchForm';
+import SearchResultsSection from '@/components/interline/SearchResultsSection';
+import BookingInfo from '@/components/interline/BookingInfo';
+import { useBookNavigation } from '@/hooks/useBookNavigation';
 
 const InterlineBooking = () => {
   const {
@@ -28,7 +33,12 @@ const InterlineBooking = () => {
   } = useInterlineBooking();
 
   // if (!user) return null;
-
+  const { handleBooking } = useBookNavigation(
+    searchResults,
+    selectedFlight,
+    setIsSubmitting,
+    passengers
+  );
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />

@@ -35,7 +35,6 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({ balance }) => {
         </div>
       </CardHeader>
       <CardContent className="relative z-10">
-      <CardContent className="relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <p className="text-sm text-gray-500 mb-1">Available Balance</p>

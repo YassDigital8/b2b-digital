@@ -28,7 +28,6 @@ const PriceBreakdownContent: React.FC<PriceBreakdownContentProps> = ({
 
   return (
     <div className="p-5 bg-white">
-    <div className="p-5 bg-white">
       <div className="mb-4 flex items-center gap-2">
         <CreditCard className="h-5 w-5 text-chamGold" />
         <h3 className="text-lg font-medium text-chamDarkBlue">{title}</h3>
