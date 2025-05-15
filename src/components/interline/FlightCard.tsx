@@ -49,8 +49,12 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
   
   return (
-    <div className={cn("transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md", 
-      isSelected ? "border-violet-500 bg-violet-50/40" : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50")}>
+    <div className={cn(
+      "transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md", 
+      isSelected 
+        ? "border-violet-500 bg-gradient-to-br from-violet-50/50 to-blue-50/30" 
+        : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50/80"
+    )}>
       
       {/* Flight header with price */}
       <FlightHeader 

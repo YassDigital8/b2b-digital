@@ -33,11 +33,11 @@ const DatePickerField = ({
             id={id}
             variant="outline"
             className={cn(
-              "w-full justify-start text-left font-normal mt-1",
+              "w-full justify-start text-left font-normal mt-1.5 shadow-sm border-chamBlue/20 hover:bg-blue-50/50",
               !date && "text-muted-foreground"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="mr-2 h-4 w-4 text-chamBlue" />
             {date ? (
               format(date, "PPP")
             ) : (
@@ -45,7 +45,7 @@ const DatePickerField = ({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0 shadow-lg border-chamBlue/20" align="start">
           <Calendar
             mode="single"
             selected={date || undefined}
@@ -56,7 +56,7 @@ const DatePickerField = ({
               return false;
             }}
             initialFocus
-            className={cn("p-3 pointer-events-auto")}
+            className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>
       </Popover>
