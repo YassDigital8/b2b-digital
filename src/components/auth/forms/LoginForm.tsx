@@ -178,7 +178,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           >
             <Button 
               type="submit" 
-              className="w-3/4 mx-auto bg-chamBlue hover:bg-chamBlue/90 py-2.5 h-auto text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+              className="w-full mx-auto bg-chamBlue hover:bg-chamBlue/90 py-2.5 h-auto text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
