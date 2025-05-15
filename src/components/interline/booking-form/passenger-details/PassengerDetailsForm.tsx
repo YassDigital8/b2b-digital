@@ -24,15 +24,25 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
     
     // Validate the passenger details
     if (validateAllPassengers(passengers, setOpenAccordion)) {
+      toast.success("Passenger details saved", {
+        description: "Moving to contact information"
+      });
       onNext();
     }
   };
 
   return (
-    <Card className="shadow-lg bg-white rounded-lg overflow-hidden">
+    <Card className="shadow-xl bg-white rounded-xl overflow-hidden border-none">
+      <div className="bg-gradient-to-r from-chamBlue to-blue-600 py-4 px-6">
+        <h2 className="text-2xl font-bold text-white font-display">Complete Your Booking</h2>
+        <p className="text-blue-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
+      </div>
+      
+      <BookingSteps currentStep={1} />
+      
       <div className="p-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold gradient-text mb-2 font-display">Passenger Details</h2>
+          <h2 className="text-xl font-semibold gradient-text mb-2 font-display">Passenger Details</h2>
           <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
         </div>
         
@@ -56,7 +66,12 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
             ))}
           </Accordion>
           
-          <div className="flex justify-between pt-6 border-t">
+          <motion.div 
+            className="flex justify-between pt-6 border-t"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             <Button 
               type="button" 
               variant="outline"
@@ -66,12 +81,12 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
             </Button>
             <Button 
               type="submit"
-              className="bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 text-white gap-2 rounded-full shadow-button"
+              className="bg-gradient-to-r from-chamGold to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white gap-2 rounded-full shadow-md"
             >
               Continue
               <ArrowRight size={16} />
             </Button>
-          </div>
+          </motion.div>
         </form>
       </div>
     </Card>
