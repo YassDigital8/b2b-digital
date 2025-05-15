@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Flight } from '@/types/flight';
@@ -10,7 +9,7 @@ import { Clock, Plane, Ticket } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/redux/useAppSelector';
-import curr7encies from '@/utils/currencies';
+import currencies from '@/utils/currencies';
 
 interface FlightCardProps {
   flight: Flight;
@@ -41,7 +40,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
 
   const getCurrency = (pos) => {
-    return (curr7encies?.find((c) => c.code === pos)?.symbol)
+    return currencies?.find((c) => c.code === pos)?.symbol;
   }
 
   return (

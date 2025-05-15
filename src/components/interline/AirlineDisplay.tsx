@@ -3,18 +3,18 @@ import React from 'react';
 import { Segment } from '@/types/flight';
 
 interface AirlineDisplayProps {
-  segments: Segment[];
+  segments?: Segment[];
 }
 
-const AirlineDisplay: React.FC<AirlineDisplayProps> = ({ segments }) => {
+const AirlineDisplay: React.FC<AirlineDisplayProps> = ({ segments = [] }) => {
   return (
     <div className="flex flex-wrap gap-2 items-center pb-5 mb-5 border-b border-dashed">
       {segments.map((segment, index) => (
-        <div key={segment.id} className="flex items-center gap-1.5">
+        <div key={segment.id || index} className="flex items-center gap-1.5">
           {index > 0 && <span className="text-gray-300">→</span>}
           <div className="flex items-center gap-1">
-            <span className="text-sm font-medium">airlineCode</span>
-            <span className="text-xs text-gray-500">flightNumber</span>
+            <span className="text-sm font-medium">{segment.airline || 'Airline'}</span>
+            <span className="text-xs text-gray-500">{segment.flightNumber}</span>
           </div>
         </div>
       ))}
