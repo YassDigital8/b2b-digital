@@ -12,10 +12,13 @@ export interface Passenger {
 }
 
 export interface ContactInformation {
+  gender: 'male' | 'female';
+  firstName: string;
+  lastName: string;
   email: string;
   phoneCode: string;
   phoneNumber: string;
-  nationality: string;
+  city: string;
 }
 
 export interface PassengerDetailsFormProps {

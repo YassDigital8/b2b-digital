@@ -25,10 +25,13 @@ export const useBookingForm = () => {
   // Form data
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [contactInformation, setContactInformation] = useState<ContactInformation>({
+    gender: 'male',
+    firstName: '',
+    lastName: '',
     email: user?.email || '',
     phoneCode: '+963',
     phoneNumber: '',
-    nationality: ''
+    city: ''
   });
   
   // Initialize from state passed from search page
