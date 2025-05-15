@@ -1,9 +1,10 @@
-
-import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
+import { z } from "zod";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from 'date-fns';
+import { toast } from 'sonner';
+import { Calendar as CalendarIcon, Search, Plus, Minus } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -11,192 +12,216 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { CalendarIcon, Map, Plane, Search, Users } from 'lucide-react';
+} from "@/components/ui/select";
 import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { addDays } from 'date-fns';
-import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
 
-// Define the schema for the form
-const searchFormSchema = z.object({
-  fromCity: z.string().min(1, { message: 'Please select a departure city' }),
-  toCity: z.string().min(1, { message: 'Please select a destination city' }),
+export const bookingFormSchema = z.object({
   tripType: z.enum(['one-way', 'round-trip']),
-  departureDate: z.date({
-    required_error: 'Please select a departure date',
-  }),
-  returnDate: z.date().optional(),
-  adults: z.number().min(1),
-  children: z.number().min(0),
-  infants: z.number().min(0),
-  cabinClass: z.enum(['economy', 'business']),
+  fromCity: z.string().min(1, { message: "Please select a departure city" }),
+  toCity: z.string().min(1, { message: "Please select a destination city" }),
+  departureDate: z.date({ required_error: "Please select a departure date" }),
+  returnDate: z.date().optional().nullable(),
+  cabinClass: z.enum(['economy', 'business'], { required_error: "Please select a cabin class" }),
+  adults: z.number().int().min(1, { message: "At least 1 adult is required" }).max(9),
+  children: z.number().int().min(0).max(9),
+  infants: z.number().int().min(0).max(9),
 });
 
-// Derive the TypeScript type from the schema
-export type BookingFormValues = z.infer<typeof searchFormSchema>;
+export type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
-// Define airport options
-const airports = [
-  { value: 'DAM', label: 'Damascus (DAM)' },
-  { value: 'SHJ', label: 'Sharjah (SHJ)' },
-  { value: 'BEY', label: 'Beirut (BEY)' },
-  { value: 'CAI', label: 'Cairo (CAI)' },
-];
-
-interface SearchFormProps {
+export interface SearchFormProps {
   onSearch: (data: BookingFormValues) => void;
-  isSearching?: boolean;
+  isSearching: boolean;
   initialValues?: BookingFormValues;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({
-  onSearch,
-  isSearching = false,
-  initialValues
-}) => {
-  const defaultValues: BookingFormValues = initialValues || {
-    fromCity: 'DAM',
-    toCity: 'SHJ',
-    tripType: 'one-way',
-    departureDate: new Date(),
-    adults: 1,
-    children: 0,
-    infants: 0,
-    cabinClass: 'economy',
-  };
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialValues }) => {
+  const { isLoadingSrarchFlights } = useSelector(state => state.pos)
+  const allCities = [
+    { city: 'Damascus', code: 'DAM' },
+    { city: 'Aleppo', code: 'ALP' },
+    { city: 'Latakia', code: 'LTK' },
+    { city: 'Beirut', code: 'BEY' },
+    // { city: 'Dubai', code: 'DXB' },
+    { city: 'Abu Dhabi', code: 'AUH' },
+    { city: 'Cairo', code: 'CAI' },
+    { city: 'Alexandria', code: 'ALY' },
+    { city: 'Baghdad', code: 'BGW' },
+    { city: 'Tehran', code: 'IKA' },
+    { city: 'Khartoum', code: 'KRT' },
+    { city: 'Kuwait City', code: 'KWI' },
+    { city: 'Doha', code: 'DOH' },
+    { city: 'Riyadh', code: 'RUH' },
+    { city: 'Jeddah', code: 'JED' },
+    { city: 'Amman', code: 'AMM' },
+    { city: 'Sharjah', code: 'SHJ' },
+    { city: 'Basra', code: 'BSR' }
+  ];
 
   const form = useForm<BookingFormValues>({
-    resolver: zodResolver(searchFormSchema),
-    defaultValues,
+    // resolver: zodResolver(bookingFormSchema),
+    defaultValues: {
+      tripType: 'one-way',
+      fromCity: '',
+      toCity: '',
+      departureDate: undefined,
+      returnDate: undefined,
+      cabinClass: 'Y',
+      adults: 0,
+      children: 0,
+      infants: 0,
+    },
   });
+  const adults = useWatch({ control: form.control, name: "adults" });
+  const children = useWatch({ control: form.control, name: "children" });
+  const infants = useWatch({ control: form.control, name: "infants" });
 
   const tripType = form.watch('tripType');
+  const fromCity = form.watch('fromCity');
 
-  function onSubmit(data: BookingFormValues) {
-    if (data.fromCity === data.toCity) {
-      toast.error('Departure and destination cannot be the same');
+  useEffect(() => {
+    if (tripType === 'round-trip') {
+      form.register('returnDate', { required: "Return date is required for round trips" });
+    } else {
+      form.setValue('returnDate', null);
+    }
+  }, [tripType, form]);
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setValue('fromCity', initialValues.fromCity);
+      form.setValue('toCity', initialValues.toCity);
+      form.setValue('departureDate', initialValues.departureDate);
+      form.setValue('cabinClass', initialValues.cabinClass);
+      form.setValue('adults', initialValues.adults);
+      form.setValue('children', initialValues.children);
+      form.setValue('infants', initialValues.infants);
+    }
+  }, [initialValues, form.setValue]);
+
+  const adjustPassenger = (type: 'adults' | 'children' | 'infants', increment: boolean) => {
+    const currentValue = form.getValues(type);
+    const newValue = increment ? currentValue + 1 : Math.max(type === 'adults' ? 1 : 0, currentValue - 1);
+    console.log('type', type);
+
+    if (type === 'adults' && newValue > 9) {
+      toast.error('Maximum 9 adults allowed per booking');
       return;
     }
 
-    // Validate the return date if it's a round trip
-    if (data.tripType === 'round-trip' && data.returnDate) {
-      if (data.returnDate < data.departureDate) {
-        toast.error('Return date cannot be before departure date');
-        return;
-      }
+    if (type === 'children' && newValue > 9) {
+      toast.error('Maximum 9 children allowed per booking');
+      return;
     }
 
-    // Validate the total number of passengers
-    const totalPassengers = data.adults + data.children + data.infants;
-    if (totalPassengers > 9) {
+    if (type === 'infants' && newValue > form.getValues('adults')) {
+      toast.error('Number of infants cannot exceed number of adults');
+      return;
+    }
+
+    const totalPassengers = (type === 'adults' ? newValue : form.getValues('adults')) +
+      (type === 'children' ? newValue : form.getValues('children')) +
+      (type === 'infants' ? newValue : form.getValues('infants'));
+
+    if (increment && totalPassengers > 9) {
       toast.error('Maximum 9 passengers allowed per booking');
       return;
     }
+
+    form.setValue(type, newValue);
+  };
+
+  const handleSubmit = (data: BookingFormValues) => {
+    if (data.fromCity === data.toCity) {
+      toast.error('Departure and destination cities cannot be the same');
+      return;
+    }
+
+    if (data.tripType === 'round-trip' && data.returnDate && data.departureDate > data.returnDate) {
+      toast.error('Return date must be after departure date');
+      return;
+    }
+
+    // const totalPassengers = data.adults + data.children + data.infants;
+
 
     if (data.infants > data.adults) {
       toast.error('Number of infants cannot exceed number of adults');
       return;
     }
+    if (data.adults < 1 && data.children < 1) {
+      toast.error('At least one adult or one child must be selected');
+      return;
+    }
 
-    console.log('Form submitted:', data);
     onSearch(data);
-  }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <fieldset className="space-y-2">
-            <legend className="text-sm font-medium mb-1">Trip Type</legend>
-            <div className="flex gap-3">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="one-way"
-                  checked={tripType === 'one-way'}
-                  {...form.register('tripType')}
-                  className="rounded-full text-chamBlue focus:ring-chamBlue"
-                />
-                <span className="text-sm">One Way</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="round-trip"
-                  checked={tripType === 'round-trip'}
-                  {...form.register('tripType')}
-                  className="rounded-full text-chamBlue focus:ring-chamBlue"
-                />
-                <span className="text-sm">Round Trip</span>
-              </label>
-            </div>
-          </fieldset>
-
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <div className="mb-6">
           <FormField
             control={form.control}
-            name="cabinClass"
+            name="tripType"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium">Cabin Class</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(value as "economy" | "business")}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select cabin class" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="economy">Economy</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                  </SelectContent>
-                </Select>
+              <FormItem className="space-y-0">
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex space-x-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="one-way" id="one-way" />
+                      <Label htmlFor="one-way">One Way</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="round-trip" id="round-trip" />
+                      <Label htmlFor="round-trip">Round Trip</Label>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
 
-        {/* City selections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="fromCity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-1.5">
-                  <Map className="h-3.5 w-3.5 text-chamBlue" />
-                  From
-                </FormLabel>
+                <FormLabel>From *</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select departure city" />
+                    <SelectTrigger>
+                      <SelectValue placeholder="Departure city" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    {airports.map((airport) => (
-                      <SelectItem key={airport.value} value={airport.value}>
-                        {airport.label}
+                  <SelectContent enableSearch>
+                    {allCities.map((city) => (
+                      <SelectItem key={city.code} value={city.code}>
+                        {city.city} ({city.code})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -211,25 +236,24 @@ const SearchForm: React.FC<SearchFormProps> = ({
             name="toCity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-1.5">
-                  <Plane className="h-3.5 w-3.5 text-chamBlue" />
-                  To
-                </FormLabel>
+                <FormLabel>To *</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select destination city" />
+                    <SelectTrigger>
+                      <SelectValue placeholder="Destination city" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    {airports.map((airport) => (
-                      <SelectItem key={airport.value} value={airport.value}>
-                        {airport.label}
-                      </SelectItem>
-                    ))}
+                  <SelectContent enableSearch>
+                    {allCities
+                      .filter(city => city.city !== fromCity)
+                      .map((city) => (
+                        <SelectItem key={city.code} value={city.code}>
+                          {city.city} ({city.code})
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -238,43 +262,37 @@ const SearchForm: React.FC<SearchFormProps> = ({
           />
         </div>
 
-        {/* Date selections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="departureDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="flex items-center gap-1.5">
-                  <CalendarIcon className="h-3.5 w-3.5 text-chamBlue" />
-                  Departure Date
-                </FormLabel>
+                <FormLabel>Departure Date *</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
-                        variant={"outline"}
+                        variant="outline"
                         className={cn(
-                          "pl-3 text-left font-normal",
+                          "w-full justify-start text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
                       >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? format(field.value, "PPP") : <span>Select date</span>}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0">
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        console.log('Selected Date:', date);
+                        field.onChange(date);
+                      }} initialFocus
                       disabled={(date) => date < new Date()}
-                      initialFocus
                     />
                   </PopoverContent>
                 </Popover>
@@ -283,145 +301,199 @@ const SearchForm: React.FC<SearchFormProps> = ({
             )}
           />
 
-          {tripType === 'round-trip' && (
-            <FormField
-              control={form.control}
-              name="returnDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel className="flex items-center gap-1.5">
-                    <CalendarIcon className="h-3.5 w-3.5 text-chamBlue" />
-                    Return Date
-                  </FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value || undefined}
-                        onSelect={field.onChange}
-                        disabled={(date) => 
-                          date < form.getValues('departureDate') ||
-                          date < new Date()
-                        }
-                        defaultMonth={form.getValues('departureDate')}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-        </div>
-
-        {/* Passenger selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <FormField
             control={form.control}
-            name="adults"
+            name="returnDate"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-1.5">
-                  <Users className="h-3.5 w-3.5 text-chamBlue" />
-                  Adults (12+)
+              <FormItem className="flex flex-col">
+                <FormLabel className={tripType === 'one-way' ? 'text-gray-400' : ''}>
+                  Return Date {tripType === 'round-trip' ? '*' : ''}
                 </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="1"
-                    max="9"
-                    {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                    className="bg-white"
-                  />
-                </FormControl>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                          tripType === 'one-way' && "opacity-50 cursor-not-allowed"
+                        )}
+                        disabled={tripType === 'one-way'}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? format(field.value, "PPP") : <span>Select date</span>}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={field.value || undefined}
+                      onSelect={(date) => {
+                        console.log('Selected Date:', date);
+                        field.onChange(date);
+                      }} initialFocus
+                      disabled={(date) => {
+                        const departureDate = form.getValues("departureDate");
+                        return !departureDate || date < departureDate;
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
           />
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
-            name="children"
+            name="cabinClass"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Children (2-11)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="8"
-                    {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                    className="bg-white"
-                  />
-                </FormControl>
+                <FormLabel>Cabin Class</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select cabin class" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Y">Economy Class</SelectItem>
+                    <SelectItem value="C">Business Class</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* <FormField
-            control={form.control}
-            name="infants"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Infants (< 2)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="0"
-                    max={form.getValues('adults')}
-                    {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                    className="bg-white"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+          <div>
+            <Label>Passengers</Label>
+            <div className="grid grid-cols-3 gap-4 mt-2">
+              <div className="border rounded-md p-3 relative">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">Adults</p>
+                    <p className="text-xs text-muted-foreground">12+ years</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('adults', false)}
+                      disabled={form.watch('adults') <= 1}
+                    >
+                      <Minus className="h-3 w-3" />
+                    </Button>
+                    <span className="w-5 text-center">{form.watch('adults')}</span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('adults', true)}
+                    >
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border rounded-md p-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">Children</p>
+                    <p className="text-xs text-muted-foreground">2-11 years</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('children', false)}
+                      disabled={form.watch('children') <= 0}
+                    >
+                      <Minus className="h-3 w-3" />
+                    </Button>
+                    <span className="w-5 text-center">{form.watch('children')}</span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('children', true)}
+                    >
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border rounded-md p-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">Infants</p>
+                    <p className="text-xs text-muted-foreground">0-23 months</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('infants', false)}
+                      disabled={form.watch('infants') <= 0}
+                    >
+                      <Minus className="h-3 w-3" />
+                    </Button>
+                    <span className="w-5 text-center">{form.watch('infants')}</span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => adjustPassenger('infants', true)}
+                    >
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {(form.watch('adults') + form.watch('children') + form.watch('infants')) > 0 && (
+              <p className="text-xs text-muted-foreground mt-2">
+                Total passengers: {form.watch('adults') + form.watch('children') + form.watch('infants')}
+              </p>
             )}
-          /> */}
+          </div>
         </div>
 
-        {/* Submit button */}
-        <div className="text-center mt-6">
-          <Button 
-            type="submit" 
-            className="bg-chamBlue hover:bg-chamBlue/90 px-10 py-6 h-auto text-base rounded-full shadow-md"
-            disabled={isSearching}
-          >
-            {isSearching ? (
-              <>
-                <Search className="mr-2 h-4 w-4 animate-spin" />
-                <span>Searching...</span>
-              </>
-            ) : (
-              <>
-                <Search className="mr-2 h-4 w-4" />
-                <span>Search Flights</span>
-              </>
-            )}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          className="w-full bg-chamBlue hover:bg-chamBlue/90"
+          disabled={isLoadingSrarchFlights}
+        >
+          {isLoadingSrarchFlights ? (
+            <>
+              <Search className="mr-2 h-4 w-4 animate-pulse" />
+              Searching Flights...
+            </>
+          ) : (
+            <>
+              <Search className="mr-2 h-4 w-4" />
+              Search Flights
+            </>
+          )}
+        </Button>
       </form>
     </Form>
   );
