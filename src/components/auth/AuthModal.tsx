@@ -27,7 +27,7 @@ const AuthModal = ({
         onTabChange(value);
       }
       setIsTransitioning(false);
-    }, 100);
+    }, 150);
   };
 
   // Initialize with default tab
@@ -53,7 +53,7 @@ const AuthModal = ({
       className="w-full max-w-md"
     >
       <Card className="border-none shadow-lg overflow-hidden bg-white/95 backdrop-blur-lg">
-        <AspectRatio ratio={16/3} className="bg-gradient-to-r from-blue-600 to-blue-800 h-20 flex items-center justify-center">
+        <AspectRatio ratio={16/3} className="bg-gradient-to-r from-chamBlue to-blue-500 h-20 flex items-center justify-center">
           <div className="text-white text-center">
             <h3 className="text-xl font-semibold">Cham Wings</h3>
             <p className="text-xs opacity-80">Travel Hub Portal</p>
@@ -61,7 +61,7 @@ const AuthModal = ({
         </AspectRatio>
         
         <CardHeader className="text-center pt-6 pb-2">
-          <CardTitle className="text-2xl text-chamDarkBlue mb-2 font-bold">
+          <CardTitle className="text-2xl mb-2 font-bold bg-gradient-to-r from-chamBlue to-blue-600 bg-clip-text text-transparent">
             {activeTab === 'login' ? 'Welcome Back' : 'Create an Account'}
           </CardTitle>
           <CardDescription className="text-gray-500">
@@ -73,18 +73,20 @@ const AuthModal = ({
         </CardHeader>
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="px-6">
-            <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/80 p-2 rounded-xl">
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/80 p-1.5 rounded-xl">
               <TabsTrigger 
                 value="login" 
-                className={`data-[state=active]:bg-white data-[state=active]:text-chamBlue data-[state=active]:shadow-md rounded-lg py-3 font-medium transition-all duration-300 ${isTransitioning ? 'opacity-50' : ''}`}
+                className={`relative group transition-all px-6 duration-300 ${isTransitioning ? 'opacity-50' : ''}`}
               >
-                Sign In
+                <span className="relative z-10">Sign In</span>
+                <span className={`absolute inset-0 bg-white rounded-lg shadow-md transform transition-transform duration-300 ease-in-out ${activeTab === 'login' ? 'opacity-100' : 'opacity-0'}`}></span>
               </TabsTrigger>
               <TabsTrigger 
                 value="register"
-                className={`data-[state=active]:bg-white data-[state=active]:text-chamBlue data-[state=active]:shadow-md rounded-lg py-3 font-medium transition-all duration-300 ${isTransitioning ? 'opacity-50' : ''}`}
+                className={`relative group transition-all px-6 duration-300 ${isTransitioning ? 'opacity-50' : ''}`}
               >
-                Sign Up
+                <span className="relative z-10">Sign Up</span>
+                <span className={`absolute inset-0 bg-white rounded-lg shadow-md transform transition-transform duration-300 ease-in-out ${activeTab === 'register' ? 'opacity-100' : 'opacity-0'}`}></span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -95,7 +97,7 @@ const AuthModal = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3 }}
             >
               <TabsContent value="login" className="m-0">
                 <LoginForm />

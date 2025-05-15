@@ -104,7 +104,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                     <Input 
                       placeholder="your@email.com" 
                       {...field} 
-                      className="w-full h-12 border-gray-200 shadow-sm focus-visible:ring-chamBlue"
+                      className="w-full h-11 border-gray-200 shadow-sm focus-visible:ring-chamBlue"
                       type="email"
                       inputMode="email"
                       autoCapitalize="none"
@@ -133,7 +133,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••" 
                         {...field}
-                        className="w-full h-12 border-gray-200 shadow-sm pr-10 focus-visible:ring-chamBlue" 
+                        className="w-full h-11 border-gray-200 shadow-sm pr-10 focus-visible:ring-chamBlue" 
                         autoComplete="current-password"
                       />
                       <button
@@ -170,7 +170,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             </Button>
           </motion.div>
         </CardContent>
-        <CardFooter className={`flex-col ${isMobile ? 'px-6 pb-8' : 'px-6 pb-8'}`}>
+        <CardFooter className={`flex-col ${isMobile ? 'px-4 pb-6' : 'px-6 pb-6'}`}>
           <motion.div 
             {...formAnimation} 
             className="w-full" 
@@ -178,12 +178,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           >
             <Button 
               type="submit" 
-              className="w-full bg-chamBlue hover:bg-chamBlue/90 py-6 h-auto font-semibold text-base rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+              className="w-3/4 mx-auto bg-chamBlue hover:bg-chamBlue/90 py-2.5 h-auto text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Signing in...
                 </>
               ) : 'Sign In'}

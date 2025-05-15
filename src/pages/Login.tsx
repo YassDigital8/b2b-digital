@@ -20,7 +20,7 @@ const Login = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center py-20 bg-gradient-to-br from-chamGray/30 via-white to-chamLightGold/10">
+      <main className="flex-grow flex items-center justify-center py-20 bg-gradient-to-br from-chamGray/30 via-white to-chamGold/10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24">
             <motion.div
@@ -33,7 +33,7 @@ const Login = () => {
               {activeTab === 'login' ? (
                 <>
                   <h1 className="text-3xl md:text-4xl font-bold mb-6">
-                    <span className="bg-gradient-to-r from-chamBlue to-chamDarkBlue bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-chamBlue to-blue-600 bg-clip-text text-transparent">
                       Welcome to Cham Wings
                     </span>
                     <br />

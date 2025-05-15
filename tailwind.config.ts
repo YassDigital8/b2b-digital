@@ -63,8 +63,8 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				chamBlue: '#00559A',
-				chamGold: '#C69C3F',
+				chamBlue: '#5093C9',
+				chamGold: '#D0C29C',
 				chamDarkBlue: '#0A2540',
 				chamLightGold: '#E8D6A9',
 				chamGray: '#F6F6F7',
