@@ -1,8 +1,8 @@
 
+
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import AccountBalance from '@/components/interline/AccountBalance';
 import InterlineHeader from '@/components/interline/InterlineHeader';
 import BookingSection from '@/components/interline/BookingSection';
 import BookResults from '@/components/interline/BookResults';
@@ -42,14 +42,6 @@ const InterlineBooking = () => {
       
       <main className="flex-grow pb-12">
         <div className="container mx-auto px-4 -mt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.4 }}
-            className="mb-6"
-          >
-            <AccountBalance balance={user.balance} />
-          </motion.div>
           
           <BookingSection 
             onSearch={handleSearch}
@@ -76,3 +68,4 @@ const InterlineBooking = () => {
 };
 
 export default InterlineBooking;
+
