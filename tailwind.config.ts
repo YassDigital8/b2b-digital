@@ -68,6 +68,8 @@ export default {
 				chamDarkBlue: '#0A2540',
 				chamLightGold: '#E8D6A9',
 				chamGray: '#F6F6F7',
+				softBlue: '#E5F0FF',
+				softGold: '#FFF8E5',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -106,6 +108,10 @@ export default {
 				'floating': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'pulse-gentle': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.7' }
 				}
 			},
 			animation: {
@@ -117,14 +123,18 @@ export default {
 				'slide-out-left': 'slide-out-left 0.3s ease-out forwards',
 				'slide-up': 'slide-up 0.4s ease-out forwards',
 				'floating': 'floating 3s ease-in-out infinite',
+				'pulse-gentle': 'pulse-gentle 2s ease-in-out infinite',
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
-				display: ['Poppins', 'sans-serif']
+				display: ['Poppins', 'sans-serif'],
+				montserrat: ['Montserrat', 'sans-serif']
 			},
 			boxShadow: {
 				'soft': '0 4px 20px 0 rgba(0, 0, 0, 0.05)',
-				'glass': '0 8px 32px 0 rgba(0, 85, 154, 0.08)'
+				'glass': '0 8px 32px 0 rgba(0, 85, 154, 0.08)',
+				'card': '0 10px 30px -5px rgba(0, 0, 0, 0.1)',
+				'button': '0 4px 10px rgba(0, 0, 0, 0.1)',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { Flight } from '@/types/flight';
 import FlightCard from './FlightCard';
 import { CheckCircle2, Ticket, Search, Filter, Clock, ChevronUp, ChevronDown, Sliders } from 'lucide-react';

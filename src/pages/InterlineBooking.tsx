@@ -1,12 +1,11 @@
 
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import SearchForm from '@/components/interline/SearchForm';
 import AccountBalance from '@/components/interline/AccountBalance';
-import BookingInfo from '@/components/interline/BookingInfo';
-import SearchResultsSection from '@/components/interline/SearchResultsSection';
+import InterlineHeader from '@/components/interline/InterlineHeader';
+import BookingSection from '@/components/interline/BookingSection';
+import BookResults from '@/components/interline/BookResults';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { Plane, ChevronDown } from 'lucide-react';
 import DateNavigator from '@/components/interline/DateNavigator';
@@ -24,14 +23,14 @@ const InterlineBooking = () => {
     lastSearchCriteria,
     setSelectedFlight,
     handleSearch,
-    handleBooking,
-    handleSortChange
+    handleSortChange,
+    setIsSubmitting
   } = useInterlineBooking();
 
   // if (!user) return null;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
 
       {/* Enhanced header background */}
@@ -61,8 +60,8 @@ const InterlineBooking = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="mb-8"
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="mb-6"
           >
             <AccountBalance balance={5000} />
           </motion.div>

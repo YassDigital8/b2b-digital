@@ -39,10 +39,14 @@ const BookingInfo: React.FC = () => {
             <Info className="h-4 w-4 text-chamBlue" />
             About Interline Booking
           </h3>
+          <h3 className="font-medium text-chamDarkBlue mb-2 flex items-center gap-1.5">
+            <Info className="h-4 w-4 text-chamBlue" />
+            About Interline Booking
+          </h3>
           <p className="text-gray-600 text-sm">
-            Cham Wings Airlines has partnered with several airlines to offer interline booking options.
-            This allows you to book flights where at least one segment is operated by Cham Wings (code 6Q),
-            with connecting flights on partner airlines, all in a single reservation.
+            Cham Wings Airlines has partnered with several airlines to offer interline booking options,
+            allowing you to book flights with at least one segment operated by Cham Wings (code 6Q)
+            and connecting flights on partner airlines in a single reservation.
           </p>
         </div>
         

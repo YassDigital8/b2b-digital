@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Flight } from '@/types/flight';
+import { Plane } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import FlightSegment from './FlightSegment';
 import AirlineDisplay from './AirlineDisplay';
 import FlightCardInfo from './FlightCardInfo';
@@ -22,13 +24,15 @@ interface FlightCardProps {
     infants: number;
     total: number;
   };
+  onBook?: () => void;
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({
   flight,
   selectedFlightId,
   onSelect,
-  totalPassengers
+  totalPassengers,
+  onBook
 }) => {
   const { travelAgent } = useAppSelector(state => state.auth);
   const pos = travelAgent?.value?.pos
@@ -45,14 +49,9 @@ const FlightCard: React.FC<FlightCardProps> = ({
   }
 
   return (
-    <div
-      className={cn(
-        "border rounded-lg transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md",
-        isSelected
-          ? "border-chamBlue bg-chamBlue/5"
-          : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50"
-      )}
-    >
+    <div className={cn("border rounded-lg transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md", 
+      isSelected ? "border-chamBlue bg-chamBlue/5" : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50")}>
+      
       {/* Flight header with price */}
       <div
         className={cn(
@@ -125,8 +124,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
             className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
             onClick={() => onSelect(flight?.id)}
           >
-            <Ticket className="h-4 w-4 mr-1.5" />
-            Book Now
+            <FlightPrice flight={flight} totalPassengers={totalPassengers} />
           </Button>
         </div>
       </div>
