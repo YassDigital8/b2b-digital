@@ -16,12 +16,12 @@ const SearchButton = ({ isSearching }: SearchButtonProps) => {
     >
       <Button
         type="submit"
-        className="w-full bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 relative overflow-hidden group shadow-md"
+        className="w-full bg-gradient-to-r from-chamBlue to-blue-500 hover:from-blue-600 hover:to-blue-500 relative overflow-hidden group text-base py-6 h-auto font-semibold rounded-xl shadow-lg"
         disabled={isSearching}
       >
         {isSearching ? (
           <>
-            <Search className="mr-2 h-4 w-4 animate-pulse" />
+            <Search className="mr-2 h-5 w-5 animate-pulse" />
             Searching Flights...
             <motion.div 
               className="absolute inset-0 bg-white/10"
@@ -32,7 +32,8 @@ const SearchButton = ({ isSearching }: SearchButtonProps) => {
           </>
         ) : (
           <>
-            <Search className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 transform-gpu group-hover:animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity"/>
+            <Search className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
             <span className="relative">
               Search Flights
               <motion.span 
@@ -42,12 +43,6 @@ const SearchButton = ({ isSearching }: SearchButtonProps) => {
                 transition={{ duration: 0.3 }}
               />
             </span>
-            <motion.div 
-              className="absolute top-0 right-0 w-12 h-full bg-gradient-to-r from-transparent to-white/10 skew-x-12"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "200%" }}
-              transition={{ duration: 1 }}
-            />
           </>
         )}
       </Button>

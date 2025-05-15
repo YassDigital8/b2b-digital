@@ -40,24 +40,30 @@ const InterlineBooking = () => {
       <InterlineHeader />
       
       <main className="flex-grow pb-12">
-        <div className="container mx-auto px-4 -mt-16">
-          
-          <BookingSection 
-            onSearch={handleSearch}
-            isSearching={isSearching}
-            lastSearchCriteria={lastSearchCriteria}
-          />
-          
-          <BookResults
-            searchResults={searchResults}
-            selectedFlight={selectedFlight}
-            setSelectedFlight={setSelectedFlight}
-            passengers={passengers}
-            onBook={handleBooking}
-            isSubmitting={isSubmitting}
-            sortBy={sortBy}
-            onSortChange={handleSortChange}
-          />
+        <div className="container mx-auto px-4 -mt-24 sm:-mt-28 md:-mt-32 relative z-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            className="mb-6"
+          >
+            <BookingSection 
+              onSearch={handleSearch}
+              isSearching={isSearching}
+              lastSearchCriteria={lastSearchCriteria}
+            />
+            
+            <BookResults
+              searchResults={searchResults}
+              selectedFlight={selectedFlight}
+              setSelectedFlight={setSelectedFlight}
+              passengers={passengers}
+              onBook={handleBooking}
+              isSubmitting={isSubmitting}
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+            />
+          </motion.div>
         </div>
       </main>
       
