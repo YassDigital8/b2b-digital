@@ -20,24 +20,33 @@ interface FlightCardTabsProps {
 const FlightCardTabs: React.FC<FlightCardTabsProps> = ({ flight, totalPassengers }) => {
   return (
     <Tabs defaultValue="details" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 rounded-none border-b bg-gradient-to-r from-slate-50 to-violet-50/20">
+      <TabsList className="grid w-full grid-cols-3 rounded-none border-b bg-gradient-to-r from-slate-50 to-[#D0C29C]/20">
         <TabsTrigger 
           value="details" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-violet-50/30 data-[state=active]:text-violet-800 data-[state=active]:border-b-2 data-[state=active]:border-violet-500"
+          className="flex gap-1.5 py-3.5 text-sm font-medium transition-all duration-300
+            data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-[#5093C9]/10 
+            data-[state=active]:text-[#5093C9] data-[state=active]:border-b-2 data-[state=active]:border-[#5093C9]
+            hover:bg-[#5093C9]/5"
         >
           <FileText className="h-4 w-4" />
           Flight Details
         </TabsTrigger>
         <TabsTrigger 
           value="price" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-amber-50/30 data-[state=active]:text-amber-600 data-[state=active]:border-b-2 data-[state=active]:border-amber-400"
+          className="flex gap-1.5 py-3.5 text-sm font-medium transition-all duration-300
+            data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-[#D0C29C]/20 
+            data-[state=active]:text-[#5093C9] data-[state=active]:border-b-2 data-[state=active]:border-[#D0C29C]
+            hover:bg-[#D0C29C]/5"
         >
           <DollarSign className="h-4 w-4" />
           Price Breakdown
         </TabsTrigger>
         <TabsTrigger 
           value="rules" 
-          className="flex gap-1.5 py-3.5 text-sm font-medium data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-orange-50/30 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-400"
+          className="flex gap-1.5 py-3.5 text-sm font-medium transition-all duration-300
+            data-[state=active]:bg-gradient-to-b data-[state=active]:from-white data-[state=active]:to-[#5093C9]/10 
+            data-[state=active]:text-[#5093C9] data-[state=active]:border-b-2 data-[state=active]:border-[#5093C9]
+            hover:bg-[#5093C9]/5"
         >
           <Info className="h-4 w-4" />
           Fare Rules
