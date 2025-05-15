@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { LoginFormValues } from '@/context/auth/types';
@@ -27,6 +27,7 @@ import { AppDispatch } from '@/redux/store';
 import { useAppSelector } from '@/redux/useAppSelector';
 import { useAuthContext } from '@/context/auth';
 import { loginFormSchema } from '../hooks/form/loginFormSchema';
+import { motion } from 'framer-motion';
 
 // Define the form schema - minimal validation to allow most inputs
 const formSchema = z.object({
@@ -45,6 +46,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const isMobile = useIsMobile();
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useAppSelector(state => state.auth);
