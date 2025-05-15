@@ -24,8 +24,8 @@ const InterlineHeader = () => {
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className="flex items-center gap-2 mb-2 backdrop-blur-sm bg-white/10 py-1.5 px-3 rounded-full inline-block"
-            whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
+            className="flex items-center gap-2 mb-3 backdrop-blur-sm bg-white/15 py-2 px-4 rounded-full inline-block border border-white/20 shadow-sm"
+            whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.2)" }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <motion.div
@@ -38,7 +38,7 @@ const InterlineHeader = () => {
             <h1 className="text-2xl font-semibold font-display text-white drop-shadow-md">Interline Booking</h1>
           </motion.div>
           <motion.p 
-            className="text-white font-medium text-sm max-w-xl ml-1 drop-shadow-md bg-black/10 px-3 py-1 rounded-lg inline-block"
+            className="text-white font-medium text-sm max-w-xl ml-1 drop-shadow-md bg-chamGold/20 px-4 py-1.5 rounded-lg inline-block border border-chamGold/30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
