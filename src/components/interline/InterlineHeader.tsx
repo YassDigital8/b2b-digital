@@ -7,7 +7,7 @@ const InterlineHeader = () => {
   return (
     <div className="relative">
       {/* Header Background with Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-chamDarkBlue via-blue-700 to-chamBlue overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-violet-800 to-purple-900 overflow-hidden">
         {/* Decorative Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIvPjxwYXRoIGQ9Ik0zMCAzMGgzMHYzMEgzMHoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
@@ -69,7 +69,7 @@ const InterlineHeader = () => {
               transition={{ duration: 0.5 }}
               whileHover={{ scale: 1.03, backgroundColor: "rgba(255,255,255,0.15)" }}
             >
-              <Plane className="h-5 w-5 text-chamGold" />
+              <Plane className="h-5 w-5 text-amber-300" />
               <h1 className="text-2xl md:text-3xl font-semibold font-display text-white drop-shadow-md">Interline Booking</h1>
             </motion.div>
             
@@ -79,7 +79,7 @@ const InterlineHeader = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight drop-shadow-lg"
             >
-              Connect Your <span className="text-chamGold">Journey</span><br />
+              Connect Your <span className="text-amber-300">Journey</span><br />
               Across the World
             </motion.h2>
             
@@ -87,7 +87,7 @@ const InterlineHeader = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="max-w-md text-lg text-white/90 bg-chamGold/20 backdrop-blur-sm px-5 py-3 rounded-lg border border-chamGold/30 shadow-lg"
+              className="max-w-md text-lg text-white/90 bg-violet-800/20 backdrop-blur-sm px-5 py-3 rounded-lg border border-violet-300/30 shadow-lg"
             >
               Book seamless connections with Cham Wings and our trusted airline partners for your global travel needs.
             </motion.p>
@@ -99,19 +99,19 @@ const InterlineHeader = () => {
               className="flex flex-wrap gap-4 md:gap-6"
             >
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                <Search className="h-4 w-4 text-chamGold" />
+                <Search className="h-4 w-4 text-amber-300" />
                 <span className="text-sm font-medium">Find best routes</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                <Map className="h-4 w-4 text-chamGold" />
+                <Map className="h-4 w-4 text-amber-300" />
                 <span className="text-sm font-medium">Global destinations</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                <Calendar className="h-4 w-4 text-chamGold" />
+                <Calendar className="h-4 w-4 text-amber-300" />
                 <span className="text-sm font-medium">Flexible dates</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                <Clock className="h-4 w-4 text-chamGold" />
+                <Clock className="h-4 w-4 text-amber-300" />
                 <span className="text-sm font-medium">Real-time availability</span>
               </div>
             </motion.div>
@@ -127,7 +127,7 @@ const InterlineHeader = () => {
               <AspectRatio ratio={4/3} className="bg-white/10 backdrop-blur-md overflow-hidden">
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="relative w-full h-full">
-                    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-chamBlue/30 via-transparent to-chamGold/30"></div>
+                    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-violet-600/30 via-transparent to-amber-300/30"></div>
                     <motion.div 
                       className="absolute inset-0 flex items-center justify-center"
                       initial={{ opacity: 0 }}
@@ -154,10 +154,10 @@ const InterlineHeader = () => {
                           }}
                           className="relative w-24 h-24 md:w-36 md:h-36"
                         >
-                          <div className="absolute inset-0 rounded-full border-2 border-dashed border-chamGold/50 animate-spin" style={{ animationDuration: '30s' }}></div>
+                          <div className="absolute inset-0 rounded-full border-2 border-dashed border-amber-300/50 animate-spin" style={{ animationDuration: '30s' }}></div>
                           <div className="absolute inset-2 rounded-full border border-white/30"></div>
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <Plane className="h-10 w-10 md:h-16 md:w-16 text-chamGold" />
+                            <Plane className="h-10 w-10 md:h-16 md:w-16 text-amber-300" />
                           </div>
                         </motion.div>
                       </div>

@@ -49,8 +49,8 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
   
   return (
-    <div className={cn("border rounded-lg transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md", 
-      isSelected ? "border-chamBlue bg-chamBlue/5" : "border-gray-200 hover:border-chamBlue/50 hover:bg-gray-50")}>
+    <div className={cn("transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md", 
+      isSelected ? "border-violet-500 bg-violet-50/40" : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50")}>
       
       {/* Flight header with price */}
       <FlightHeader 
@@ -82,7 +82,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
           {/* Right side - Book Now button */}
           <Button 
             variant="default" 
-            className="bg-chamGold hover:bg-chamGold/90 text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full" 
+            className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full" 
             onClick={handleBookNow}
           >
             <FlightPrice flight={flight} totalPassengers={totalPassengers} />

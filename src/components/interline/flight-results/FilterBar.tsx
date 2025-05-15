@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Search, Sliders, ChevronUp, ChevronDown, Clock } from 'lucide-react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -15,7 +14,7 @@ interface FilterBarProps {
   totalFlightCount: number;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const FilterBar = ({
   searchTerm,
   setSearchTerm,
   showFilters,
@@ -24,97 +23,65 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onSortChange,
   filteredFlightCount,
   totalFlightCount
-}) => {
+}: FilterBarProps) => {
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-white border-b px-6 py-4">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3 flex-1">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+    <div className="bg-gradient-to-r from-violet-600 to-indigo-700 text-white p-4">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex-1 w-full md:w-auto">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
             <Input
-              type="text"
-              placeholder="Search flights, airlines, or airports..."
+              placeholder="Search by airline, airport or flight number"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-blue-200 focus:border-blue-400 bg-white rounded-full"
+              className="pl-9 pr-4 py-2 w-full bg-white text-gray-900 border-0 rounded-full shadow-inner"
             />
           </div>
-          
+        </div>
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="text-sm text-violet-100">
+            <span className="font-medium">{filteredFlightCount}</span> flights found
+            {filteredFlightCount !== totalFlightCount && (
+              <> (filtered from <span className="font-medium">{totalFlightCount}</span>)</>
+            )}
+          </div>
           <Button
             variant="outline"
             size="sm"
+            className="ml-auto bg-white/10 hover:bg-white/20 text-white border-white/20 rounded-full"
             onClick={() => setShowFilters(!showFilters)}
-            className="hidden md:flex items-center gap-1 border-blue-200"
           >
-            <Sliders className="h-3.5 w-3.5 text-chamBlue" />
-            <span className="text-sm">{showFilters ? 'Hide filters' : 'Show filters'}</span>
-            {showFilters ? (
-              <ChevronUp className="h-4 w-4 ml-1" />
-            ) : (
-              <ChevronDown className="h-4 w-4 ml-1" />
-            )}
+            <SlidersHorizontal className="mr-1.5 h-3.5 w-3.5" />
+            Filters
           </Button>
         </div>
-        
-        <div className="flex flex-col md:flex-row md:items-center gap-3">
-          <div className="text-sm text-gray-600 flex items-center gap-1">
-            <span>Showing</span>
-            <span className="font-semibold text-chamDarkBlue">{filteredFlightCount}</span>
-            <span>of</span>
-            <span className="font-semibold text-chamDarkBlue">{totalFlightCount}</span>
-            <span>flights</span>
-          </div>
-          
-          <div className="flex border divide-x rounded-lg overflow-hidden shadow-sm">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onSortChange('price')}
-              className={`px-3 py-1 text-xs font-medium rounded-none h-full ${
-                sortBy === 'price' ? 'bg-blue-50 text-chamBlue' : 'bg-white text-gray-600'
-              }`}
-            >
-              Price
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onSortChange('departure')}
-              className={`px-3 py-1 text-xs font-medium rounded-none h-full flex items-center gap-1 ${
-                sortBy === 'departure' ? 'bg-blue-50 text-chamBlue' : 'bg-white text-gray-600'
-              }`}
-            >
-              <Clock className="h-3 w-3" />
-              Departure
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onSortChange('arrival')}
-              className={`px-3 py-1 text-xs font-medium rounded-none h-full flex items-center gap-1 ${
-                sortBy === 'arrival' ? 'bg-blue-50 text-chamBlue' : 'bg-white text-gray-600'
-              }`}
-            >
-              <Clock className="h-3 w-3" />
-              Arrival
-            </Button>
-          </div>
-          
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowFilters(!showFilters)}
-            className="md:hidden flex items-center gap-1 border-blue-200"
+      </div>
+      <div className="flex items-center gap-4 mt-4">
+        <div className="text-sm font-medium">Sort by:</div>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'price' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
+            onClick={() => onSortChange('price')}
           >
-            <Sliders className="h-3.5 w-3.5 text-chamBlue" />
-            <span className="text-sm">Filters</span>
-            {showFilters ? (
-              <ChevronUp className="h-4 w-4 ml-1" />
-            ) : (
-              <ChevronDown className="h-4 w-4 ml-1" />
-            )}
+            Price
+          </Button>
+          <Button 
+            size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'departure' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
+            onClick={() => onSortChange('departure')}
+          >
+            Departure Time
+          </Button>
+          <Button 
+            size="sm" 
+            variant="ghost"
+            className={`rounded-full px-3 py-1 text-xs ${sortBy === 'arrival' ? 'bg-white text-violet-700' : 'bg-white/10 hover:bg-white/20 text-white'}`}
+            onClick={() => onSortChange('arrival')}
+          >
+            Arrival Time
           </Button>
         </div>
       </div>

@@ -14,7 +14,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
   ];
 
   return (
-    <div className="px-6 py-6 border-b bg-gradient-to-r from-white to-blue-50">
+    <div className="px-6 py-6 border-b bg-gradient-to-r from-white to-violet-50">
       <div className="flex items-center justify-between">
         {steps.map((step, index) => (
           <div key={step.id} className="flex-1 flex flex-col items-center">
@@ -24,7 +24,7 @@ const BookingSteps = ({ currentStep }: BookingStepsProps) => {
                   ${currentStep > step.id 
                     ? 'bg-gradient-to-r from-green-500 to-green-600 border-green-600' 
                     : currentStep === step.id 
-                      ? 'border-chamBlue text-chamBlue bg-blue-50' 
+                      ? 'border-violet-500 text-violet-700 bg-violet-50' 
                       : 'border-gray-300 text-gray-400 bg-gray-50'}`}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}

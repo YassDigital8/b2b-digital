@@ -1,6 +1,4 @@
 
-export type BookingStep = 1 | 2 | 3;
-
 export interface Passenger {
   id: string;
   type: 'adult' | 'child' | 'infant';
@@ -20,11 +18,16 @@ export interface ContactInformation {
   phoneNumber: string;
 }
 
-export interface BookingFormProps {
-  flightData: any;
-  passengersCount: {
-    adults: number;
-    children: number;
-    infants: number;
-  };
+export interface PassengerDetailsFormProps {
+  passengers: Passenger[];
+  updatePassenger: (index: number, data: Partial<Passenger>) => void;
+  onNext: () => void;
+}
+
+export interface PassengerFormItemProps {
+  passenger: Passenger;
+  index: number;
+  updatePassenger: (index: number, data: Partial<Passenger>) => void;
+  openAccordion: string;
+  setOpenAccordion: (value: string) => void;
 }

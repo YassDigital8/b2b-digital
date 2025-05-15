@@ -64,12 +64,12 @@ const BookResults = ({
         id="booking-info"
       >
         {searchResults.length === 0 && (
-          <Card className="border-none shadow-md overflow-hidden bg-gradient-to-br from-white to-blue-50/50 mb-6">
+          <Card className="border-none shadow-md overflow-hidden bg-gradient-to-br from-white to-slate-50/50 mb-6">
             <CardContent className="p-6">
-              <div className="flex items-start gap-3 text-blue-600">
-                <InfoIcon className="h-5 w-5 mt-0.5 text-chamBlue" />
+              <div className="flex items-start gap-3 text-violet-600">
+                <InfoIcon className="h-5 w-5 mt-0.5 text-violet-600" />
                 <div>
-                  <h3 className="font-medium text-chamDarkBlue mb-2">Search for Available Flights</h3>
+                  <h3 className="font-medium text-violet-900 mb-2">Search for Available Flights</h3>
                   <p className="text-gray-600 text-sm">
                     Use the search form above to find available interline connections with Cham Wings and our partner airlines.
                     You can search for one-way or round-trip flights to various destinations.
@@ -97,13 +97,13 @@ const BookResults = ({
                   {['Cham Wings (6Q)', 'Jazeera Airways (J9)', 'Air Arabia (G9)', 'FlyDubai (FZ)', 'Kuwait Airways (KU)', 'MEA (ME)'].map((airline, index) => (
                     <motion.div 
                       key={airline}
-                      className="bg-white rounded-lg p-4 border border-blue-100 flex items-center gap-3 shadow-sm"
+                      className="bg-white rounded-lg p-4 border border-violet-100 flex items-center gap-3 shadow-sm"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 * index, duration: 0.3 }}
                       whileHover={{ y: -3, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
                     >
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-chamBlue flex items-center justify-center text-white font-bold text-xs">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs">
                         {airline.split(' ')[1].replace('(', '').replace(')', '')}
                       </div>
                       <span className="font-medium">{airline.split(' ')[0]}</span>

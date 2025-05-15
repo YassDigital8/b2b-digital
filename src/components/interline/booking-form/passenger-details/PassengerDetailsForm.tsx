@@ -33,16 +33,16 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
 
   return (
     <Card className="shadow-xl bg-white rounded-xl overflow-hidden border-none">
-      <div className="bg-gradient-to-r from-chamBlue to-blue-600 py-4 px-6">
+      <div className="bg-gradient-to-r from-violet-700 to-indigo-600 py-4 px-6">
         <h2 className="text-2xl font-bold text-white font-display">Complete Your Booking</h2>
-        <p className="text-blue-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
+        <p className="text-indigo-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
       </div>
       
       <BookingSteps currentStep={1} />
       
       <div className="p-6">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold gradient-text mb-2 font-display">Passenger Details</h2>
+          <h2 className="text-xl font-semibold text-violet-900 mb-2 font-display">Passenger Details</h2>
           <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
         </div>
         
@@ -81,7 +81,7 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
             </Button>
             <Button 
               type="submit"
-              className="bg-gradient-to-r from-chamGold to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white gap-2 rounded-full shadow-md"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white gap-2 rounded-full shadow-md"
             >
               Continue
               <ArrowRight size={16} />

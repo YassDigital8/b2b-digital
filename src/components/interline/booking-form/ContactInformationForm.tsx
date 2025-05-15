@@ -64,7 +64,7 @@ const ContactInformationForm = ({
 
   return (
     <div className="px-6 py-4 pb-6">
-      <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
+      <h2 className="text-xl font-semibold mb-4 text-violet-900">Contact Information</h2>
       <p className="text-gray-600 text-sm mb-6">
         Please provide contact details for booking confirmation and updates
       </p>
@@ -78,7 +78,7 @@ const ContactInformationForm = ({
             value={contactInformation.email}
             onChange={(e) => updateContactInformation({ email: e.target.value })}
             placeholder="e.g. name@example.com"
-            className="mt-1"
+            className="mt-1 border-violet-200 focus:border-violet-500"
           />
         </div>
         
@@ -89,7 +89,7 @@ const ContactInformationForm = ({
               value={contactInformation.phoneCode}
               onValueChange={(value) => updateContactInformation({ phoneCode: value })}
             >
-              <SelectTrigger id="phoneCode" className="w-full mt-1">
+              <SelectTrigger id="phoneCode" className="w-full mt-1 border-violet-200 focus:border-violet-500">
                 <SelectValue placeholder="Select Code" />
               </SelectTrigger>
               <SelectContent>
@@ -110,7 +110,7 @@ const ContactInformationForm = ({
               value={contactInformation.phoneNumber}
               onChange={(e) => updateContactInformation({ phoneNumber: e.target.value })}
               placeholder="e.g. 9XXXXXXXX"
-              className="mt-1"
+              className="mt-1 border-violet-200 focus:border-violet-500"
             />
           </div>
         </div>
@@ -121,6 +121,7 @@ const ContactInformationForm = ({
             variant="outline"
             onClick={onBack}
             disabled={isSubmitting}
+            className="border-gray-300 hover:bg-gray-50 rounded-full"
           >
             <ChevronLeft className="mr-2 h-4 w-4" />
             Back to Passenger Details
@@ -128,7 +129,7 @@ const ContactInformationForm = ({
           
           <Button
             type="button"
-            className="bg-chamGold hover:bg-chamGold/90 text-white px-6"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-6 rounded-full shadow-md"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >

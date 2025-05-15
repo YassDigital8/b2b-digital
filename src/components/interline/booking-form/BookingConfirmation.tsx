@@ -33,15 +33,15 @@ const BookingConfirmation = ({
         <p className="text-gray-600">
           Your booking has been successfully completed. A confirmation email has been sent to {contactInformation.email}.
         </p>
-        <div className="mt-4 bg-gray-50 rounded-lg p-3 inline-block">
+        <div className="mt-4 bg-violet-50 rounded-lg p-3 inline-block">
           <p className="text-sm text-gray-600">Booking Reference</p>
-          <p className="text-xl font-mono font-bold text-chamDarkBlue tracking-wider">{bookingReference}</p>
+          <p className="text-xl font-mono font-bold text-violet-900 tracking-wider">{bookingReference}</p>
         </div>
       </div>
       
-      <div className="border rounded-lg overflow-hidden mb-6">
-        <div className="bg-gray-50 px-6 py-4 border-b">
-          <h3 className="text-lg font-medium">Flight Details</h3>
+      <div className="border rounded-lg overflow-hidden mb-6 shadow-md">
+        <div className="bg-violet-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-medium text-violet-900">Flight Details</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">
@@ -53,7 +53,7 @@ const BookingConfirmation = ({
                       {segment.fromCode} → {segment.toCode}
                     </span>
                     {index === 0 && (
-                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
                         Departure
                       </span>
                     )}
@@ -85,9 +85,9 @@ const BookingConfirmation = ({
         </div>
       </div>
       
-      <div className="border rounded-lg overflow-hidden mb-6">
-        <div className="bg-gray-50 px-6 py-4 border-b">
-          <h3 className="text-lg font-medium">Passenger Information</h3>
+      <div className="border rounded-lg overflow-hidden mb-6 shadow-md">
+        <div className="bg-violet-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-medium text-violet-900">Passenger Information</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">
@@ -96,10 +96,10 @@ const BookingConfirmation = ({
                 <div className="flex items-center mb-2">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full mr-2 text-xs
                     ${passenger.type === 'adult' 
-                      ? 'bg-blue-100 text-blue-700' 
+                      ? 'bg-violet-100 text-violet-700' 
                       : passenger.type === 'child' 
                         ? 'bg-green-100 text-green-700' 
-                        : 'bg-purple-100 text-purple-700'
+                        : 'bg-pink-100 text-pink-700'
                     }`}>
                     {passenger.type === 'adult' ? 'A' : passenger.type === 'child' ? 'C' : 'I'}
                   </span>
@@ -140,9 +140,9 @@ const BookingConfirmation = ({
         </div>
       </div>
       
-      <div className="border rounded-lg overflow-hidden mb-10">
-        <div className="bg-gray-50 px-6 py-4 border-b">
-          <h3 className="text-lg font-medium">Contact Information</h3>
+      <div className="border rounded-lg overflow-hidden mb-10 shadow-md">
+        <div className="bg-violet-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-medium text-violet-900">Contact Information</h3>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -159,15 +159,15 @@ const BookingConfirmation = ({
       </div>
       
       <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 rounded-full">
           <Printer className="h-4 w-4" />
           Print Confirmation
         </Button>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 rounded-full">
           <DownloadCloud className="h-4 w-4" />
           Download E-Ticket
         </Button>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 rounded-full">
           <FileText className="h-4 w-4" />
           View Invoice
         </Button>
@@ -176,7 +176,7 @@ const BookingConfirmation = ({
       <div className="flex justify-center">
         <Button 
           onClick={() => navigate('/dashboard')}
-          className="bg-chamBlue hover:bg-chamDarkBlue text-white px-6 gap-2"
+          className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-6 gap-2 rounded-full shadow-md"
         >
           <Home className="h-4 w-4" />
           Return to Dashboard
