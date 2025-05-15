@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -60,7 +61,6 @@ export const useBookingForm = () => {
         lastName: '',
         dateOfBirth: null,
         passportNumber: '',
-        passportIssueDate: null,
         passportExpiryDate: null,
         nationality: ''
       });
@@ -76,7 +76,6 @@ export const useBookingForm = () => {
         lastName: '',
         dateOfBirth: null,
         passportNumber: '',
-        passportIssueDate: null,
         passportExpiryDate: null,
         nationality: ''
       });
@@ -92,7 +91,6 @@ export const useBookingForm = () => {
         lastName: '',
         dateOfBirth: null,
         passportNumber: '',
-        passportIssueDate: null,
         passportExpiryDate: null,
         nationality: ''
       });

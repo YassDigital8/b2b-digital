@@ -7,7 +7,6 @@ export interface Passenger {
   lastName: string;
   dateOfBirth: Date | null;
   passportNumber: string;
-  passportIssueDate: Date | null;
   passportExpiryDate: Date | null;
   nationality: string;
 }

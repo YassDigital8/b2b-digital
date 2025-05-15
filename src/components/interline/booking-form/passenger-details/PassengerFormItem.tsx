@@ -141,16 +141,6 @@ const PassengerFormItem = ({
                 placeholder="Enter passport number"
               />
             </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DatePickerField 
-              label="Issue Date"
-              id={`${passenger.id}-issue-date`}
-              date={passenger.passportIssueDate}
-              onSelect={(date) => updatePassenger(index, { passportIssueDate: date })}
-              disableFuture={true}
-            />
             
             <DatePickerField 
               label="Expiry Date"
