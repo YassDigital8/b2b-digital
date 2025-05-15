@@ -380,7 +380,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="infants"
             render={({ field }) => (
@@ -399,7 +399,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         {/* Submit button */}
