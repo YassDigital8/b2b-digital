@@ -1,5 +1,6 @@
-const curr7encies = [
+
+const currencies = [
     { code: "ae", symbol: "د.إ" },
     { code: "sy", symbol: "$" }
 ];
-export default curr7encies
+export default currencies;

@@ -1,19 +1,16 @@
 
 import React from 'react';
-import { format } from 'date-fns';
 import { MapPin, Plane } from 'lucide-react';
-import { Segment } from '@/types/flight';
+import { Flight } from '@/types/flight';
 import { formatTimeWithoutSeconds } from '@/utils/formatTime';
 
 interface FlightSegmentProps {
-  segments: Segment[];
+  flight: Flight;
 }
 
 const FlightSegment: React.FC<FlightSegmentProps> = ({ flight }) => {
-  let segments = flight?.segments
-
-  const StopsIndicator = ({ segments = [], flight }) => {
-    const stops = segments.length - 1; // Calculate number of stops
+  const StopsIndicator = ({ flight }) => {
+    const stops = flight?.segments?.length - 1 || 0; // Calculate number of stops
 
     return (
       <div className="col-span-1 flex flex-col items-center">
@@ -41,13 +38,11 @@ const FlightSegment: React.FC<FlightSegmentProps> = ({ flight }) => {
 
           {/* Plane icon at the end */}
           <MapPin className="h-4 w-4 text-green-600" />
-
-          {/* <Plane className="h-4 w-4 text-chamBlue ml-2" /> */}
         </div>
 
         {/* Total duration */}
         <p className="text-xs text-gray-500 text-center">
-          Total duration: {flight?.duration}
+          Total duration: {flight?.Duration || flight?.duration}
         </p>
       </div>
     );
@@ -63,7 +58,7 @@ const FlightSegment: React.FC<FlightSegmentProps> = ({ flight }) => {
       </div>
 
       {/* Duration line */}
-      <StopsIndicator flight={flight} segments={flight?.segments} />
+      <StopsIndicator flight={flight} />
 
       {/* Arrival */}
       <div className="col-span-3 text-right">

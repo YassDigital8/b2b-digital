@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Flight } from '@/types/flight';
@@ -44,7 +43,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
 
   const getCurrency = (pos) => {
-    return (curr7encies?.find((c) => c.code === pos)?.symbol)
+    return currencies?.find((c) => c.code === pos)?.symbol;
   }
   const handleBookNow = () => {
     // First ensure this flight is selected

@@ -3,10 +3,10 @@ import React from 'react';
 import { Segment } from '@/types/flight';
 
 interface AirlineDisplayProps {
-  segments: Segment[];
+  segments?: Segment[];
 }
 
-const AirlineDisplay: React.FC<AirlineDisplayProps> = ({ segments }) => {
+const AirlineDisplay: React.FC<AirlineDisplayProps> = ({ segments = [] }) => {
   return (
     <div className="flex flex-wrap gap-2 items-center pb-4 mb-4 border-b">
       {segments.map((segment, index) => (
