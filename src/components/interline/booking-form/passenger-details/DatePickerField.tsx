@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 
 interface DatePickerFieldProps {
   label: string;
@@ -25,12 +24,10 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover>
         <PopoverTrigger asChild>
           <Button
             id={id}
@@ -49,28 +46,16 @@ const DatePickerField = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 shadow-lg border-chamBlue/20" align="start">
-          <div className="p-2 bg-blue-50/50 border-b border-blue-100/50">
-            <div className="text-xs text-blue-700 font-medium">
-              Use the year/month dropdowns to navigate quickly
-            </div>
-          </div>
           <Calendar
             mode="single"
             selected={date || undefined}
-            onSelect={(date) => {
-              onSelect(date);
-              setIsOpen(false);
-            }}
+            onSelect={onSelect}
             disabled={(day) => {
               if (disableFuture && day > new Date()) return true;
               if (disablePast && day < new Date()) return true;
               return false;
             }}
             initialFocus
-            captionLayout="dropdown-buttons"
-            fromYear={1900}
-            toYear={2030}
-            defaultMonth={date || undefined}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>

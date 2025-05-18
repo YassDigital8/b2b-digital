@@ -54,23 +54,14 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-              <div className="p-2 bg-blue-50/50 border-b border-blue-100/50">
-                <div className="text-xs text-blue-700 font-medium">
-                  Use the year/month dropdowns to navigate quickly
-                </div>
-              </div>
               <Calendar
                 mode="single"
                 selected={field.value || undefined}
                 onSelect={(date) => {
                   field.onChange(date);
-                  setIsOpen(false);
+                  setIsOpen(false); // Close the calendar after selection
                 }}
                 initialFocus
-                captionLayout="dropdown-buttons"
-                fromYear={2024}
-                toYear={2030}
-                defaultMonth={field.value || undefined}
                 disabled={(date) => {
                   if (minDate) {
                     return date < minDate;
