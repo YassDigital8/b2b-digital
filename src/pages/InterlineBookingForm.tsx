@@ -27,7 +27,7 @@ const InterlineBookingForm = () => {
   } = useBookingForm();
   
   if (!flightData) {
-    return null; // Could show a loading state or redirect
+    return null; 
   }
   
   return (

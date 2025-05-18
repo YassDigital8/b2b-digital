@@ -9,7 +9,7 @@ interface FlightCardInfoProps {
   isSelected: boolean;
   showFlightDetails: boolean;
   onSelect: (flightId: string) => void;
-  onToggleFlightDetails: () => void;
+  onToggleFlightDetails: (flightId: string) => void;
 }
 
 const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
@@ -28,14 +28,14 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
         {/* <span className="mx-2">•</span> */}
         {/* <span>{flight?.seats} seats left</span> */}
       </div>
-      
+
       {/* View details button - softened edges and improved style */}
       <div className="text-right">
         {isSelected && showFlightDetails ? (
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={onToggleFlightDetails}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onToggleFlightDetails(flight.transaction_id)}
             className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             Hide Details <ChevronDown className="ml-1 h-4 w-4" />
@@ -44,7 +44,12 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight.id)}
+            // onClick={isSelected ? onToggleFlightDetails : () => onSelect(flight.id)}
+            onClick={() => {
+              console.log('flight', flight);
+
+              onToggleFlightDetails(flight.transaction_id)
+            }}
             className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details

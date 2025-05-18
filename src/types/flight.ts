@@ -15,6 +15,7 @@ export interface Segment {
 }
 
 export interface Flight {
+  transaction_id(transaction_id: any): void;
   id: string;
   segments: Segment[];
   stops: number;
