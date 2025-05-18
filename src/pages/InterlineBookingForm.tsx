@@ -62,12 +62,13 @@ const InterlineBookingForm = () => {
         </motion.div>
       </div>
       
-      <main className="flex-grow">
-        <div className="container mx-auto -mt-6">
+      <main className="flex-grow pb-12">
+        <div className="container mx-auto px-4 -mt-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.4 }}
+            className="mb-6"
           >
             <Card className="border-none shadow-2xl overflow-visible rounded-xl">
               <CardContent className="p-0">
@@ -85,33 +86,31 @@ const InterlineBookingForm = () => {
               
                 <BookingSteps currentStep={currentStep} />
                 
-                <div className="w-full">
-                  {currentStep === 1 && (
-                    <PassengerDetailsForm 
-                      passengers={passengers}
-                      updatePassenger={updatePassenger}
-                      onNext={nextStep}
-                    />
-                  )}
-                  
-                  {currentStep === 2 && (
-                    <ContactInformationForm 
-                      contactInformation={contactInformation}
-                      updateContactInformation={updateContactInformation}
-                      onBack={prevStep}
-                      onSubmit={handleSubmit}
-                      isSubmitting={isSubmitting}
-                    />
-                  )}
-                  
-                  {currentStep === 3 && (
-                    <BookingConfirmation 
-                      flightData={flightData}
-                      passengers={passengers}
-                      contactInformation={contactInformation}
-                    />
-                  )}
-                </div>
+                {currentStep === 1 && (
+                  <PassengerDetailsForm 
+                    passengers={passengers}
+                    updatePassenger={updatePassenger}
+                    onNext={nextStep}
+                  />
+                )}
+                
+                {currentStep === 2 && (
+                  <ContactInformationForm 
+                    contactInformation={contactInformation}
+                    updateContactInformation={updateContactInformation}
+                    onBack={prevStep}
+                    onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
+                
+                {currentStep === 3 && (
+                  <BookingConfirmation 
+                    flightData={flightData}
+                    passengers={passengers}
+                    contactInformation={contactInformation}
+                  />
+                )}
               </CardContent>
             </Card>
           </motion.div>
