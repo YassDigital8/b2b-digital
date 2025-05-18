@@ -46,6 +46,9 @@ const DatePickerField = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 shadow-lg border-chamBlue/20" align="start">
+          <div className="p-2 text-xs text-muted-foreground bg-blue-50/30">
+            Click on month/year to quickly navigate between years and months
+          </div>
           <Calendar
             mode="single"
             selected={date || undefined}
@@ -56,6 +59,9 @@ const DatePickerField = ({
               return false;
             }}
             initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1900}
+            toYear={2100}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>

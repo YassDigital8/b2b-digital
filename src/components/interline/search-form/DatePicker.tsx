@@ -54,6 +54,9 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
+              <div className="p-2 text-xs text-muted-foreground bg-blue-50/30">
+                Click on month/year to quickly navigate between years and months
+              </div>
               <Calendar
                 mode="single"
                 selected={field.value || undefined}
@@ -62,6 +65,9 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
                   setIsOpen(false); // Close the calendar after selection
                 }}
                 initialFocus
+                captionLayout="dropdown-buttons"
+                fromYear={new Date().getFullYear()}
+                toYear={new Date().getFullYear() + 5}
                 disabled={(date) => {
                   if (minDate) {
                     return date < minDate;
