@@ -1,28 +1,25 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
 import { HeaderBackground, HeaderTitle, HeaderFeatures, HeaderVisual, WaveSeparator } from './header';
 
 const InterlineHeader = () => {
   return (
-    <div className="relative overflow-hidden h-80 sm:h-96 md:h-[460px] bg-gradient-to-r from-chamDarkBlue to-blue-700">
-      {/* Background effects */}
+    <div className="relative">
+      {/* Header Background with Gradient */}
       <HeaderBackground />
       
-      <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Left side - Header title and text */}
-          <HeaderTitle />
+      {/* Content */}
+      <div className="container mx-auto px-4 relative z-10 py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="text-white space-y-6">
+            <HeaderTitle />
+            <HeaderFeatures />
+          </div>
           
-          {/* Right side - Visual elements */}
           <HeaderVisual />
         </div>
-        
-        {/* Features list */}
-        <HeaderFeatures />
       </div>
       
-      {/* Wave separator */}
+      {/* Custom wave separator */}
       <WaveSeparator />
     </div>
   );
