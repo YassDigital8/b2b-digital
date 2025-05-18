@@ -36,7 +36,7 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
           <FormLabel className={disabled ? 'text-gray-400' : ''}>
             {label} {!disabled && '*'}
           </FormLabel>
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <Popover open={isOpen && !disabled} onOpenChange={(open) => !disabled && setIsOpen(open)}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button

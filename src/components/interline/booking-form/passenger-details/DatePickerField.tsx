@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 interface DatePickerFieldProps {
   label: string;
@@ -24,10 +25,12 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             id={id}
