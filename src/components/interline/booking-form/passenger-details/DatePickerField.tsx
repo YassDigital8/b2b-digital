@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 interface DatePickerFieldProps {
   label: string;
@@ -24,10 +25,20 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
+  // Initialize with true to show year view first
+  const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
+  
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      // When opening the popover, set year picker to open
+      setIsYearPickerOpen(true);
+    }
+  };
+
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <Popover>
+      <Popover onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             id={id}
@@ -49,13 +60,28 @@ const DatePickerField = ({
           <Calendar
             mode="single"
             selected={date || undefined}
-            onSelect={onSelect}
+            onSelect={(date) => {
+              onSelect(date);
+              // Reset the year picker state for next opening
+              setIsYearPickerOpen(false); 
+            }}
             disabled={(day) => {
               if (disableFuture && day > new Date()) return true;
               if (disablePast && day < new Date()) return true;
               return false;
             }}
             initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1900}
+            toYear={2030}
+            defaultMonth={date || undefined}
+            // Start with year picker open
+            view={isYearPickerOpen ? "year" : "day"}
+            onViewChange={view => {
+              if (view !== "year") {
+                setIsYearPickerOpen(false);
+              }
+            }}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>

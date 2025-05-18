@@ -26,6 +26,16 @@ interface DatePickerProps {
 
 const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  // Initialize with true to show year view first
+  const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (open) {
+      // When opening the popover, set year picker to open
+      setIsYearPickerOpen(true);
+    }
+  };
 
   return (
     <FormField
@@ -36,7 +46,7 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
           <FormLabel className={disabled ? 'text-gray-400' : ''}>
             {label} {!disabled && '*'}
           </FormLabel>
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <Popover open={isOpen} onOpenChange={handleOpenChange}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -60,8 +70,20 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
                 onSelect={(date) => {
                   field.onChange(date);
                   setIsOpen(false); // Close the calendar after selection
+                  setIsYearPickerOpen(false); // Reset the year picker state
                 }}
                 initialFocus
+                captionLayout="dropdown-buttons"
+                fromYear={2024}
+                toYear={2030}
+                defaultMonth={field.value || undefined}
+                // Start with year picker open
+                view={isYearPickerOpen ? "year" : "day"}
+                onViewChange={view => {
+                  if (view !== "year") {
+                    setIsYearPickerOpen(false);
+                  }
+                }}
                 disabled={(date) => {
                   if (minDate) {
                     return date < minDate;
