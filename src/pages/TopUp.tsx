@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -150,65 +149,6 @@ const TopUp = () => {
             <h1 className="text-3xl font-bold text-chamDarkBlue">Account Top Up</h1>
             <p className="text-gray-600">Add funds to your Cham Wings account through multiple payment methods</p>
           </motion.div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="lg:col-span-2"
-            >
-              <Card className="border-none shadow-soft">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-chamDarkBlue">Your Account Balance</CardTitle>
-                  <CardDescription>Current available funds in your account</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Available Balance</p>
-                      <p className="text-4xl font-bold text-chamDarkBlue">${user.balance.toLocaleString()}</p>
-                    </div>
-                    <div className="flex items-center gap-2 bg-chamBlue/10 px-4 py-2 rounded-lg">
-                      <Info className="h-5 w-5 text-chamBlue" />
-                      <span className="text-sm text-chamBlue font-medium">
-                        Top up your account to book services
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <Card className="border-none shadow-soft h-full">
-                <CardHeader>
-                  <CardTitle className="text-xl text-chamDarkBlue">Recent Top Ups</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {user.balance > 0 ? (
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                        <div>
-                          <p className="font-medium text-chamDarkBlue">Initial Credit</p>
-                          <p className="text-xs text-gray-500">Via System</p>
-                        </div>
-                        <span className="font-bold text-green-600">+${user.balance}</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center py-4">
-                      <p className="text-gray-500">No recent top ups</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
           
           <Tabs defaultValue="ecash" value={activeTab} onValueChange={setActiveTab}>
             <motion.div 

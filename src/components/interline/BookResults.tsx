@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import SearchResultsSection from '@/components/interline/SearchResultsSection';
 import BookingInfo from '@/components/interline/BookingInfo';
-import AccountBalance from '@/components/interline/AccountBalance';
 import { Flight } from '@/types/flight';
 import { PassengerCounts } from '@/hooks/useInterlineBooking';
 import { Card, CardContent } from '@/components/ui/card';
@@ -45,15 +44,6 @@ const BookResults = ({
           onSortChange={onSortChange}
         />
       )}
-      
-      {/* Account Balance */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.4 }}
-      >
-        <AccountBalance balance={5000} />
-      </motion.div>
       
       {/* Booking Info Sections */}
       <motion.div
