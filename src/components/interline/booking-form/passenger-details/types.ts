@@ -1,15 +1,16 @@
 
-import { FormikProps } from 'formik';
 import { Passenger } from "../types";
 
 export interface PassengerDetailsFormProps {
-  formik: FormikProps<any>;
+  passengers: Passenger[];
+  updatePassenger: (index: number, data: Partial<Passenger>) => void;
   onNext: () => void;
 }
 
 export interface PassengerFormItemProps {
+  passenger: Passenger;
   index: number;
-  formik: FormikProps<any>;
+  updatePassenger: (index: number, data: Partial<Passenger>) => void;
   openAccordion: string;
   setOpenAccordion: (value: string) => void;
 }

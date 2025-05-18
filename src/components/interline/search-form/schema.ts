@@ -16,7 +16,7 @@ export const bookingFormSchema = z.object({
 export type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 export interface SearchFormProps {
-  formik: any;
+  onSearch: (data: BookingFormValues) => void;
   isSearching: boolean;
   initialValues?: BookingFormValues;
 }

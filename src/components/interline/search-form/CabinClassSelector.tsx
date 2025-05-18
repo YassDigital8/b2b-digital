@@ -1,5 +1,11 @@
 
-import { Label } from "@/components/ui/label";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -7,38 +13,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { UseFormReturn } from "react-hook-form";
+import { BookingFormValues } from "./schema";
 
 interface CabinClassSelectorProps {
-  value: string;
-  onChange: (value: string) => void;
-  error?: string;
+  form: UseFormReturn<BookingFormValues>;
 }
 
-const CabinClassSelector = ({ value, onChange, error }: CabinClassSelectorProps) => {
+const CabinClassSelector = ({ form }: CabinClassSelectorProps) => {
   return (
-    <div className="space-y-2">
-      <Label htmlFor="cabinClass">Cabin Class</Label>
-      <Select
-        value={value}
-        onValueChange={onChange}
-      >
-        <SelectTrigger 
-          id="cabinClass" 
-          className={cn(
-            "w-full border-chamBlue/20 hover:border-chamBlue/50 bg-white shadow-sm",
-            error ? "border-red-500 ring-1 ring-red-500" : ""
-          )}
-        >
-          <SelectValue placeholder="Select cabin class" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="economy">Economy Class</SelectItem>
-          <SelectItem value="business">Business Class</SelectItem>
-        </SelectContent>
-      </Select>
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
+    <FormField
+      control={form.control}
+      name="cabinClass"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Cabin Class</FormLabel>
+          <Select
+            onValueChange={field.onChange}
+            value={field.value}
+          >
+            <FormControl>
+              <SelectTrigger>
+                <SelectValue placeholder="Select cabin class" />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              <SelectItem value="economy">Economy Class</SelectItem>
+              <SelectItem value="business">Business Class</SelectItem>
+            </SelectContent>
+          </Select>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };
 

@@ -1,13 +1,11 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
 
 interface NationalitySelectProps {
   passengerId: string;
   value: string;
   onChange: (value: string) => void;
-  name?: string;
-  error?: string;
 }
 
 export const nationalities = [
@@ -23,26 +21,17 @@ export const nationalities = [
   { value: 'GB', label: 'British' },
 ];
 
-const NationalitySelect = ({ 
-  passengerId, 
-  value, 
-  onChange,
-  name,
-  error 
-}: NationalitySelectProps) => {
+const NationalitySelect = ({ passengerId, value, onChange }: NationalitySelectProps) => {
   return (
     <div>
+      <Label htmlFor={`${passengerId}-nationality`}>Nationality</Label>
       <Select 
         value={value}
         onValueChange={onChange}
-        name={name}
       >
         <SelectTrigger 
           id={`${passengerId}-nationality`} 
-          className={cn(
-            "w-full mt-1.5 border-chamBlue/20 shadow-sm hover:border-chamBlue/40 transition-colors",
-            error && "border-red-500 ring-1 ring-red-500"
-          )}
+          className="w-full mt-1.5 border-chamBlue/20 shadow-sm hover:border-chamBlue/40 transition-colors"
         >
           <SelectValue placeholder="Select Nationality" />
         </SelectTrigger>
@@ -58,9 +47,6 @@ const NationalitySelect = ({
           ))}
         </SelectContent>
       </Select>
-      {error && (
-        <p className="text-xs text-red-500 mt-1">{error}</p>
-      )}
     </div>
   );
 };

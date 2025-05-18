@@ -1,45 +1,47 @@
 
-import { Label } from "@/components/ui/label";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group";
-import { ArrowRight, Repeat } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { 
+  FormControl, 
+  FormField, 
+  FormItem, 
+  FormMessage 
+} from "@/components/ui/form";
+import { UseFormReturn } from 'react-hook-form';
+import { BookingFormValues } from './schema';
 
 interface TripTypeSelectorProps {
-  value: 'one-way' | 'round-trip';
-  onChange: (value: 'one-way' | 'round-trip') => void;
+  form: UseFormReturn<BookingFormValues>;
 }
 
-const TripTypeSelector = ({ value, onChange }: TripTypeSelectorProps) => {
+const TripTypeSelector = ({ form }: TripTypeSelectorProps) => {
   return (
-    <div className="space-y-2">
-      <Label>Trip Type</Label>
-      <ToggleGroup 
-        type="single" 
-        value={value} 
-        onValueChange={(value) => {
-          if (value) onChange(value as 'one-way' | 'round-trip');
-        }}
-        className="justify-center border rounded-lg p-1 w-full max-w-md mx-auto shadow-sm"
-      >
-        <ToggleGroupItem 
-          value="one-way" 
-          className="data-[state=on]:bg-chamBlue data-[state=on]:text-white flex-1 rounded-md"
-          aria-label="Toggle one-way trip"
-        >
-          <ArrowRight className="h-4 w-4 mr-2" />
-          One Way
-        </ToggleGroupItem>
-        <ToggleGroupItem 
-          value="round-trip" 
-          className="data-[state=on]:bg-chamBlue data-[state=on]:text-white flex-1 rounded-md"
-          aria-label="Toggle round trip"
-        >
-          <Repeat className="h-4 w-4 mr-2" />
-          Round Trip
-        </ToggleGroupItem>
-      </ToggleGroup>
+    <div className="mb-6">
+      <FormField
+        control={form.control}
+        name="tripType"
+        render={({ field }) => (
+          <FormItem className="space-y-0">
+            <FormControl>
+              <RadioGroup
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                className="flex space-x-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="one-way" id="one-way" />
+                  <Label htmlFor="one-way">One Way</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="round-trip" id="round-trip" />
+                  <Label htmlFor="round-trip">Round Trip</Label>
+                </div>
+              </RadioGroup>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 };

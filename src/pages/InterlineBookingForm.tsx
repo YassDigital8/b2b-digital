@@ -5,39 +5,12 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BookingSteps from '@/components/interline/booking-form/BookingSteps';
 import PassengerDetailsForm from '@/components/interline/booking-form/passenger-details';
-import ContactInformationForm from '@/components/interline/booking-form/contact-information/ContactInformationForm';
+import ContactInformationForm from '@/components/interline/booking-form/ContactInformationForm';
 import BookingConfirmation from '@/components/interline/booking-form/BookingConfirmation';
 import { useBookingForm } from '@/hooks/useBookingForm';
-import FormProvider from '@/components/interline/booking-form/FormProvider';
-import { toast } from 'sonner';
-import * as Yup from 'yup';
 
 // Re-export types from the types file
 export { type Passenger, type ContactInformation } from '@/components/interline/booking-form/types';
-
-// Create validation schema for the form
-const validationSchema = Yup.object({
-  passengers: Yup.array().of(
-    Yup.object({
-      gender: Yup.string().required('Gender is required'),
-      firstName: Yup.string().required('First name is required'),
-      lastName: Yup.string().required('Last name is required'),
-      dateOfBirth: Yup.date().nullable().required('Date of birth is required'),
-      passportNumber: Yup.string().required('Passport number is required'),
-      passportExpiryDate: Yup.date().nullable().required('Passport expiry date is required'),
-      nationality: Yup.string().required('Nationality is required')
-    })
-  ),
-  contactInformation: Yup.object({
-    gender: Yup.string().required('Gender is required'),
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    email: Yup.string().email('Invalid email address').required('Email is required'),
-    phoneCode: Yup.string().required('Phone code is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    city: Yup.string().required('City is required')
-  })
-});
 
 const InterlineBookingForm = () => {
   const {
@@ -48,24 +21,14 @@ const InterlineBookingForm = () => {
     contactInformation,
     nextStep,
     prevStep,
-    setIsSubmitting,
+    updatePassenger,
+    updateContactInformation,
     handleSubmit
   } = useBookingForm();
   
   if (!flightData) {
     return null; // Could show a loading state or redirect
   }
-
-  const handleFormSubmit = (values: any) => {
-    console.log('Final form values:', values);
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      handleSubmit();
-      setIsSubmitting(false);
-    }, 1500);
-  };
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50/10">
@@ -114,41 +77,31 @@ const InterlineBookingForm = () => {
               
                 <BookingSteps currentStep={currentStep} />
                 
-                <FormProvider
-                  initialValues={{ 
-                    passengers: passengers,
-                    contactInformation: contactInformation
-                  }}
-                  validationSchema={validationSchema}
-                  onSubmit={handleFormSubmit}
-                >
-                  {(formikProps) => (
-                    <>
-                      {currentStep === 1 && (
-                        <PassengerDetailsForm 
-                          formik={formikProps}
-                          onNext={nextStep}
-                        />
-                      )}
-                      
-                      {currentStep === 2 && (
-                        <ContactInformationForm 
-                          formik={formikProps}
-                          onBack={prevStep}
-                          isSubmitting={isSubmitting}
-                        />
-                      )}
-                      
-                      {currentStep === 3 && (
-                        <BookingConfirmation 
-                          flightData={flightData}
-                          passengers={formikProps.values.passengers}
-                          contactInformation={formikProps.values.contactInformation}
-                        />
-                      )}
-                    </>
-                  )}
-                </FormProvider>
+                {currentStep === 1 && (
+                  <PassengerDetailsForm 
+                    passengers={passengers}
+                    updatePassenger={updatePassenger}
+                    onNext={nextStep}
+                  />
+                )}
+                
+                {currentStep === 2 && (
+                  <ContactInformationForm 
+                    contactInformation={contactInformation}
+                    updateContactInformation={updateContactInformation}
+                    onBack={prevStep}
+                    onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
+                
+                {currentStep === 3 && (
+                  <BookingConfirmation 
+                    flightData={flightData}
+                    passengers={passengers}
+                    contactInformation={contactInformation}
+                  />
+                )}
               </CardContent>
             </Card>
           </motion.div>

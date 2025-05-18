@@ -1,59 +1,80 @@
 
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { UseFormReturn } from 'react-hook-form';
+import { BookingFormValues } from './schema';
+import { cn } from '@/lib/utils';
 
 interface DatePickerProps {
+  form: UseFormReturn<BookingFormValues>;
+  name: "departureDate" | "returnDate";
   label: string;
-  date: Date | undefined;
-  onSelect: (date: Date) => void;
-  error?: string;
+  disabled?: boolean;
+  minDate?: Date;
 }
 
-const DatePicker = ({ label, date, onSelect, error }: DatePickerProps) => {
+const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePickerProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="space-y-2">
-      <Label htmlFor={`date-${label.replace(/\s+/g, '-').toLowerCase()}`}>{label}</Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id={`date-${label.replace(/\s+/g, '-').toLowerCase()}`}
-            variant={"outline"}
-            className={cn(
-              "w-full justify-between border-chamBlue/20 hover:border-chamBlue/50 bg-white shadow-sm",
-              !date && "text-muted-foreground",
-              error ? "border-red-500 ring-1 ring-red-500" : ""
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4 text-chamBlue/70" />
-              {date ? format(date, "PPP") : <span>Select date</span>}
-            </div>
-            <span className="sr-only">Open calendar</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(date) => {
-              if (date) onSelect(date);
-            }}
-            disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="flex flex-col">
+          <FormLabel className={disabled ? 'text-gray-400' : ''}>
+            {label} {!disabled && '*'}
+          </FormLabel>
+          <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger asChild>
+              <FormControl>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !field.value && "text-muted-foreground",
+                    disabled && "opacity-50 cursor-not-allowed"
+                  )}
+                  disabled={disabled}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {field.value ? format(field.value, "PPP") : <span>Select date</span>}
+                </Button>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={field.value || undefined}
+                onSelect={(date) => {
+                  field.onChange(date);
+                  setIsOpen(false); // Close the calendar after selection
+                }}
+                initialFocus
+                disabled={(date) => {
+                  if (minDate) {
+                    return date < minDate;
+                  }
+                  return date < new Date();
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };
 
