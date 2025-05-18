@@ -24,6 +24,13 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
+  // Calculate reasonable year ranges based on the field type
+  const currentYear = new Date().getFullYear();
+  // For DOB fields (disableFuture=true), show 100 years in the past
+  // For expiry dates (disablePast=true), show 20 years in the future
+  const fromYear = disableFuture ? currentYear - 100 : currentYear;
+  const toYear = disablePast ? currentYear + 20 : currentYear;
+
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
@@ -46,6 +53,9 @@ const DatePickerField = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 shadow-lg border-chamBlue/20" align="start">
+          <div className="text-xs text-center p-2 text-muted-foreground bg-muted/50 border-b">
+            Click on month/year to select different years
+          </div>
           <Calendar
             mode="single"
             selected={date || undefined}
@@ -56,6 +66,9 @@ const DatePickerField = ({
               return false;
             }}
             initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={fromYear}
+            toYear={toYear}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>

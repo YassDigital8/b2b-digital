@@ -26,6 +26,11 @@ interface DatePickerProps {
 
 const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Calculate reasonable year ranges
+  const currentYear = new Date().getFullYear();
+  const fromYear = currentYear;
+  const toYear = currentYear + 2; // Allow booking up to 2 years in advance
 
   return (
     <FormField
@@ -54,6 +59,9 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
+              <div className="text-xs text-center p-2 text-muted-foreground bg-muted/50 border-b">
+                Click on month/year to select different years
+              </div>
               <Calendar
                 mode="single"
                 selected={field.value || undefined}
@@ -62,6 +70,10 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
                   setIsOpen(false); // Close the calendar after selection
                 }}
                 initialFocus
+                captionLayout="dropdown-buttons"
+                fromYear={fromYear}
+                toYear={toYear}
+                defaultMonth={field.value || new Date()}
                 disabled={(date) => {
                   if (minDate) {
                     return date < minDate;
