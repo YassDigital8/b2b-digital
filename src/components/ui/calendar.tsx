@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
@@ -56,10 +55,6 @@ function Calendar({
         dropdown_year: "flex-1 ml-1 p-1.5 text-muted-foreground",
         vhidden: "hidden [.rdp-dropdown_month]:block [.rdp-dropdown_year]:mr-1",
         ...classNames,
-      }}
-      components={{
-        IconLeft: ({ ..._props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ..._props }) => <ChevronRight className="h-4 w-4" />,
       }}
       {...props}
     />

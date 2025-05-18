@@ -29,7 +29,7 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
   
   // Calculate reasonable year ranges
   const currentYear = new Date().getFullYear();
-  const fromYear = currentYear;
+  const fromYear = 1920; // Always start from 1920 as requested
   const toYear = currentYear + 2; // Allow booking up to 2 years in advance
 
   return (
@@ -59,9 +59,6 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-              <div className="text-xs text-center p-2 text-muted-foreground bg-muted/50 border-b">
-                Click on month/year to select different years
-              </div>
               <Calendar
                 mode="single"
                 selected={field.value || undefined}
@@ -73,6 +70,7 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
                 captionLayout="dropdown-buttons"
                 fromYear={fromYear}
                 toYear={toYear}
+                hideNavigation={true} // Hide the arrow navigation
                 defaultMonth={field.value || new Date()}
                 disabled={(date) => {
                   if (minDate) {
