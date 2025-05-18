@@ -26,16 +26,6 @@ interface DatePickerProps {
 
 const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  // Initialize with true to show year view first
-  const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
-
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    if (open) {
-      // When opening the popover, set year picker to open
-      setIsYearPickerOpen(true);
-    }
-  };
 
   return (
     <FormField
@@ -46,7 +36,7 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
           <FormLabel className={disabled ? 'text-gray-400' : ''}>
             {label} {!disabled && '*'}
           </FormLabel>
-          <Popover open={isOpen} onOpenChange={handleOpenChange}>
+          <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -64,26 +54,23 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
+              <div className="p-2 bg-blue-50/50 border-b border-blue-100/50">
+                <div className="text-xs text-blue-700 font-medium">
+                  Use the year/month dropdowns to navigate quickly
+                </div>
+              </div>
               <Calendar
                 mode="single"
                 selected={field.value || undefined}
                 onSelect={(date) => {
                   field.onChange(date);
-                  setIsOpen(false); // Close the calendar after selection
-                  setIsYearPickerOpen(false); // Reset the year picker state
+                  setIsOpen(false);
                 }}
                 initialFocus
                 captionLayout="dropdown-buttons"
                 fromYear={2024}
                 toYear={2030}
                 defaultMonth={field.value || undefined}
-                // Start with year picker open
-                view={isYearPickerOpen ? "year" : "day"}
-                onViewChange={view => {
-                  if (view !== "year") {
-                    setIsYearPickerOpen(false);
-                  }
-                }}
                 disabled={(date) => {
                   if (minDate) {
                     return date < minDate;

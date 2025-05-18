@@ -25,20 +25,12 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
-  // Initialize with true to show year view first
-  const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   
-  const handleOpenChange = (open: boolean) => {
-    if (open) {
-      // When opening the popover, set year picker to open
-      setIsYearPickerOpen(true);
-    }
-  };
-
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <Popover onOpenChange={handleOpenChange}>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             id={id}
@@ -57,13 +49,17 @@ const DatePickerField = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 shadow-lg border-chamBlue/20" align="start">
+          <div className="p-2 bg-blue-50/50 border-b border-blue-100/50">
+            <div className="text-xs text-blue-700 font-medium">
+              Use the year/month dropdowns to navigate quickly
+            </div>
+          </div>
           <Calendar
             mode="single"
             selected={date || undefined}
             onSelect={(date) => {
               onSelect(date);
-              // Reset the year picker state for next opening
-              setIsYearPickerOpen(false); 
+              setIsOpen(false);
             }}
             disabled={(day) => {
               if (disableFuture && day > new Date()) return true;
@@ -75,13 +71,6 @@ const DatePickerField = ({
             fromYear={1900}
             toYear={2030}
             defaultMonth={date || undefined}
-            // Start with year picker open
-            view={isYearPickerOpen ? "year" : "day"}
-            onViewChange={view => {
-              if (view !== "year") {
-                setIsYearPickerOpen(false);
-              }
-            }}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>
