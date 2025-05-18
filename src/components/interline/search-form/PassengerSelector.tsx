@@ -1,7 +1,6 @@
 
 import {
   FormControl,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -12,36 +11,50 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
-import { BookingFormValues } from "./schema";
 import { MinusCircle, PlusCircle, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface PassengerSelectorProps {
-  form: UseFormReturn<BookingFormValues>;
+  adults: number;
+  children: number;
+  infants: number;
+  onChangeAdults: (value: number) => void;
+  onChangeChildren: (value: number) => void;
+  onChangeInfants: (value: number) => void;
+  error?: string;
 }
 
-interface PassengerTypeProps {
-  form: UseFormReturn<BookingFormValues>;
-  type: "adults" | "children" | "infants";
+interface PassengerTypeControlProps {
+  value: number;
+  onChange: (value: number) => void;
   label: string;
   description: string;
+  minValue?: number;
+  maxValue?: number;
 }
 
-const PassengerTypeControl = ({ form, type, label, description }: PassengerTypeProps) => {
-  const value = form.watch(type);
+const PassengerTypeControl = ({ 
+  value, 
+  onChange, 
+  label, 
+  description,
+  minValue = 0,
+  maxValue = 9
+}: PassengerTypeControlProps) => {
   
   const handleIncrement = () => {
-    form.setValue(type, value + 1);
-  };
-  
-  const handleDecrement = () => {
-    if (value > 0) {
-      form.setValue(type, value - 1);
+    if (value < maxValue) {
+      onChange(value + 1);
     }
   };
   
-  const isDisabled = type === "adults" && value <= 1;
+  const handleDecrement = () => {
+    if (value > minValue) {
+      onChange(value - 1);
+    }
+  };
+  
+  const isDisabled = value <= minValue;
   
   return (
     <div className="flex items-center justify-between py-3 first:pt-1 last:pb-1">
@@ -77,64 +90,64 @@ const PassengerTypeControl = ({ form, type, label, description }: PassengerTypeP
   );
 };
 
-const PassengerSelector = ({ form }: PassengerSelectorProps) => {
-  const adults = form.watch("adults");
-  const children = form.watch("children");
-  const infants = form.watch("infants");
+const PassengerSelector = ({
+  adults,
+  children,
+  infants,
+  onChangeAdults,
+  onChangeChildren,
+  onChangeInfants,
+  error
+}: PassengerSelectorProps) => {
   const total = adults + children + infants;
   
   return (
-    <FormField
-      control={form.control}
-      name="adults"
-      render={() => (
-        <FormItem className="flex flex-col">
-          <FormLabel>Passengers *</FormLabel>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  className="justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                    <span>{total} Passenger{total !== 1 ? "s" : ""}</span>
-                  </div>
-                  <div className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                    {adults} Adult{adults !== 1 ? "s" : ""}
-                    {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
-                    {infants > 0 && `, ${infants} Infant${infants !== 1 ? "s" : ""}`}
-                  </div>
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 p-3" align="end">
-              <PassengerTypeControl
-                form={form}
-                type="adults"
-                label="Adults"
-                description="Age 12+"
-              />
-              <PassengerTypeControl
-                form={form}
-                type="children"
-                label="Children"
-                description="Age 2-11"
-              />
-              <PassengerTypeControl
-                form={form}
-                type="infants"
-                label="Infants"
-                description="Under 2 years"
-              />
-            </PopoverContent>
-          </Popover>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+    <div className="space-y-2">
+      <FormLabel>Passengers *</FormLabel>
+      <Popover>
+        <PopoverTrigger asChild>
+          <FormControl>
+            <Button
+              variant="outline"
+              role="combobox"
+              className={`justify-between w-full ${error ? "border-red-500 ring-1 ring-red-500" : "border-chamBlue/20 hover:border-chamBlue/50"}`}
+            >
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <span>{total} Passenger{total !== 1 ? "s" : ""}</span>
+              </div>
+              <div className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                {adults} Adult{adults !== 1 ? "s" : ""}
+                {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
+                {infants > 0 && `, ${infants} Infant${infants !== 1 ? "s" : ""}`}
+              </div>
+            </Button>
+          </FormControl>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 p-3" align="end">
+          <PassengerTypeControl
+            value={adults}
+            onChange={onChangeAdults}
+            label="Adults"
+            description="Age 12+"
+            minValue={1} // At least one adult is required
+          />
+          <PassengerTypeControl
+            value={children}
+            onChange={onChangeChildren}
+            label="Children"
+            description="Age 2-11"
+          />
+          <PassengerTypeControl
+            value={infants}
+            onChange={onChangeInfants}
+            label="Infants"
+            description="Under 2 years"
+          />
+        </PopoverContent>
+      </Popover>
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+    </div>
   );
 };
 

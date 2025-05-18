@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
@@ -9,10 +10,34 @@ import BookingConfirmation from '@/components/interline/booking-form/BookingConf
 import { useBookingForm } from '@/hooks/useBookingForm';
 import FormProvider from '@/components/interline/booking-form/FormProvider';
 import { toast } from 'sonner';
-import { FormikProps } from 'formik';
+import * as Yup from 'yup';
 
 // Re-export types from the types file
 export { type Passenger, type ContactInformation } from '@/components/interline/booking-form/types';
+
+// Create validation schema for the form
+const validationSchema = Yup.object({
+  passengers: Yup.array().of(
+    Yup.object({
+      gender: Yup.string().required('Gender is required'),
+      firstName: Yup.string().required('First name is required'),
+      lastName: Yup.string().required('Last name is required'),
+      dateOfBirth: Yup.date().nullable().required('Date of birth is required'),
+      passportNumber: Yup.string().required('Passport number is required'),
+      passportExpiryDate: Yup.date().nullable().required('Passport expiry date is required'),
+      nationality: Yup.string().required('Nationality is required')
+    })
+  ),
+  contactInformation: Yup.object({
+    gender: Yup.string().required('Gender is required'),
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    phoneCode: Yup.string().required('Phone code is required'),
+    phoneNumber: Yup.string().required('Phone number is required'),
+    city: Yup.string().required('City is required')
+  })
+});
 
 const InterlineBookingForm = () => {
   const {
@@ -89,14 +114,15 @@ const InterlineBookingForm = () => {
               
                 <BookingSteps currentStep={currentStep} />
                 
-                <FormProvider 
+                <FormProvider
                   initialValues={{ 
                     passengers: passengers,
                     contactInformation: contactInformation
                   }}
+                  validationSchema={validationSchema}
                   onSubmit={handleFormSubmit}
                 >
-                  {(formikProps: FormikProps<any>) => (
+                  {(formikProps) => (
                     <>
                       {currentStep === 1 && (
                         <PassengerDetailsForm 

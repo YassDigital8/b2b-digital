@@ -1,18 +1,26 @@
 
 import React from 'react';
-import { FormikProps } from 'formik';
+import { useFormik, FormikConfig, FormikProps } from 'formik';
 
-interface FormProviderProps {
-  formik: FormikProps<any>;
-  children: React.ReactNode;
+interface FormProviderProps<T> {
+  initialValues: T;
+  onSubmit: (values: T) => void;
+  validationSchema?: any;
+  children: (formikProps: FormikProps<T>) => React.ReactNode;
 }
 
-const FormProvider: React.FC<FormProviderProps> = ({ formik, children }) => {
+function FormProvider<T>({ initialValues, onSubmit, validationSchema, children }: FormProviderProps<T>) {
+  const formik = useFormik<T>({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
   return (
     <form onSubmit={formik.handleSubmit} className="h-full">
-      {children}
+      {children(formik)}
     </form>
   );
-};
+}
 
 export default FormProvider;
