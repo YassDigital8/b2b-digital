@@ -1,6 +1,5 @@
 
 import {
-  FormControl,
   FormItem,
   FormLabel,
   FormMessage,
@@ -106,23 +105,21 @@ const PassengerSelector = ({
       <FormLabel>Passengers *</FormLabel>
       <Popover>
         <PopoverTrigger asChild>
-          <FormControl>
-            <Button
-              variant="outline"
-              role="combobox"
-              className={`justify-between w-full ${error ? "border-red-500 ring-1 ring-red-500" : "border-chamBlue/20 hover:border-chamBlue/50"}`}
-            >
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span>{total} Passenger{total !== 1 ? "s" : ""}</span>
-              </div>
-              <div className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                {adults} Adult{adults !== 1 ? "s" : ""}
-                {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
-                {infants > 0 && `, ${infants} Infant${infants !== 1 ? "s" : ""}`}
-              </div>
-            </Button>
-          </FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={`justify-between w-full ${error ? "border-red-500 ring-1 ring-red-500" : "border-chamBlue/20 hover:border-chamBlue/50"}`}
+          >
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-muted-foreground" />
+              <span>{total} Passenger{total !== 1 ? "s" : ""}</span>
+            </div>
+            <div className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+              {adults} Adult{adults !== 1 ? "s" : ""}
+              {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
+              {infants > 0 && `, ${infants} Infant${infants !== 1 ? "s" : ""}`}
+            </div>
+          </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80 p-3" align="end">
           <PassengerTypeControl
