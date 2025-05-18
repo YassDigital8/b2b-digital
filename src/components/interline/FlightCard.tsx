@@ -39,7 +39,9 @@ const FlightCard: React.FC<FlightCardProps> = ({
   const [showFlightDetails, setShowFlightDetails] = useState(false);
   const isSelected = selectedFlightId === flight.id;
 
-  const handleToggleFlightDetails = () => {
+  const handleToggleFlightDetails = (id) => {
+    // alert(id)
+    onSelect(id)
     setShowFlightDetails(!showFlightDetails);
   };
 
@@ -57,13 +59,9 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
 
   return (
-    <div className={cn(
-      "transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md", 
-      isSelected 
-        ? "border-violet-500 bg-gradient-to-br from-violet-50/50 to-blue-50/30" 
-        : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50/80"
-    )}>
-      
+    <div className={cn("transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md",
+      isSelected ? "border-violet-500 bg-violet-50/40" : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50")}>
+
       {/* Flight header with price */}
       <div
         className={cn(
@@ -131,11 +129,11 @@ const FlightCard: React.FC<FlightCardProps> = ({
             onSelect={onSelect}
             onToggleFlightDetails={handleToggleFlightDetails}
           />
-          
+
           {/* Right side - Book Now button */}
-          <Button 
-            variant="default" 
-            className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full" 
+          <Button
+            variant="default"
+            className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white text-sm px-8 py-5 h-auto font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 rounded-full"
             onClick={handleBookNow}
           >
             <FlightPrice flight={flight} totalPassengers={totalPassengers} />
