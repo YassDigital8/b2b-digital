@@ -1,11 +1,13 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 interface NationalitySelectProps {
   passengerId: string;
   value: string;
   onChange: (value: string) => void;
+  name?: string;
+  error?: string;
 }
 
 export const nationalities = [
@@ -21,17 +23,26 @@ export const nationalities = [
   { value: 'GB', label: 'British' },
 ];
 
-const NationalitySelect = ({ passengerId, value, onChange }: NationalitySelectProps) => {
+const NationalitySelect = ({ 
+  passengerId, 
+  value, 
+  onChange,
+  name,
+  error 
+}: NationalitySelectProps) => {
   return (
     <div>
-      <Label htmlFor={`${passengerId}-nationality`}>Nationality</Label>
       <Select 
         value={value}
         onValueChange={onChange}
+        name={name}
       >
         <SelectTrigger 
           id={`${passengerId}-nationality`} 
-          className="w-full mt-1.5 border-chamBlue/20 shadow-sm hover:border-chamBlue/40 transition-colors"
+          className={cn(
+            "w-full mt-1.5 border-chamBlue/20 shadow-sm hover:border-chamBlue/40 transition-colors",
+            error && "border-red-500 ring-1 ring-red-500"
+          )}
         >
           <SelectValue placeholder="Select Nationality" />
         </SelectTrigger>
@@ -47,6 +58,9 @@ const NationalitySelect = ({ passengerId, value, onChange }: NationalitySelectPr
           ))}
         </SelectContent>
       </Select>
+      {error && (
+        <p className="text-xs text-red-500 mt-1">{error}</p>
+      )}
     </div>
   );
 };

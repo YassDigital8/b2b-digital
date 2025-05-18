@@ -2,39 +2,41 @@
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Label } from '@/components/ui/label';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 interface DatePickerFieldProps {
-  label: string;
   id: string;
   date: Date | null;
   onSelect: (date: Date | null) => void;
   disableFuture?: boolean;
   disablePast?: boolean;
+  name?: string;
+  error?: string;
 }
 
 const DatePickerField = ({ 
-  label, 
   id, 
   date, 
   onSelect, 
   disableFuture = false, 
-  disablePast = false 
+  disablePast = false,
+  name,
+  error
 }: DatePickerFieldProps) => {
   return (
     <div>
-      <Label htmlFor={id}>{label}</Label>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id={id}
+            name={name}
             variant="outline"
             className={cn(
               "w-full justify-start text-left font-normal mt-1.5 shadow-sm border-chamBlue/20 hover:bg-blue-50/50",
-              !date && "text-muted-foreground"
+              !date && "text-muted-foreground",
+              error && "border-red-500 ring-1 ring-red-500"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4 text-chamBlue" />
@@ -60,6 +62,9 @@ const DatePickerField = ({
           />
         </PopoverContent>
       </Popover>
+      {error && (
+        <p className="text-xs text-red-500 mt-1">{error}</p>
+      )}
     </div>
   );
 };

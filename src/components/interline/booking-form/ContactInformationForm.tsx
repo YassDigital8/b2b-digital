@@ -10,17 +10,13 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ChevronLeft, Send, UserRound } from 'lucide-react';
-import { toast } from 'sonner';
-import { ContactInformation } from '@/components/interline/booking-form/types';
-import { useState, useEffect } from 'react';
-import { allCities } from '@/components/interline/search-form/schema';
+import { ChevronLeft, Send } from 'lucide-react';
+import { FormikProps } from 'formik';
+import { getIn } from 'formik';
 
 interface ContactInformationFormProps {
-  contactInformation: ContactInformation;
-  updateContactInformation: (data: Partial<ContactInformation>) => void;
+  formik: FormikProps<any>;
   onBack: () => void;
-  onSubmit: () => void;
   isSubmitting: boolean;
 }
 
@@ -102,13 +98,22 @@ const getCountryCities = (countryCode: string) => {
 };
 
 const ContactInformationForm = ({
-  contactInformation,
-  updateContactInformation,
+  formik,
   onBack,
-  onSubmit,
   isSubmitting
 }: ContactInformationFormProps) => {
-  const [availableCities, setAvailableCities] = useState<Array<{city: string, code: string}>>([]);
+  const contactInfo = formik.values.contactInformation;
+  const getFieldName = (field: string) => `contactInformation.${field}`;
+
+  // Get error helper for nested objects in formik
+  const getErrorMessage = (fieldName: string) => {
+    const error = getIn(formik.errors, fieldName);
+    const touched = getIn(formik.touched, fieldName);
+    return touched && error ? error : undefined;
+  };
+
+  // Get available cities based on selected country code
+  const availableCities = getCountryCities(contactInfo.phoneCode);
 
   const phoneCodes = [
     { value: '+963', label: 'Syria (+963)' },
@@ -123,53 +128,6 @@ const ContactInformationForm = ({
     { value: '+1', label: 'USA (+1)' },
   ];
 
-  // Update cities when country code changes
-  useEffect(() => {
-    const cities = getCountryCities(contactInformation.phoneCode);
-    setAvailableCities(cities);
-    
-    // Reset city if current selection isn't in the new list
-    if (contactInformation.city && cities.length > 0 && !cities.some(c => c.city === contactInformation.city)) {
-      updateContactInformation({ city: '' });
-    }
-  }, [contactInformation.phoneCode, contactInformation.city, updateContactInformation]);
-
-  const handleSubmit = () => {
-    // Simple validation
-    if (!contactInformation.firstName) {
-      toast.error('Please enter your first name');
-      return;
-    }
-    
-    if (!contactInformation.lastName) {
-      toast.error('Please enter your last name');
-      return;
-    }
-    
-    if (!contactInformation.email) {
-      toast.error('Please enter an email address');
-      return;
-    }
-    
-    if (!contactInformation.email.includes('@') || !contactInformation.email.includes('.')) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
-    
-    if (!contactInformation.phoneNumber) {
-      toast.error('Please enter a phone number');
-      return;
-    }
-    
-    if (!contactInformation.city) {
-      toast.error('Please select a city');
-      return;
-    }
-    
-    // Submit the form
-    onSubmit();
-  };
-
   return (
     <div className="px-6 py-4 pb-6">
       <h2 className="text-xl font-semibold mb-4 text-chamDarkBlue">Contact Information</h2>
@@ -180,10 +138,11 @@ const ContactInformationForm = ({
       <div className="space-y-5 max-w-xl mx-auto">
         {/* Gender Selection */}
         <div>
-          <Label>Gender</Label>
+          <Label>Gender*</Label>
           <RadioGroup 
-            value={contactInformation.gender} 
-            onValueChange={(value) => updateContactInformation({ gender: value as 'male' | 'female' })}
+            value={contactInfo.gender} 
+            onValueChange={(value) => formik.setFieldValue(getFieldName('gender'), value)}
+            name={getFieldName('gender')}
             className="flex flex-row gap-6 mt-2"
           >
             <div className="flex items-center space-x-2">
@@ -195,55 +154,84 @@ const ContactInformationForm = ({
               <Label htmlFor="gender-female" className="cursor-pointer">Female</Label>
             </div>
           </RadioGroup>
+          {getErrorMessage(getFieldName('gender')) && (
+            <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('gender'))}</p>
+          )}
         </div>
         
         {/* Name Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="firstName">First Name</Label>
+            <Label htmlFor="firstName">First Name*</Label>
             <Input
               id="firstName"
-              value={contactInformation.firstName}
-              onChange={(e) => updateContactInformation({ firstName: e.target.value })}
+              name={getFieldName('firstName')}
+              value={contactInfo.firstName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder="Enter first name"
-              className="mt-1 border-chamBlue/20 focus:border-chamBlue"
+              className={`mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('firstName')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
             />
+            {getErrorMessage(getFieldName('firstName')) && (
+              <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('firstName'))}</p>
+            )}
           </div>
           
           <div>
-            <Label htmlFor="lastName">Last Name</Label>
+            <Label htmlFor="lastName">Last Name*</Label>
             <Input
               id="lastName"
-              value={contactInformation.lastName}
-              onChange={(e) => updateContactInformation({ lastName: e.target.value })}
+              name={getFieldName('lastName')}
+              value={contactInfo.lastName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder="Enter last name"
-              className="mt-1 border-chamBlue/20 focus:border-chamBlue"
+              className={`mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('lastName')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
             />
+            {getErrorMessage(getFieldName('lastName')) && (
+              <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('lastName'))}</p>
+            )}
           </div>
         </div>
         
         {/* Email Address */}
         <div>
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">Email Address*</Label>
           <Input
             id="email"
             type="email"
-            value={contactInformation.email}
-            onChange={(e) => updateContactInformation({ email: e.target.value })}
+            name={getFieldName('email')}
+            value={contactInfo.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             placeholder="e.g. name@example.com"
-            className="mt-1 border-chamBlue/20 focus:border-chamBlue"
+            className={`mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('email')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
           />
+          {getErrorMessage(getFieldName('email')) && (
+            <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('email'))}</p>
+          )}
         </div>
         
         {/* Phone Number with Country Code */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <Label htmlFor="phoneCode">Country Code</Label>
+            <Label htmlFor="phoneCode">Country Code*</Label>
             <Select
-              value={contactInformation.phoneCode}
-              onValueChange={(value) => updateContactInformation({ phoneCode: value })}
+              value={contactInfo.phoneCode}
+              onValueChange={(value) => {
+                formik.setFieldValue(getFieldName('phoneCode'), value);
+                // If city is not available in the new country, reset it
+                const cities = getCountryCities(value);
+                if (contactInfo.city && cities.length > 0 && !cities.some(c => c.city === contactInfo.city)) {
+                  formik.setFieldValue(getFieldName('city'), '');
+                }
+              }}
+              name={getFieldName('phoneCode')}
             >
-              <SelectTrigger id="phoneCode" className="w-full mt-1 border-chamBlue/20 focus:border-chamBlue">
+              <SelectTrigger 
+                id="phoneCode" 
+                className={`w-full mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('phoneCode')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+              >
                 <SelectValue placeholder="Select Code" />
               </SelectTrigger>
               <SelectContent>
@@ -254,29 +242,41 @@ const ContactInformationForm = ({
                 ))}
               </SelectContent>
             </Select>
+            {getErrorMessage(getFieldName('phoneCode')) && (
+              <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('phoneCode'))}</p>
+            )}
           </div>
           
           <div className="col-span-2">
-            <Label htmlFor="phoneNumber">Phone Number</Label>
+            <Label htmlFor="phoneNumber">Phone Number*</Label>
             <Input
               id="phoneNumber"
               type="tel"
-              value={contactInformation.phoneNumber}
-              onChange={(e) => updateContactInformation({ phoneNumber: e.target.value })}
+              name={getFieldName('phoneNumber')}
+              value={contactInfo.phoneNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder="e.g. 9XXXXXXXX"
-              className="mt-1 border-chamBlue/20 focus:border-chamBlue"
+              className={`mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('phoneNumber')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
             />
+            {getErrorMessage(getFieldName('phoneNumber')) && (
+              <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('phoneNumber'))}</p>
+            )}
           </div>
         </div>
         
         {/* City Selector based on Country */}
         <div>
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city">City*</Label>
           <Select
-            value={contactInformation.city}
-            onValueChange={(value) => updateContactInformation({ city: value })}
+            value={contactInfo.city}
+            onValueChange={(value) => formik.setFieldValue(getFieldName('city'), value)}
+            name={getFieldName('city')}
           >
-            <SelectTrigger id="city" className="w-full mt-1 border-chamBlue/20 focus:border-chamBlue">
+            <SelectTrigger 
+              id="city" 
+              className={`w-full mt-1 border-chamBlue/20 focus:border-chamBlue ${getErrorMessage(getFieldName('city')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+            >
               <SelectValue placeholder="Select City" />
             </SelectTrigger>
             <SelectContent enableSearch>
@@ -287,6 +287,9 @@ const ContactInformationForm = ({
               ))}
             </SelectContent>
           </Select>
+          {getErrorMessage(getFieldName('city')) && (
+            <p className="text-xs text-red-500 mt-1">{getErrorMessage(getFieldName('city'))}</p>
+          )}
         </div>
         
         <div className="pt-6 flex items-center justify-between gap-4">
@@ -302,9 +305,8 @@ const ContactInformationForm = ({
           </Button>
           
           <Button
-            type="button"
+            type="submit"
             className="bg-gradient-to-r from-chamGold to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-6 rounded-full shadow-md"
-            onClick={handleSubmit}
             disabled={isSubmitting}
           >
             {isSubmitting ? (

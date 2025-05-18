@@ -8,6 +8,9 @@ import PassengerDetailsForm from '@/components/interline/booking-form/passenger-
 import ContactInformationForm from '@/components/interline/booking-form/ContactInformationForm';
 import BookingConfirmation from '@/components/interline/booking-form/BookingConfirmation';
 import { useBookingForm } from '@/hooks/useBookingForm';
+import FormProvider from '@/components/interline/booking-form/FormProvider';
+import { toast } from 'sonner';
+import { FormikProps } from 'formik';
 
 // Re-export types from the types file
 export { type Passenger, type ContactInformation } from '@/components/interline/booking-form/types';
@@ -21,14 +24,24 @@ const InterlineBookingForm = () => {
     contactInformation,
     nextStep,
     prevStep,
-    updatePassenger,
-    updateContactInformation,
+    setIsSubmitting,
     handleSubmit
   } = useBookingForm();
   
   if (!flightData) {
     return null; // Could show a loading state or redirect
   }
+
+  const handleFormSubmit = (values: any) => {
+    console.log('Final form values:', values);
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      handleSubmit();
+      setIsSubmitting(false);
+    }, 1500);
+  };
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50/10">
@@ -77,31 +90,40 @@ const InterlineBookingForm = () => {
               
                 <BookingSteps currentStep={currentStep} />
                 
-                {currentStep === 1 && (
-                  <PassengerDetailsForm 
-                    passengers={passengers}
-                    updatePassenger={updatePassenger}
-                    onNext={nextStep}
-                  />
-                )}
-                
-                {currentStep === 2 && (
-                  <ContactInformationForm 
-                    contactInformation={contactInformation}
-                    updateContactInformation={updateContactInformation}
-                    onBack={prevStep}
-                    onSubmit={handleSubmit}
-                    isSubmitting={isSubmitting}
-                  />
-                )}
-                
-                {currentStep === 3 && (
-                  <BookingConfirmation 
-                    flightData={flightData}
-                    passengers={passengers}
-                    contactInformation={contactInformation}
-                  />
-                )}
+                <FormProvider 
+                  initialValues={{ 
+                    passengers: passengers,
+                    contactInformation: contactInformation
+                  }}
+                  onSubmit={handleFormSubmit}
+                >
+                  {(formikProps: FormikProps<any>) => (
+                    <>
+                      {currentStep === 1 && (
+                        <PassengerDetailsForm 
+                          formik={formikProps}
+                          onNext={nextStep}
+                        />
+                      )}
+                      
+                      {currentStep === 2 && (
+                        <ContactInformationForm 
+                          formik={formikProps}
+                          onBack={prevStep}
+                          isSubmitting={isSubmitting}
+                        />
+                      )}
+                      
+                      {currentStep === 3 && (
+                        <BookingConfirmation 
+                          flightData={flightData}
+                          passengers={formikProps.values.passengers}
+                          contactInformation={formikProps.values.contactInformation}
+                        />
+                      )}
+                    </>
+                  )}
+                </FormProvider>
               </CardContent>
             </Card>
           </motion.div>

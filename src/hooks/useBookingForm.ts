@@ -123,27 +123,14 @@ export const useBookingForm = () => {
   };
   
   const handleSubmit = async () => {
-    setIsSubmitting(true);
+    // In a real app, this would be an API call to your backend
+    // For now, let's simulate a successful booking with a timeout
+    toast.success('Booking completed successfully!', {
+      description: 'You will receive a confirmation email shortly.'
+    });
     
-    try {
-      // In a real app, this would be an API call to your backend
-      // For now, let's simulate a successful booking with a timeout
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate successful booking
-      toast.success('Booking completed successfully!', {
-        description: 'You will receive a confirmation email shortly.'
-      });
-      
-      // Move to confirmation step
-      nextStep();
-    } catch (error) {
-      toast.error('Failed to complete booking', {
-        description: 'Please try again or contact customer support.'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Move to confirmation step
+    nextStep();
   };
 
   return {
@@ -151,6 +138,7 @@ export const useBookingForm = () => {
     passengersCount,
     currentStep,
     isSubmitting,
+    setIsSubmitting,
     passengers,
     contactInformation,
     nextStep,
