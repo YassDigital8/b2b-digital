@@ -19,6 +19,7 @@ const InterlineBookingForm = () => {
     isSubmitting,
     passengers,
     contactInformation,
+    bookingResponse,
     nextStep,
     prevStep,
     updatePassenger,
@@ -50,7 +51,9 @@ const InterlineBookingForm = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="text-white">
-            <h1 className="text-2xl font-semibold font-display">Complete Your Booking</h1>
+            <h1 className="text-2xl font-semibold font-display">
+              {currentStep === 3 ? 'Booking Confirmed' : 'Complete Your Booking'}
+            </h1>
             <p className="text-white/90 text-sm mt-1 flex items-center">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-chamGold mr-1.5"></span>
               {flightData.segments[0].from} to {flightData.segments[flightData.segments.length-1].to}
@@ -71,8 +74,14 @@ const InterlineBookingForm = () => {
               <CardContent className="p-0">
                 {/* Booking Header */}
                 <div className="bg-gradient-to-r from-chamDarkBlue via-blue-700 to-chamDarkBlue py-6 px-6 rounded-t-xl">
-                  <h2 className="text-2xl font-bold text-white font-display">Complete Your Booking</h2>
-                  <p className="text-blue-100 text-sm mt-1">Fill in passenger details to proceed with your reservation</p>
+                  <h2 className="text-2xl font-bold text-white font-display">
+                    {currentStep === 3 ? 'Booking Confirmed' : 'Complete Your Booking'}
+                  </h2>
+                  <p className="text-blue-100 text-sm mt-1">
+                    {currentStep === 3 
+                      ? 'Your flight has been booked successfully' 
+                      : 'Fill in passenger details to proceed with your reservation'}
+                  </p>
                 </div>
               
                 <BookingSteps currentStep={currentStep} />
