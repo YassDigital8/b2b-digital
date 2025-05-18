@@ -1,43 +1,17 @@
 
 import React from 'react';
-import { Formik, FormikProps, Form } from 'formik';
-import { bookingFormSchema } from './validationSchema';
-import { Passenger, ContactInformation } from './types';
-
-export interface BookingFormValues {
-  passengers: Passenger[];
-  contactInformation: ContactInformation;
-}
+import { FormikProps } from 'formik';
 
 interface FormProviderProps {
-  initialValues: BookingFormValues;
-  onSubmit: (values: BookingFormValues) => void;
-  children: (formikProps: FormikProps<BookingFormValues>) => React.ReactNode;
+  formik: FormikProps<any>;
+  children: React.ReactNode;
 }
 
-const FormProvider: React.FC<FormProviderProps> = ({ 
-  initialValues, 
-  onSubmit, 
-  children 
-}) => {
+const FormProvider: React.FC<FormProviderProps> = ({ formik, children }) => {
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={bookingFormSchema}
-      onSubmit={(values, actions) => {
-        console.log('Form submitted with values:', values);
-        onSubmit(values);
-        actions.setSubmitting(false);
-      }}
-      validateOnChange={false}
-      validateOnBlur={true}
-    >
-      {(formikProps) => (
-        <Form className="h-full">
-          {children(formikProps)}
-        </Form>
-      )}
-    </Formik>
+    <form onSubmit={formik.handleSubmit} className="h-full">
+      {children}
+    </form>
   );
 };
 

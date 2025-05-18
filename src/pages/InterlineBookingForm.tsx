@@ -1,11 +1,10 @@
-
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BookingSteps from '@/components/interline/booking-form/BookingSteps';
 import PassengerDetailsForm from '@/components/interline/booking-form/passenger-details';
-import ContactInformationForm from '@/components/interline/booking-form/ContactInformationForm';
+import ContactInformationForm from '@/components/interline/booking-form/contact-information/ContactInformationForm';
 import BookingConfirmation from '@/components/interline/booking-form/BookingConfirmation';
 import { useBookingForm } from '@/hooks/useBookingForm';
 import FormProvider from '@/components/interline/booking-form/FormProvider';

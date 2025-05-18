@@ -1,18 +1,19 @@
 
 import { motion } from 'framer-motion';
+import { FormikProps } from 'formik';
 import { Card, CardContent } from '@/components/ui/card';
 import SearchForm from '@/components/interline/SearchForm';
 import { BookingFormValues } from '@/components/interline/search-form/schema';
 import { Plane } from 'lucide-react';
 
 interface BookingSectionProps {
-  onSearch: (data: BookingFormValues) => void;
+  formik: FormikProps<any>;
   isSearching: boolean;
   lastSearchCriteria: BookingFormValues | null;
 }
 
 const BookingSection = ({
-  onSearch,
+  formik,
   isSearching,
   lastSearchCriteria
 }: BookingSectionProps) => {
@@ -30,9 +31,8 @@ const BookingSection = ({
         
         <CardContent className="pt-10 px-4 md:px-8 lg:px-10">
           <SearchForm 
-            onSearch={onSearch} 
+            formik={formik}
             isSearching={isSearching} 
-            initialValues={lastSearchCriteria || undefined} 
           />
         </CardContent>
       </Card>
