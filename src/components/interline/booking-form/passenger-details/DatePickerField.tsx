@@ -65,7 +65,6 @@ const DatePickerField = ({
             captionLayout="dropdown-buttons"
             fromYear={fromYear}
             toYear={toYear}
-            hideNavigation={true} // Hide the arrow navigation
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>

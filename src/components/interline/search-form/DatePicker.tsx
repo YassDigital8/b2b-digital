@@ -70,7 +70,6 @@ const DatePicker = ({ form, name, label, disabled = false, minDate }: DatePicker
                 captionLayout="dropdown-buttons"
                 fromYear={fromYear}
                 toYear={toYear}
-                hideNavigation={true} // Hide the arrow navigation
                 defaultMonth={field.value || new Date()}
                 disabled={(date) => {
                   if (minDate) {
