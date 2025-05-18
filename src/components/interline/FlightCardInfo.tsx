@@ -36,7 +36,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onToggleFlightDetails(flight.transaction_id)}
-            className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
+            className="text-chamBlue hover:border-chamBlue hover:bg-chamBlue-50 hover:text-chamBlue-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             Hide Details <ChevronDown className="ml-1 h-4 w-4" />
           </Button>
@@ -50,7 +50,7 @@ const FlightCardInfo: React.FC<FlightCardInfoProps> = ({
 
               onToggleFlightDetails(flight.transaction_id)
             }}
-            className="text-violet-700 border-violet-300 hover:bg-violet-50 hover:text-violet-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
+            className="text-chamBlue hover:border-chamBlue hover:bg-chamBlue-50 hover:text-chamBlue-800 font-medium rounded-full px-4 shadow-sm transition-all duration-300"
           >
             <Eye className="mr-1 h-4 w-4" /> View Details
           </Button>

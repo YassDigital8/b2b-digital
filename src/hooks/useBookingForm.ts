@@ -40,22 +40,22 @@ export const useBookingForm = () => {
     if (!isAuthenticated) return;
     
     const state = location.state;
-    if (!state || !state.flightData || !state.passengers) {
-      toast.error('Booking information is missing', {
-        description: 'Please select a flight first'
-      });
-      navigate('/interline');
-      return;
-    }
+    // if (!state || !state.flightData || !state.passengers) {
+    //   toast.error('Booking information is missing', {
+    //     description: 'Please select a flight first'
+    //   });
+    //   navigate('/interline');
+    //   return;
+    // }
     
-    setFlightData(state.flightData);
+    // setFlightData(state.flightData);
     setPassengersCount(state.passengers);
-    
+    // 
     // Initialize passenger forms based on counts
     const initialPassengers: Passenger[] = [];
     
     // Create forms for adults
-    for (let i = 0; i < state.passengers.adults; i++) {
+    for (let i = 0; i < state?.passengers?.adults; i++) {
       initialPassengers.push({
         id: `adult-${i + 1}`,
         type: 'adult',
@@ -70,7 +70,7 @@ export const useBookingForm = () => {
     }
     
     // Create forms for children
-    for (let i = 0; i < state.passengers.children; i++) {
+    for (let i = 0; i < state?.passengers?.children; i++) {
       initialPassengers.push({
         id: `child-${i + 1}`,
         type: 'child',
@@ -85,7 +85,7 @@ export const useBookingForm = () => {
     }
     
     // Create forms for infants
-    for (let i = 0; i < state.passengers.infants; i++) {
+    for (let i = 0; i < state?.passengers?.infants; i++) {
       initialPassengers.push({
         id: `infant-${i + 1}`,
         type: 'infant',

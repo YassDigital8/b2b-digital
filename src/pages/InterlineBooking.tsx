@@ -32,7 +32,7 @@ const InterlineBooking = () => {
   } = useInterlineBooking();
 
   // if (!user) return null;
-  const { handleBooking } = useBookNavigation(
+  const { onBook } = useBookNavigation(
     searchResults,
     selectedFlight,
     setIsSubmitting,
@@ -63,7 +63,7 @@ const InterlineBooking = () => {
               selectedFlight={selectedFlight}
               setSelectedFlight={setSelectedFlight}
               passengers={passengers}
-              onBook={handleBooking}
+              onBook={onBook}
               isSubmitting={isSubmitting}
               sortBy={sortBy}
               onSortChange={handleSortChange}

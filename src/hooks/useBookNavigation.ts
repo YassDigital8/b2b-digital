@@ -16,7 +16,7 @@ export const useBookNavigation = (
   const navigate = useNavigate();
   
   // Handle booking button click - navigates to booking form
-  const handleBooking = () => {
+  const onBook = () => {
     // if (!selectedFlight) {
     //   toast.error('Please select a flight first');
     //   return;
@@ -41,5 +41,5 @@ export const useBookNavigation = (
     });
   };
   
-  return { handleBooking };
+  return { onBook };
 };

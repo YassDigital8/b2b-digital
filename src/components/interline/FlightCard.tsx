@@ -37,7 +37,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
   const pos = travelAgent?.value?.pos
 
   const [showFlightDetails, setShowFlightDetails] = useState(false);
-  const isSelected = selectedFlightId === flight.id;
+  const isSelected = selectedFlightId === flight.transaction_id;
 
   const handleToggleFlightDetails = (id) => {
     // alert(id)
@@ -50,7 +50,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
   }
   const handleBookNow = () => {
     // First ensure this flight is selected
-    onSelect(flight.id);
+    onSelect(flight.transaction_id);
 
     // If there's an onBook handler, call it to proceed with booking
     if (onBook) {
@@ -69,7 +69,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
           isSelected ? "bg-chamBlue/10" : "bg-gray-50 hover:bg-chamBlue/5"
         )}
         onClick={() => {
-          onSelect(flight?.id);
+          onSelect(flight?.transaction_id);
           // Automatically show details when selecting a flight
           if (!isSelected) {
             setShowFlightDetails(true);

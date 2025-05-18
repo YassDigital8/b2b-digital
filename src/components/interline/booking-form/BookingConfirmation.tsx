@@ -48,29 +48,29 @@ const BookingConfirmation = ({
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-500">From</p>
-              <p className="font-medium">{flightData.segments[0].from}</p>
+              <p className="font-medium">{flightData?.segments[0]?.from}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">To</p>
-              <p className="font-medium">{flightData.segments[flightData.segments.length-1].to}</p>
+              <p className="font-medium">{flightData.segments[flightData?.segments?.length-1]?.to}</p>
             </div>
           </div>
           <hr className="my-3" />
           <div className="space-y-2">
-            {flightData.segments.map((segment: any, index: number) => (
+            {flightData?.segments?.map((segment: any, index: number) => (
               <div key={index} className="flex justify-between text-sm">
                 <div className="flex items-center">
                   <div className="mr-3 w-6 h-6 bg-chamBlue/10 flex items-center justify-center rounded-full text-xs font-medium text-chamBlue">
                     {index + 1}
                   </div>
                   <div>
-                    <p className="font-medium">{segment.from} → {segment.to}</p>
-                    <p className="text-gray-500">{new Date(segment.departureTime).toLocaleString()}</p>
+                    <p className="font-medium">{segment?.from} → {segment?.to}</p>
+                    <p className="text-gray-500">{new Date(segment?.departureTime)?.toLocaleString()}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">{segment.flightNumber}</p>
-                  <p className="text-gray-500">{segment.duration}</p>
+                  <p className="font-medium">{segment?.flightNumber}</p>
+                  <p className="text-gray-500">{segment?.duration}</p>
                 </div>
               </div>
             ))}
@@ -86,21 +86,21 @@ const BookingConfirmation = ({
           <div className="flex items-center mb-3">
             <UserRound className="w-5 h-5 mr-2 text-gray-500" />
             <span className="font-medium">
-              {contactInformation.gender === 'male' ? 'Mr.' : 'Ms.'} {contactInformation.firstName} {contactInformation.lastName}
+              {contactInformation?.gender === 'male' ? 'Mr.' : 'Ms.'} {contactInformation?.firstName} {contactInformation?.lastName}
             </span>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-500">Email</p>
-              <p>{contactInformation.email}</p>
+              <p>{contactInformation?.email}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Phone</p>
-              <p>{contactInformation.phoneCode} {contactInformation.phoneNumber}</p>
+              <p>{contactInformation?.phoneCode} {contactInformation?.phoneNumber}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">City</p>
-              <p>{contactInformation.city}</p>
+              <p>{contactInformation?.city}</p>
             </div>
           </div>
         </div>
@@ -112,24 +112,24 @@ const BookingConfirmation = ({
         </div>
         <div className="p-4">
           <div className="space-y-4">
-            {passengers.map((passenger, index) => (
+            {passengers?.map((passenger, index) => (
               <div key={index} className="border-b border-gray-200 pb-3 last:border-0 last:pb-0">
                 <div className="flex justify-between mb-1">
                   <span className="font-medium">
-                    {passenger.gender === 'male' ? 'Mr.' : 'Ms.'} {passenger.firstName} {passenger.lastName}
+                    {passenger?.gender === 'male' ? 'Mr.' : 'Ms.'} {passenger?.firstName} {passenger?.lastName}
                   </span>
                   <span className="text-sm bg-gray-100 px-2 py-1 rounded-full capitalize">
-                    {passenger.type}
+                    {passenger?.type}
                   </span>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-gray-500">Passport</p>
-                    <p>{passenger.passportNumber}</p>
+                    <p>{passenger?.passportNumber}</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Nationality</p>
-                    <p>{passenger.nationality}</p>
+                    <p>{passenger?.nationality}</p>
                   </div>
                 </div>
               </div>
