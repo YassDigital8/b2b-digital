@@ -308,8 +308,8 @@ const BookingConfirmation = ({
   };
   
   return (
-    <div className="px-6 py-4 pb-6">
-      <div className="flex flex-col items-center justify-center mb-8 text-center">
+    <div className="w-full">
+      <div className="flex flex-col items-center justify-center mb-8 text-center py-6">
         <div className="bg-green-100 p-4 mb-4 rounded-full">
           <CheckCircle size={50} className="text-green-600" />
         </div>
@@ -317,7 +317,7 @@ const BookingConfirmation = ({
         <p className="text-gray-600 mb-6 max-w-md">
           Your booking has been confirmed. A confirmation email has been sent to {fly_cham.contatct_info.Email}.
         </p>
-        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 w-full max-w-md">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 w-full max-w-lg mx-auto">
           <div className="flex justify-between items-center">
             <div>
               <p className="font-medium text-gray-700 mb-1">PNR / Booking Reference</p>
@@ -332,190 +332,192 @@ const BookingConfirmation = ({
         </div>
       </div>
       
-      <Alert className="bg-blue-50 border-blue-100 mb-6">
-        <Info className="h-4 w-4 text-blue-600" />
-        <AlertDescription className="text-blue-700">
-          {fly_cham.ticketing_status.advisory}
-        </AlertDescription>
-      </Alert>
-      
-      {/* Flight Details */}
-      <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
-          <Calendar className="h-4 w-4 mr-2" />
-          <h3 className="font-medium">Flight Details</h3>
-        </div>
-        <div className="p-4">
-          {fly_cham.flight_segments.map((segment, index) => (
-            <div key={index} className={`${index > 0 ? 'mt-6 pt-6 border-t' : ''}`}>
-              <div className="flex items-center mb-3">
-                <Badge className="mr-2 bg-violet-100 text-violet-800 hover:bg-violet-100 border-violet-200">
-                  {index === 0 ? 'Return' : 'Outbound'}
-                </Badge>
-                <span className="text-sm text-gray-500">
-                  {new Date(segment.departure_datetime).toLocaleDateString('en-US', {
-                    weekday: 'short',
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                  })}
-                </span>
-              </div>
-              
-              <div className="flex flex-wrap md:flex-nowrap gap-4 items-center">
-                <div className="flex-1">
-                  <div className="flex items-center mb-1">
-                    <span className="font-bold text-lg">{segment.departure_airport}</span>
-                    <div className="mx-2 flex-1 border-t border-dashed border-gray-300 relative">
-                      <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-gray-500">
-                        {segment.duration}
-                      </div>
-                    </div>
-                    <span className="font-bold text-lg">{segment.arrival_airport}</span>
-                  </div>
-                  
-                  <div className="flex justify-between text-sm text-gray-500">
-                    <span>{formatDate(segment.departure_datetime)}</span>
-                    <span>{formatDate(segment.arrival_datetime)}</span>
-                  </div>
+      <div className="px-4 pb-6 w-full">
+        <Alert className="bg-blue-50 border-blue-100 mb-6">
+          <Info className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-700">
+            {fly_cham.ticketing_status.advisory}
+          </AlertDescription>
+        </Alert>
+        
+        {/* Flight Details */}
+        <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
+            <Calendar className="h-4 w-4 mr-2" />
+            <h3 className="font-medium">Flight Details</h3>
+          </div>
+          <div className="p-4">
+            {fly_cham.flight_segments.map((segment, index) => (
+              <div key={index} className={`${index > 0 ? 'mt-6 pt-6 border-t' : ''}`}>
+                <div className="flex items-center mb-3">
+                  <Badge className="mr-2 bg-violet-100 text-violet-800 hover:bg-violet-100 border-violet-200">
+                    {index === 0 ? 'Return' : 'Outbound'}
+                  </Badge>
+                  <span className="text-sm text-gray-500">
+                    {new Date(segment.departure_datetime).toLocaleDateString('en-US', {
+                      weekday: 'short',
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric'
+                    })}
+                  </span>
                 </div>
                 
-                <div className="border-l pl-4 md:w-1/4 flex flex-col">
-                  <div className="text-sm text-gray-500">Flight</div>
-                  <div className="font-medium">{segment.flight_number}</div>
-                  <div className="text-xs text-gray-500">{segment.airline}</div>
+                <div className="flex flex-wrap md:flex-nowrap gap-4 items-center">
+                  <div className="flex-1">
+                    <div className="flex items-center mb-1">
+                      <span className="font-bold text-lg">{segment.departure_airport}</span>
+                      <div className="mx-2 flex-1 border-t border-dashed border-gray-300 relative">
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-gray-500">
+                          {segment.duration}
+                        </div>
+                      </div>
+                      <span className="font-bold text-lg">{segment.arrival_airport}</span>
+                    </div>
+                    
+                    <div className="flex justify-between text-sm text-gray-500">
+                      <span>{formatDate(segment.departure_datetime)}</span>
+                      <span>{formatDate(segment.arrival_datetime)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="border-l pl-4 md:w-1/4 flex flex-col">
+                    <div className="text-sm text-gray-500">Flight</div>
+                    <div className="font-medium">{segment.flight_number}</div>
+                    <div className="text-xs text-gray-500">{segment.airline}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* E-Ticket */}
-      <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
-          <Ticket className="h-4 w-4 mr-2" />
-          <h3 className="font-medium">E-Ticket Details</h3>
-        </div>
-        <div className="p-4">
-          {fly_cham.passengers.map((passenger, index) => (
-            <div key={index} className="mb-4 last:mb-0">
-              <div className="flex justify-between mb-2">
-                <span className="font-medium">
-                  {passenger.title === 'MS' ? 'Ms.' : 'Mr.'} {passenger.given_name} {passenger.surname}
-                </span>
-                <Badge className="bg-amber-100 text-amber-800 border-amber-200">
-                  {passenger.e_ticket.used_status}
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">E-Ticket Number</p>
-                  <p className="font-mono">{passenger.e_ticket.number}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Passenger Type</p>
-                  <p>{passenger.type === 'ADT' ? 'Adult' : passenger.type === 'CHD' ? 'Child' : 'Infant'}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Payment Details */}
-      <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
-          <CreditCard className="h-4 w-4 mr-2" />
-          <h3 className="font-medium">Payment Details</h3>
-        </div>
-        <div className="p-4">
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <p className="text-sm text-gray-500">Agency</p>
-              <p>{fly_cham.payment.agency_name}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Currency</p>
-              <p>{fly_cham.payment.payment_currency}</p>
-            </div>
+            ))}
           </div>
-          
-          <Separator className="my-4" />
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">Price Breakdown</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Base Fare</span>
-                  <span>${fly_cham.total_fare_summary.base_fare.toFixed(2)}</span>
+        </div>
+        
+        {/* E-Ticket */}
+        <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
+            <Ticket className="h-4 w-4 mr-2" />
+            <h3 className="font-medium">E-Ticket Details</h3>
+          </div>
+          <div className="p-4">
+            {fly_cham.passengers.map((passenger, index) => (
+              <div key={index} className="mb-4 last:mb-0">
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">
+                    {passenger.title === 'MS' ? 'Ms.' : 'Mr.'} {passenger.given_name} {passenger.surname}
+                  </span>
+                  <Badge className="bg-amber-100 text-amber-800 border-amber-200">
+                    {passenger.e_ticket.used_status}
+                  </Badge>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Taxes & Fees</span>
-                  <span>${(fly_cham.total_fare_summary.taxes[0].amount + fly_cham.total_fare_summary.fees[0].amount).toFixed(2)}</span>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">E-Ticket Number</p>
+                    <p className="font-mono">{passenger.e_ticket.number}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Passenger Type</p>
+                    <p>{passenger.type === 'ADT' ? 'Adult' : passenger.type === 'CHD' ? 'Child' : 'Infant'}</p>
+                  </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Payment Details */}
+        <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
+            <CreditCard className="h-4 w-4 mr-2" />
+            <h3 className="font-medium">Payment Details</h3>
+          </div>
+          <div className="p-4">
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <p className="text-sm text-gray-500">Agency</p>
+                <p>{fly_cham.payment.agency_name}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Currency</p>
+                <p>{fly_cham.payment.payment_currency}</p>
               </div>
             </div>
             
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <div className="flex justify-between mb-1">
-                <span className="font-medium">Total Amount</span>
-                <span className="font-bold text-lg text-amber-600">
-                  ${fly_cham.total_fare_summary.total_fare.toFixed(2)}
-                </span>
+            <Separator className="my-4" />
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium mb-2">Price Breakdown</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Base Fare</span>
+                    <span>${fly_cham.total_fare_summary.base_fare.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Taxes & Fees</span>
+                    <span>${(fly_cham.total_fare_summary.taxes[0].amount + fly_cham.total_fare_summary.fees[0].amount).toFixed(2)}</span>
+                  </div>
+                </div>
               </div>
-              <div className="text-xs text-gray-500 text-right">
-                Equivalent to {fly_cham.total_fare_summary.total_equiv_fare} {fly_cham.total_fare_summary.currency}
+              
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="flex justify-between mb-1">
+                  <span className="font-medium">Total Amount</span>
+                  <span className="font-bold text-lg text-amber-600">
+                    ${fly_cham.total_fare_summary.total_fare.toFixed(2)}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-500 text-right">
+                  Equivalent to {fly_cham.total_fare_summary.total_equiv_fare} {fly_cham.total_fare_summary.currency}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Contact Information */}
-      <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
-          <UserRound className="h-4 w-4 mr-2" />
-          <h3 className="font-medium">Contact Information</h3>
-        </div>
-        <div className="p-4">
-          <div className="flex items-center mb-3">
-            <UserRound className="w-5 h-5 mr-2 text-gray-500" />
-            <span className="font-medium">
-              {fly_cham.contatct_info.Title === 'Ms' ? 'Ms.' : 'Mr.'} {fly_cham.contatct_info.FirstName} {fly_cham.contatct_info.LastName}
-            </span>
+        
+        {/* Contact Information */}
+        <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-chamBlue text-white px-4 py-3 flex items-center">
+            <UserRound className="h-4 w-4 mr-2" />
+            <h3 className="font-medium">Contact Information</h3>
           </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-500">Email</p>
-              <p>{fly_cham.contatct_info.Email}</p>
+          <div className="p-4">
+            <div className="flex items-center mb-3">
+              <UserRound className="w-5 h-5 mr-2 text-gray-500" />
+              <span className="font-medium">
+                {fly_cham.contatct_info.Title === 'Ms' ? 'Ms.' : 'Mr.'} {fly_cham.contatct_info.FirstName} {fly_cham.contatct_info.LastName}
+              </span>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Phone</p>
-              <p>+{fly_cham.contatct_info.CountryCode} {fly_cham.contatct_info.PhoneNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Country</p>
-              <p>{fly_cham.contatct_info.CountryName}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">City</p>
-              <p>{fly_cham.contatct_info.CityName}</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-500">Email</p>
+                <p>{fly_cham.contatct_info.Email}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Phone</p>
+                <p>+{fly_cham.contatct_info.CountryCode} {fly_cham.contatct_info.PhoneNumber}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Country</p>
+                <p>{fly_cham.contatct_info.CountryName}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">City</p>
+                <p>{fly_cham.contatct_info.CityName}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Action Buttons */}
-      <div className="flex justify-center gap-4">
-        <Button
-          onClick={handleBackToHome}
-          className="bg-gradient-to-r from-chamBlue to-chamDarkBlue hover:from-chamDarkBlue hover:to-blue-800 text-white px-8 py-2 rounded-full shadow-md"
-        >
-          Return to Dashboard
-        </Button>
+        
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4">
+          <Button
+            onClick={handleBackToHome}
+            className="bg-gradient-to-r from-chamBlue to-chamDarkBlue hover:from-chamDarkBlue hover:to-blue-800 text-white px-8 py-2 rounded-full shadow-md"
+          >
+            Return to Dashboard
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -25,9 +25,10 @@ export const NavLinks = ({ scrolled, isMobile = false, onLinkClick }: NavLinksPr
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -10 }}
+      initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      className="visible"
     >
       <DesktopNavLinks scrolled={scrolled} onLinkClick={onLinkClick} />
     </motion.div>
