@@ -10,6 +10,8 @@ import BookResults from '@/components/interline/BookResults';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { useBookNavigation } from '@/hooks/useBookNavigation';
 import { toast } from 'sonner';
+import { FormProvider as HookFormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 // Validation schema for the search form
 const searchFormSchema = Yup.object().shape({
@@ -94,6 +96,12 @@ const InterlineBooking = () => {
     },
   });
   
+  // Create a react-hook-form instance for shadcn/ui compatibility
+  const methods = useForm({
+    defaultValues: {},
+    mode: "onBlur"
+  });
+  
   const handleSearch = (values) => {
     console.log('Searching with values:', values);
     setIsSubmitting(true);
@@ -122,22 +130,24 @@ const InterlineBooking = () => {
             transition={{ delay: 0.2, duration: 0.4 }}
             className="mb-6"
           >
-            <BookingSection 
-              formik={formik}
-              isSearching={isSearching}
-              lastSearchCriteria={lastSearchCriteria}
-            />
-            
-            <BookResults
-              searchResults={searchResults}
-              selectedFlight={selectedFlight}
-              setSelectedFlight={setSelectedFlight}
-              passengers={passengers}
-              onBook={handleBooking}
-              isSubmitting={isSubmitting}
-              sortBy={sortBy}
-              onSortChange={handleSortChange}
-            />
+            <HookFormProvider {...methods}>
+              <BookingSection 
+                formik={formik}
+                isSearching={isSearching}
+                lastSearchCriteria={lastSearchCriteria}
+              />
+              
+              <BookResults
+                searchResults={searchResults}
+                selectedFlight={selectedFlight}
+                setSelectedFlight={setSelectedFlight}
+                passengers={passengers}
+                onBook={handleBooking}
+                isSubmitting={isSubmitting}
+                sortBy={sortBy}
+                onSortChange={handleSortChange}
+              />
+            </HookFormProvider>
           </motion.div>
         </div>
       </main>

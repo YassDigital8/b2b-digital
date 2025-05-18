@@ -18,11 +18,17 @@ function FormProvider<T>({ initialValues, onSubmit, validationSchema, children }
     onSubmit,
   });
   
-  // Create a mock react-hook-form instance for shadcn/ui compatibility
-  const hookForm = useForm();
+  // Create a fully initialized react-hook-form instance for shadcn/ui compatibility
+  // This is crucial for the shadcn/ui Form components to work properly
+  const methods = useForm({
+    // We need to provide default values to avoid the 'null' error
+    defaultValues: {},
+    // This is important for the Form components to render without errors
+    mode: "onBlur"
+  });
 
   return (
-    <HookFormProvider {...hookForm}>
+    <HookFormProvider {...methods}>
       <form onSubmit={formik.handleSubmit} className="h-full">
         {children(formik)}
       </form>

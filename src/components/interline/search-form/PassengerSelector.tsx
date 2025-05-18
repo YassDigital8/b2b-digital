@@ -102,7 +102,7 @@ const PassengerSelector = ({
   
   return (
     <div className="space-y-2">
-      <FormLabel>Passengers *</FormLabel>
+      <div className="text-sm font-medium">Passengers *</div>
       <Popover>
         <PopoverTrigger asChild>
           <Button
