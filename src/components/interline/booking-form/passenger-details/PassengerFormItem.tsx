@@ -97,7 +97,6 @@ const PassengerFormItem = ({
                   formik.setFieldValue(getFieldName('gender'), value);
                 }}
                 name={getFieldName('gender')}
-                onBlur={formik.handleBlur}
               >
                 <SelectTrigger id={`${passenger.id}-gender`} className={`w-full mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm ${getErrorMessage(getFieldName('gender')) ? 'border-red-500 ring-1 ring-red-500' : ''}`}>
                   <SelectValue placeholder="Select Gender" />
