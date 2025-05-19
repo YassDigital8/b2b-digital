@@ -57,7 +57,7 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        // Set components to empty to hide navigation arrows
+        // Remove navigation arrows
         IconLeft: () => null,
         IconRight: () => null,
       }}
