@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,10 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from 'framer-motion';
-import { User, Mail, Building, MapPin, Shield, KeyRound, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Building, MapPin, Shield, KeyRound, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { user, requireAuth } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -129,6 +131,17 @@ const Profile = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
+            <div className="flex items-center gap-3 mb-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 text-chamBlue hover:bg-chamBlue/5"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </Button>
+            </div>
             <h1 className="text-3xl font-bold text-chamDarkBlue">Your Profile</h1>
             <p className="text-gray-600">Manage your account information and settings</p>
           </motion.div>
