@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
@@ -6,7 +7,6 @@ import { useAuth } from '@/hooks/useAuth';
 
 // Import components
 import ServicesSection from '@/components/dashboard/ServicesSection';
-import ReportsSection from '@/components/dashboard/ReportsSection';
 import AccountSection from '@/components/dashboard/AccountSection';
 import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
 import BookingTrendsChart from '@/components/dashboard/charts/BookingTrendsChart';
@@ -161,9 +161,6 @@ const Dashboard = () => {
           
           {/* Services Section - Third row */}
           <ServicesSection />
-          
-          {/* Reports Section - Fourth row */}
-          <ReportsSection />
         </div>
       </main>
       
