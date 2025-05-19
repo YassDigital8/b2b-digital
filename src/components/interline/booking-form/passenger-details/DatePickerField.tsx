@@ -24,12 +24,6 @@ const DatePickerField = ({
   disableFuture = false, 
   disablePast = false 
 }: DatePickerFieldProps) => {
-  // Calculate reasonable year ranges based on the field type
-  // For DOB fields (disableFuture=true), use 1920 as the start year
-  const currentYear = new Date().getFullYear();
-  const fromYear = 1920; // Always start from 1920 as requested
-  const toYear = disablePast ? currentYear + 20 : currentYear;
-
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
@@ -62,9 +56,6 @@ const DatePickerField = ({
               return false;
             }}
             initialFocus
-            captionLayout="dropdown-buttons"
-            fromYear={fromYear}
-            toYear={toYear}
             className={cn("p-3 pointer-events-auto rounded-lg bg-gradient-to-br from-white to-blue-50/30")}
           />
         </PopoverContent>
