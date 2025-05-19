@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, Book, MessageCircle, Info, MessageSquare } from 'lucide-react';
 import {
   Accordion,
@@ -69,14 +68,13 @@ const FAQSection = () => {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   
-  const handleItemOpen = (itemId: string) => {
-    setActiveItem(itemId === activeItem ? null : itemId);
+  // Fixed logic to properly handle accordion item toggling
+  const handleItemClick = (itemId: string) => {
+    setActiveItem(prev => prev === itemId ? null : itemId);
   };
 
   return (
-    <div
-      className="mb-12"
-    >
+    <div className="mb-12">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 
@@ -98,7 +96,6 @@ const FAQSection = () => {
             collapsible 
             className="bg-white/85 backdrop-blur-sm rounded-lg"
             value={activeItem || undefined}
-            onValueChange={(value) => setActiveItem(value || null)}
           >
             {faqItems.map((item, index) => (
               <div
@@ -115,8 +112,13 @@ const FAQSection = () => {
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   <AccordionTrigger 
-                    onClick={() => handleItemOpen(item.id)}
                     className="py-5 px-6 font-medium text-chamDarkBlue hover:no-underline group"
+                    onClick={(e) => {
+                      // Prevent the default behavior of AccordionTrigger
+                      // This prevents the double-triggering of state updates
+                      e.stopPropagation();
+                      handleItemClick(item.id);
+                    }}
                   >
                     <div className="flex items-center space-x-3">
                       <div 
