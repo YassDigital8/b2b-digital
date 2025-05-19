@@ -46,10 +46,10 @@ const ServiceCard = ({ id, title, description, icon: Icon, link, color, buttonTe
         <CardFooter className="mt-auto pt-2">
           <Link to={link} className="w-full">
             <Button 
-              className="w-full bg-gradient-to-r from-chamBlue to-blue-500 hover:from-chamBlue/90 hover:to-blue-600 flex items-center justify-center gap-2 shadow-sm hover:shadow"
+              className="w-full bg-gradient-to-r from-chamBlue to-blue-500 hover:from-chamBlue/90 hover:to-blue-600 flex items-center justify-center gap-2 shadow-sm hover:shadow text-white py-6"
             >
               {buttonText}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-5 w-5 animate-pulse" />
             </Button>
           </Link>
         </CardFooter>

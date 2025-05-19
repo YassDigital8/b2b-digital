@@ -1,5 +1,5 @@
 
-import { Calendar, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, ArrowRight, Clock, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,14 +31,30 @@ const UpcomingBookingsCard = () => {
                 Pending
               </span>
             </div>
+            <div className="mt-3 flex justify-end">
+              <Link to="/booking-details/123">
+                <Button variant="outline" size="sm" className="text-xs h-7 px-2">
+                  View Details
+                </Button>
+              </Link>
+            </div>
           </div>
+          
           <div className="text-center py-2">
             <p className="text-gray-500 text-sm">No other upcoming bookings</p>
           </div>
-          <div className="flex justify-center">
+          
+          <div className="flex justify-center gap-2 mt-2">
             <Link to="/interline">
-              <Button variant="outline" className="text-chamBlue">
+              <Button className="bg-chamBlue hover:bg-chamBlue/90 text-white flex items-center gap-1">
+                <Plus className="h-4 w-4" />
                 Book New Flight
+              </Button>
+            </Link>
+            
+            <Link to="/bookings">
+              <Button variant="outline" className="text-chamBlue border-chamBlue/30 hover:bg-chamBlue/5">
+                View All
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             </Link>

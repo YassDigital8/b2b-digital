@@ -14,6 +14,7 @@ import BookingTrendsChart from '@/components/dashboard/charts/BookingTrendsChart
 import RevenueChart from '@/components/dashboard/charts/RevenueChart';
 import DestinationsChart from '@/components/dashboard/charts/DestinationsChart';
 import UpcomingBookingsCard from '@/components/dashboard/charts/UpcomingBookingsCard';
+import ActionBanner from '@/components/dashboard/ActionBanner';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
@@ -84,12 +85,22 @@ const Dashboard = () => {
             </motion.div>
           </div>
           
+          {/* New Action Banner for clearer CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <ActionBanner />
+          </motion.div>
+          
           {/* News Announcement - Moving ticker */}
           {showAnnouncement && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-6"
             >
               <NewsAnnouncement

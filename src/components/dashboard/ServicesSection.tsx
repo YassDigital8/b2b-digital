@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Car, CreditCard, Plane } from 'lucide-react';
+import { Car, CreditCard, Plane, Star } from 'lucide-react';
 import ServiceCard from './ServiceCard';
 
 // Mock data for services
@@ -12,7 +12,7 @@ const services = [
     icon: Plane,
     link: '/interline',
     color: 'bg-purple-100',
-    buttonText: 'Book Flights',
+    buttonText: 'Book Flights Now',
     isNew: true
   },
   {
@@ -46,8 +46,15 @@ const ServicesSection = () => {
       className="mb-12"
     >
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-chamDarkBlue">Book Services</h2>
-        <p className="text-chamBlue">Select a service to get started</p>
+        <div>
+          <h2 className="text-2xl font-bold text-chamDarkBlue flex items-center">
+            Our Services
+            <span className="ml-2 text-sm bg-chamBlue/10 text-chamBlue px-2 py-1 rounded-full">
+              3 Available
+            </span>
+          </h2>
+          <p className="text-gray-600 mt-1">Explore our comprehensive travel services</p>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
