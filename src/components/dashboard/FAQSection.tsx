@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, Book, MessageCircle, Info } from 'lucide-react';
+import { HelpCircle, Book, MessageCircle, Info, MessageSquare } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
