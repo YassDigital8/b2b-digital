@@ -52,11 +52,17 @@ const AuthModal = ({
       }} 
       className="w-full max-w-md"
     >
-      <Card className="border-none shadow-lg overflow-hidden bg-white/95 backdrop-blur-lg">
-        <AspectRatio ratio={16/3} className="bg-gradient-to-r from-chamBlue to-blue-500 h-20 flex items-center justify-center">
-          <div className="text-white text-center">
+      <Card className="border-none shadow-xl overflow-hidden bg-white/95 backdrop-blur-xl rounded-2xl">
+        <AspectRatio ratio={16/3} className="bg-gradient-to-r from-chamBlue to-blue-500 h-20 flex items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIGZpbGw9IiNmZmZmZmYxMCIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')] opacity-20"></div>
+          <div className="text-white text-center relative z-10">
             <h3 className="text-xl font-semibold">Cham Wings</h3>
-            <p className="text-xs opacity-80">Travel Hub Portal</p>
+            <p className="text-xs opacity-90">Travel Hub Portal</p>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-8">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="absolute bottom-0 left-0 w-full h-full">
+              <path fill="#ffffff" fillOpacity="0.95" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,117.3C672,96,768,96,864,128C960,160,1056,224,1152,229.3C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
           </div>
         </AspectRatio>
         

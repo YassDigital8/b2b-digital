@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { LoginFormValues } from '@/context/auth/types';
@@ -84,10 +84,16 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <CardContent className={`space-y-6 ${isMobile ? 'px-4 pt-3' : 'pt-4'}`}>
           {loginError && (
-            <Alert variant="destructive" className="mb-4 text-sm">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>{loginError}</AlertDescription>
-            </Alert>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Alert variant="destructive" className="mb-4 text-sm border border-red-200">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>{loginError}</AlertDescription>
+              </Alert>
+            </motion.div>
           )}
           
           <motion.div 
@@ -99,17 +105,25 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium text-gray-700">Email</FormLabel>
+                  <FormLabel className="font-medium text-gray-700 flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-chamBlue" />
+                    Email
+                  </FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="your@email.com" 
-                      {...field} 
-                      className="w-full h-11 border-gray-200 shadow-sm focus-visible:ring-chamBlue"
-                      type="email"
-                      inputMode="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                    />
+                    <div className="relative">
+                      <Input 
+                        placeholder="your@email.com" 
+                        {...field} 
+                        className="w-full h-12 border-gray-200 shadow-sm focus-visible:ring-chamBlue pl-10 rounded-xl"
+                        type="email"
+                        inputMode="email"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                      />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <Mail className="h-5 w-5" />
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage className="text-xs" />
                 </FormItem>
@@ -126,16 +140,22 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium text-gray-700">Password</FormLabel>
+                  <FormLabel className="font-medium text-gray-700 flex items-center gap-2">
+                    <Lock className="h-4 w-4 text-chamBlue" />
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input 
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••" 
                         {...field}
-                        className="w-full h-11 border-gray-200 shadow-sm pr-10 focus-visible:ring-chamBlue" 
+                        className="w-full h-12 border-gray-200 shadow-sm pl-10 pr-10 rounded-xl focus-visible:ring-chamBlue" 
                         autoComplete="current-password"
                       />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <Lock className="h-5 w-5" />
+                      </div>
                       <button
                         type="button"
                         onClick={toggleShowPassword}
@@ -163,7 +183,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <Button 
               type="button" 
               variant="link" 
-              className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto" 
+              className="px-0 text-chamBlue hover:text-chamGold text-sm h-auto font-medium" 
               onClick={() => navigate('/forgot-password')}
             >
               Forgot your password?
@@ -178,7 +198,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           >
             <Button 
               type="submit" 
-              className="w-full mx-auto bg-chamBlue hover:bg-chamBlue/90 py-2.5 h-auto text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+              className="w-full mx-auto bg-gradient-to-r from-chamBlue to-blue-500 hover:from-chamBlue/90 hover:to-blue-600 py-3 h-auto text-sm font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
