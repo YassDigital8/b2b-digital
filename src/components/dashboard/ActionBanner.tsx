@@ -9,7 +9,7 @@ import {
   TooltipTrigger, 
   TooltipContent 
 } from '@/components/ui/tooltip';
-import { Plane, Car, CreditCard, Bookmark, ChevronRight, Info } from 'lucide-react';
+import { Plane, Car, CreditCard, ChevronRight, Info, FileChart } from 'lucide-react';
 
 const ActionBanner = () => {
   const [quickActions] = useState([
@@ -38,12 +38,12 @@ const ActionBanner = () => {
       tooltipText: 'Add funds to your account'
     },
     {
-      id: 'saved',
-      label: 'Saved Bookings',
-      icon: Bookmark,
-      link: '/saved-bookings',
+      id: 'reports',
+      label: 'Reports',
+      icon: FileChart,
+      link: '/reports',
       color: 'bg-amber-100',
-      tooltipText: 'View your saved booking templates'
+      tooltipText: 'View performance reports and analytics'
     }
   ]);
 
