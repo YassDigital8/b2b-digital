@@ -1,5 +1,6 @@
 
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import InterlineHeader from '@/components/interline/InterlineHeader';
@@ -7,6 +8,8 @@ import BookingSection from '@/components/interline/BookingSection';
 import BookResults from '@/components/interline/BookResults';
 import { useInterlineBooking } from '@/hooks/useInterlineBooking';
 import { useBookNavigation } from '@/hooks/useBookNavigation';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 const InterlineBooking = () => {
   const {
@@ -36,6 +39,19 @@ const InterlineBooking = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50/10">
       <Navbar />
+      
+      {/* Back Button */}
+      <div className="container mx-auto px-4 pt-20">
+        <Link to="/dashboard">
+          <Button 
+            variant="ghost" 
+            className="mb-2 pl-1 text-chamBlue hover:bg-blue-50"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back to Dashboard
+          </Button>
+        </Link>
+      </div>
       
       <InterlineHeader />
       
