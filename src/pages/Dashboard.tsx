@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/hooks/useAuth';
 
 // Import components
-import ServicesSection from '@/components/dashboard/ServicesSection';
+import FAQSection from '@/components/dashboard/FAQSection';
 import AccountSection from '@/components/dashboard/AccountSection';
 import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
 import UpcomingBookingsCard from '@/components/dashboard/charts/UpcomingBookingsCard';
@@ -99,8 +99,8 @@ const Dashboard = () => {
             </div>
           </div>
           
-          {/* Services Section */}
-          <ServicesSection />
+          {/* FAQ Section - Replacing Services Section */}
+          <FAQSection />
         </div>
       </main>
       
