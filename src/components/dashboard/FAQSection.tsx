@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, Book, MessageCircle, Info, MessageSquare } from 'lucide-react';
@@ -8,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 // FAQ items data with icons
 const faqItems = [
@@ -18,7 +20,8 @@ const faqItems = [
     icon: <Book className="h-5 w-5" />,
     color: 'text-purple-500 bg-purple-100',
     link: '/interline',
-    linkText: 'Go to Interline Booking'
+    linkText: 'Go to Interline Booking',
+    gradient: 'from-purple-500/20 to-purple-50'
   },
   {
     id: 'account-top-up',
@@ -27,7 +30,8 @@ const faqItems = [
     icon: <Info className="h-5 w-5" />,
     color: 'text-blue-500 bg-blue-100',
     link: '/top-up',
-    linkText: 'Top Up Your Account'
+    linkText: 'Top Up Your Account',
+    gradient: 'from-blue-500/20 to-blue-50'
   },
   {
     id: 'ya-marhaba',
@@ -36,7 +40,8 @@ const faqItems = [
     icon: <MessageCircle className="h-5 w-5" />,
     color: 'text-green-500 bg-green-100',
     link: null,
-    linkText: null
+    linkText: null,
+    gradient: 'from-green-500/20 to-green-50'
   },
   {
     id: 'cham-miles',
@@ -45,7 +50,8 @@ const faqItems = [
     icon: <HelpCircle className="h-5 w-5" />,
     color: 'text-amber-500 bg-amber-100',
     link: '/enroll-cham-miles',
-    linkText: 'Enroll in Cham Miles'
+    linkText: 'Enroll in Cham Miles',
+    gradient: 'from-amber-500/20 to-amber-50'
   },
   {
     id: 'business-reports',
@@ -54,7 +60,8 @@ const faqItems = [
     icon: <MessageSquare className="h-5 w-5" />,
     color: 'text-rose-500 bg-rose-100',
     link: '/reports',
-    linkText: 'View Reports'
+    linkText: 'View Reports',
+    gradient: 'from-rose-500/20 to-rose-50'
   },
 ];
 
@@ -75,78 +82,112 @@ const FAQSection = () => {
     >
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-chamDarkBlue flex items-center gap-2">
+          <motion.h2 
+            className="text-2xl font-bold text-chamDarkBlue flex items-center gap-2"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             Frequently Asked Questions
-            <HelpCircle className="h-5 w-5 text-chamBlue" />
-          </h2>
+            <motion.div 
+              initial={{ rotate: -10, scale: 0.8 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.5, type: "spring" }}
+            >
+              <HelpCircle className="h-5 w-5 text-chamBlue" />
+            </motion.div>
+          </motion.h2>
           <p className="text-gray-600 mt-1">Quick answers to common questions</p>
         </div>
       </div>
       
-      <Card className="overflow-hidden border-none shadow-soft">
-        <Accordion 
-          type="single" 
-          collapsible 
-          className="bg-white rounded-lg"
-          value={activeItem || undefined}
-          onValueChange={(value) => setActiveItem(value || null)}
-        >
-          {faqItems.map((item) => (
-            <AccordionItem 
-              key={item.id} 
-              value={item.id} 
-              className={`border-b border-gray-100 last:border-0 overflow-hidden transition-colors duration-300 ${
-                activeItem === item.id ? 'bg-chamGray/10' : ''
-              } ${
-                hoveredItem === item.id && activeItem !== item.id ? 'bg-chamGray/5' : ''
-              }`}
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <AccordionTrigger 
-                onClick={() => handleItemOpen(item.id)}
-                className="py-4 px-6 font-medium text-chamDarkBlue hover:bg-chamGray/5 hover:no-underline group"
+      <Card className="overflow-hidden border-none shadow-soft rounded-xl">
+        <div className="bg-gradient-to-r from-white to-chamGray/10 p-0.5 rounded-xl">
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="bg-white/85 backdrop-blur-sm rounded-lg"
+            value={activeItem || undefined}
+            onValueChange={(value) => setActiveItem(value || null)}
+          >
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.4 }}
               >
-                <div className="flex items-center">
-                  <div className={`mr-3 p-2 rounded-lg ${item.color} transition-transform group-hover:scale-110`}>
-                    {item.icon}
-                  </div>
-                  <span className="text-left">{item.question}</span>
-                </div>
-              </AccordionTrigger>
-              <AnimatePresence>
-                <AccordionContent className="px-6 pb-4 text-gray-700">
-                  <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="pt-2 pb-1"
+                <AccordionItem 
+                  value={item.id} 
+                  className={`border-b border-gray-100 last:border-0 overflow-hidden transition-all duration-300 ${
+                    activeItem === item.id ? 'bg-gradient-to-r ' + item.gradient : ''
+                  } ${
+                    hoveredItem === item.id && activeItem !== item.id ? 'bg-chamGray/5' : ''
+                  }`}
+                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
+                  <AccordionTrigger 
+                    onClick={() => handleItemOpen(item.id)}
+                    className="py-5 px-6 font-medium text-chamDarkBlue hover:no-underline group"
                   >
-                    <div className="border-l-4 border-chamBlue/30 pl-4">
-                      <p>{item.answer}</p>
-                      
-                      {item.link && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.2, duration: 0.3 }}
-                        >
-                          <a 
-                            href={item.link} 
-                            className="inline-flex items-center mt-3 px-4 py-2 rounded-md text-sm font-medium bg-chamBlue/10 text-chamBlue hover:bg-chamBlue/20 transition-colors"
-                          >
-                            {item.linkText} →
-                          </a>
-                        </motion.div>
-                      )}
+                    <div className="flex items-center space-x-3">
+                      <motion.div 
+                        className={`p-2.5 rounded-xl ${item.color} transition-all duration-300`}
+                        whileHover={{ rotate: 5, scale: 1.1 }}
+                        animate={{ 
+                          rotate: activeItem === item.id ? 5 : 0,
+                          scale: activeItem === item.id ? 1.05 : 1 
+                        }}
+                      >
+                        {item.icon}
+                      </motion.div>
+                      <span className="text-left font-medium transition-all duration-300 group-hover:translate-x-1">
+                        {item.question}
+                      </span>
                     </div>
-                  </motion.div>
-                </AccordionContent>
-              </AnimatePresence>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                  </AccordionTrigger>
+                  
+                  <AnimatePresence>
+                    <AccordionContent className="px-6 pb-5 text-gray-700">
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="pl-12 py-2">
+                          <div className="rounded-lg bg-white/80 backdrop-blur-sm p-4 border-l-4 border-r border-t border-b border-l-solid"
+                               style={{ borderLeftColor: item.color.split(' ')[0].replace('text-', 'rgb(var(--'))}}
+                          >
+                            <p className="text-gray-700">{item.answer}</p>
+                            
+                            {item.link && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2, duration: 0.3 }}
+                              >
+                                <motion.a 
+                                  href={item.link} 
+                                  className={`inline-flex items-center mt-4 px-4 py-2 rounded-md text-sm font-medium bg-chamBlue/10 text-chamBlue hover:bg-chamBlue/20 transition-all`}
+                                  whileHover={{ x: 5 }}
+                                  whileTap={{ scale: 0.98 }}
+                                >
+                                  {item.linkText} →
+                                </motion.a>
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </AccordionContent>
+                  </AnimatePresence>
+                </AccordionItem>
+              </motion.div>
+            ))}
+          </Accordion>
+        </div>
       </Card>
     </motion.div>
   );
