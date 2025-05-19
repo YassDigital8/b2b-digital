@@ -9,42 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 import ServicesSection from '@/components/dashboard/ServicesSection';
 import AccountSection from '@/components/dashboard/AccountSection';
 import NewsAnnouncement from '@/components/dashboard/NewsAnnouncement';
-import BookingTrendsChart from '@/components/dashboard/charts/BookingTrendsChart';
-import RevenueChart from '@/components/dashboard/charts/RevenueChart';
-import DestinationsChart from '@/components/dashboard/charts/DestinationsChart';
 import UpcomingBookingsCard from '@/components/dashboard/charts/UpcomingBookingsCard';
 import ActionBanner from '@/components/dashboard/ActionBanner';
 
 const Dashboard = () => {
   const { user, requireAuth } = useAuth();
   const [showAnnouncement, setShowAnnouncement] = useState(true);
-
-  // Mock data for charts
-  const bookingTrendsData = [
-    { month: 'Jan', count: 23 },
-    { month: 'Feb', count: 28 },
-    { month: 'Mar', count: 32 },
-    { month: 'Apr', count: 38 },
-    { month: 'May', count: 42 },
-    { month: 'Jun', count: 47 },
-  ];
-
-  const revenueData = [
-    { month: 'Jan', amount: 5400 },
-    { month: 'Feb', amount: 6200 },
-    { month: 'Mar', amount: 7100 },
-    { month: 'Apr', amount: 8300 },
-    { month: 'May', amount: 9100 },
-    { month: 'Jun', amount: 10200 },
-  ];
-
-  const destinationsData = [
-    { name: 'Dubai', value: 35 },
-    { name: 'Beirut', value: 28 },
-    { name: 'Damascus', value: 22 },
-    { name: 'Kuwait', value: 18 },
-    { name: 'Doha', value: 14 },
-  ];
 
   useEffect(() => {
     const isAuthenticated = requireAuth('/login');
@@ -100,7 +70,7 @@ const Dashboard = () => {
             </motion.div>
           )}
           
-          {/* Quick Action Banner - Moved below News Announcement */}
+          {/* Quick Action Banner - Below News Announcement */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,22 +80,11 @@ const Dashboard = () => {
             <ActionBanner />
           </motion.div>
           
-          {/* Main dashboard grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Main dashboard grid - Simplified with only Account and Upcoming Bookings */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Left column - Account Section */}
             <div className="md:col-span-1">
               <AccountSection user={user} />
-            </div>
-            
-            {/* Middle column - Booking Trends */}
-            <div className="md:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
-                <BookingTrendsChart data={bookingTrendsData} />
-              </motion.div>
             </div>
             
             {/* Right column - Upcoming Bookings */}
@@ -140,26 +99,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          {/* Second row - Revenue and Destinations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              <RevenueChart data={revenueData} />
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <DestinationsChart data={destinationsData} />
-            </motion.div>
-          </div>
-          
-          {/* Services Section - Third row */}
+          {/* Services Section */}
           <ServicesSection />
         </div>
       </main>
