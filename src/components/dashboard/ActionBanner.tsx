@@ -9,7 +9,7 @@ import {
   TooltipTrigger, 
   TooltipContent 
 } from '@/components/ui/tooltip';
-import { Plane, Car, CreditCard, ChevronRight, Info, FileChart } from 'lucide-react';
+import { Plane, Car, CreditCard, ChevronRight, Info, FileBarChart } from 'lucide-react';
 
 const ActionBanner = () => {
   const [quickActions] = useState([
@@ -40,7 +40,7 @@ const ActionBanner = () => {
     {
       id: 'reports',
       label: 'Reports',
-      icon: FileChart,
+      icon: FileBarChart,
       link: '/reports',
       color: 'bg-amber-100',
       tooltipText: 'View performance reports and analytics'
