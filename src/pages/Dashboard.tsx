@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
@@ -85,16 +84,6 @@ const Dashboard = () => {
             </motion.div>
           </div>
           
-          {/* New Action Banner for clearer CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6"
-          >
-            <ActionBanner />
-          </motion.div>
-          
           {/* News Announcement - Moving ticker */}
           {showAnnouncement && (
             <motion.div 
@@ -110,6 +99,16 @@ const Dashboard = () => {
               />
             </motion.div>
           )}
+          
+          {/* Quick Action Banner - Moved below News Announcement */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <ActionBanner />
+          </motion.div>
           
           {/* Main dashboard grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
