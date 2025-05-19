@@ -68,9 +68,13 @@ const FAQSection = () => {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   
-  // Handle click on accordion item - completely separate from the Accordion's internal state
+  // Handle click on FAQ item - this will now directly toggle the accordion
   const handleItemClick = (itemId: string) => {
-    setActiveItem(prev => prev === itemId ? null : itemId);
+    if (activeItem === itemId) {
+      setActiveItem(null); // Close if already open
+    } else {
+      setActiveItem(itemId); // Open the clicked item
+    }
   };
 
   return (
@@ -114,10 +118,9 @@ const FAQSection = () => {
                   <AccordionTrigger 
                     className="py-5 px-6 font-medium text-chamDarkBlue hover:no-underline group"
                     onClick={(e) => {
-                      // Stop propagation to prevent the default AccordionTrigger behavior
-                      e.stopPropagation();
-                      // Then handle the click manually
-                      handleItemClick(item.id);
+                      e.preventDefault(); // Prevent default behavior
+                      e.stopPropagation(); // Stop event propagation
+                      handleItemClick(item.id); // Handle click manually
                     }}
                   >
                     <div className="flex items-center space-x-3">
