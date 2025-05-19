@@ -1,5 +1,5 @@
 
-import { Calendar, ArrowRight, Clock, Plus } from 'lucide-react';
+import { Calendar, ArrowRight, Clock, Plus, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,26 @@ const UpcomingBookingsCard = () => {
               <Link to="/booking-details/123">
                 <Button variant="outline" size="sm" className="text-xs h-7 px-2">
                   View Details
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* Cham Miles Program CTA Banner */}
+          <div className="p-4 rounded-lg bg-chamBlue/10 border border-chamBlue/20">
+            <div className="flex items-center gap-3">
+              <div className="bg-chamGold p-2 rounded-full">
+                <Award className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <p className="font-medium text-chamDarkBlue">Enroll Your Passenger to Cham Miles</p>
+                <p className="text-xs text-gray-600 mt-1">Earn miles on every flight and enjoy exclusive benefits</p>
+              </div>
+            </div>
+            <div className="mt-3 flex justify-end">
+              <Link to="/enroll-cham-miles">
+                <Button size="sm" className="bg-chamGold hover:bg-chamGold/90 text-white">
+                  Enroll Now
                 </Button>
               </Link>
             </div>
