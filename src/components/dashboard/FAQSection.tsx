@@ -68,7 +68,7 @@ const FAQSection = () => {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   
-  // Fixed logic to properly handle accordion item toggling
+  // Handle click on accordion item - completely separate from the Accordion's internal state
   const handleItemClick = (itemId: string) => {
     setActiveItem(prev => prev === itemId ? null : itemId);
   };
@@ -97,7 +97,7 @@ const FAQSection = () => {
             className="bg-white/85 backdrop-blur-sm rounded-lg"
             value={activeItem || undefined}
           >
-            {faqItems.map((item, index) => (
+            {faqItems.map((item) => (
               <div
                 key={item.id}
               >
@@ -114,9 +114,9 @@ const FAQSection = () => {
                   <AccordionTrigger 
                     className="py-5 px-6 font-medium text-chamDarkBlue hover:no-underline group"
                     onClick={(e) => {
-                      // Prevent the default behavior of AccordionTrigger
-                      // This prevents the double-triggering of state updates
+                      // Stop propagation to prevent the default AccordionTrigger behavior
                       e.stopPropagation();
+                      // Then handle the click manually
                       handleItemClick(item.id);
                     }}
                   >
