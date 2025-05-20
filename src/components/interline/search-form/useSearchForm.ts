@@ -28,13 +28,13 @@ export const useSearchForm = (
   const fromCity = form.watch('fromCity');
   
   // Manage return date requirement based on trip type
-  useEffect(() => {
-    if (tripType === 'round-trip') {
-      form.register('returnDate', { required: "Return date is required for round trips" });
-    } else {
-      form.setValue('returnDate', null);
-    }
-  }, [tripType, form]);
+  // useEffect(() => {
+  //   if (tripType === 'round-trip') {
+  //     form.register('returnDate', { required: "Return date is required for round trips" });
+  //   } else {
+  //     form.setValue('returnDate', null);
+  //   }
+  // }, [tripType, form]);
   
   // Initialize form with initial values if provided
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { b2bAPi, BASE_URL, GetFlightsWithPrice, POS } from '@/axios/urls';
+import { b2bAPi, BASE_URL, BookFlight, GetFlightsWithPrice, POS } from '@/axios/urls';
 import { apiClient } from '@/axios/axioxConfig';
 import { getHeadres } from '@/axios/headres';
 
@@ -65,6 +65,29 @@ export const getFlightsWithPriceService = createAsyncThunk<
       return response.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue(e.response?.data?.message || 'Something went wrong');
+    }
+  }
+);
+export const bookSessionsService = createAsyncThunk<
+  Pos[],
+  FlightSearchData,
+  { rejectValue: any }
+>(
+  `${sliceName}/bookSessionsService`,
+  async ({ data }, thunkAPI) => {
+    try {
+      const response = await apiClient.post(
+        `${b2bAPi}/${BookFlight}`,
+        data,
+        {
+          headers: getHeadres(),
+        }
+      );
+      return response.data;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || 'Something went wrong'
+      );
     }
   }
 );

@@ -52,7 +52,7 @@ const BookResults = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.4 }}
       >
-        <AccountBalance balance={5000} />
+        {/* <AccountBalance balance={5000} /> */}
       </motion.div>
       
       {/* Booking Info Sections */}

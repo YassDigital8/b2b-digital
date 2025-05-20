@@ -77,7 +77,7 @@ const Navbar = () => {
         {/* Mobile menu button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`lg:hidden p-2 rounded-md ${scrolled ? 'text-chamBlue hover:bg-chamBlue/5' : 'text-white hover:bg-white/10'}`}
+          className={`lg:hidden p-2 rounded-md ${scrolled ? 'text-chamBlue hover:bg-chamBlue/5' : ' hover:bg-white/10'}`}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
         >

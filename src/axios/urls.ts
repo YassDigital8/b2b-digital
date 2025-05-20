@@ -15,5 +15,6 @@ export const TravelAgentApplication = `TravelAgentApplication`;
 export const POS = `POS`;
 export const authenticationAPi = `${BASE_URL}:${authPort}/Authentication/login`;
 export const b2bAPi = `${BASE_URL}:${port2}`;
+export const BookFlight = `BookFlight`;
 
 

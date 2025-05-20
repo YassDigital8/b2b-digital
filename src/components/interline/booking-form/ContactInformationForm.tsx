@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -108,7 +108,7 @@ const ContactInformationForm = ({
   onSubmit,
   isSubmitting
 }: ContactInformationFormProps) => {
-  const [availableCities, setAvailableCities] = useState<Array<{city: string, code: string}>>([]);
+  const [availableCities, setAvailableCities] = useState<Array<{ city: string, code: string }>>([]);
 
   const phoneCodes = [
     { value: '+963', label: 'Syria (+963)' },
@@ -127,7 +127,7 @@ const ContactInformationForm = ({
   useEffect(() => {
     const cities = getCountryCities(contactInformation.phoneCode);
     setAvailableCities(cities);
-    
+
     // Reset city if current selection isn't in the new list
     if (contactInformation.city && cities.length > 0 && !cities.some(c => c.city === contactInformation.city)) {
       updateContactInformation({ city: '' });
@@ -140,34 +140,36 @@ const ContactInformationForm = ({
       toast.error('Please enter your first name');
       return;
     }
-    
+
     if (!contactInformation.lastName) {
       toast.error('Please enter your last name');
       return;
     }
-    
+
     if (!contactInformation.email) {
       toast.error('Please enter an email address');
       return;
     }
-    
+
     if (!contactInformation.email.includes('@') || !contactInformation.email.includes('.')) {
       toast.error('Please enter a valid email address');
       return;
     }
-    
+
     if (!contactInformation.phoneNumber) {
       toast.error('Please enter a phone number');
       return;
     }
-    
+
     if (!contactInformation.city) {
       toast.error('Please select a city');
       return;
     }
-    
+
     // Submit the form
     onSubmit();
+    console.log('contactInformation');
+
   };
 
   return (
@@ -176,13 +178,13 @@ const ContactInformationForm = ({
       <p className="text-gray-600 text-sm mb-6">
         Please provide contact details for booking confirmation and updates
       </p>
-      
+
       <div className="space-y-5 max-w-xl mx-auto">
         {/* Gender Selection */}
         <div>
           <Label>Gender</Label>
-          <RadioGroup 
-            value={contactInformation.gender} 
+          <RadioGroup
+            value={contactInformation.gender}
             onValueChange={(value) => updateContactInformation({ gender: value as 'male' | 'female' })}
             className="flex flex-row gap-6 mt-2"
           >
@@ -196,7 +198,7 @@ const ContactInformationForm = ({
             </div>
           </RadioGroup>
         </div>
-        
+
         {/* Name Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -209,7 +211,7 @@ const ContactInformationForm = ({
               className="mt-1 border-chamBlue/20 focus:border-chamBlue"
             />
           </div>
-          
+
           <div>
             <Label htmlFor="lastName">Last Name</Label>
             <Input
@@ -221,7 +223,7 @@ const ContactInformationForm = ({
             />
           </div>
         </div>
-        
+
         {/* Email Address */}
         <div>
           <Label htmlFor="email">Email Address</Label>
@@ -234,7 +236,7 @@ const ContactInformationForm = ({
             className="mt-1 border-chamBlue/20 focus:border-chamBlue"
           />
         </div>
-        
+
         {/* Phone Number with Country Code */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -255,7 +257,7 @@ const ContactInformationForm = ({
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="col-span-2">
             <Label htmlFor="phoneNumber">Phone Number</Label>
             <Input
@@ -268,7 +270,7 @@ const ContactInformationForm = ({
             />
           </div>
         </div>
-        
+
         {/* City Selector based on Country */}
         <div>
           <Label htmlFor="city">City</Label>
@@ -288,7 +290,7 @@ const ContactInformationForm = ({
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="pt-6 flex items-center justify-between gap-4">
           <Button
             type="button"
@@ -300,7 +302,7 @@ const ContactInformationForm = ({
             <ChevronLeft className="mr-2 h-4 w-4" />
             Back to Passenger Details
           </Button>
-          
+
           <Button
             type="button"
             className="bg-gradient-to-r from-chamGold to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-6 rounded-full shadow-md"

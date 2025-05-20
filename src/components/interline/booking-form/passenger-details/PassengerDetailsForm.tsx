@@ -11,7 +11,6 @@ import { Accordion } from '@/components/ui/accordion';
 
 const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
   passengers,
-  updatePassenger,
   onNext,
 }) => {
   const [openAccordion, setOpenAccordion] = useState<string>('passenger-0');
@@ -20,12 +19,17 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
     e.preventDefault();
 
     // Validate the passenger details
-    if (validateAllPassengers(passengers, setOpenAccordion)) {
-      toast.success("Passenger details saved", {
-        description: "Moving to contact information"
-      });
-      onNext();
-    }
+    // if (validateAllPassengers(passengers, setOpenAccordion)) {
+    //   toast.success("Passenger details saved", {
+    //     description: "Moving to contact information"
+    //   });
+    //   onNext();
+
+    // }
+    toast.success("Passenger details saved", {
+      description: "Moving to contact information"
+    });
+    onNext();
   };
 
   return (
@@ -34,7 +38,7 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
         <h2 className="text-xl font-semibold text-chamDarkBlue mb-2 font-display">Passenger Details</h2>
         <p className="text-gray-600">Please enter the details for each passenger as they appear on their travel documents.</p>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-8">
         <Accordion type="single" value={openAccordion} onValueChange={setOpenAccordion} collapsible>
           {passengers.map((passenger, index) => (
@@ -47,28 +51,27 @@ const PassengerDetailsForm: React.FC<PassengerDetailsFormProps> = ({
               <PassengerFormItem
                 passenger={passenger}
                 index={index}
-                updatePassenger={updatePassenger}
                 openAccordion={openAccordion}
                 setOpenAccordion={setOpenAccordion}
               />
             </motion.div>
           ))}
         </Accordion>
-        
-        <motion.div 
+
+        <motion.div
           className="flex justify-between pt-6 border-t"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             variant="outline"
             className="border-gray-300 hover:bg-gray-50 rounded-full shadow-sm hover:shadow transition-all duration-300"
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             type="submit"
             className="bg-gradient-to-r from-chamGold to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white gap-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
           >

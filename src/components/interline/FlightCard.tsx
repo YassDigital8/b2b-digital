@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { useAppSelector } from '@/redux/useAppSelector';
 import curr7encies from '@/utils/currencies';
 import FlightPrice from './flight-card/FlightPrice';
+import { useDispatch } from 'react-redux';
+import { setSelectedFlight } from '@/redux/slices/posSlice';
 
 interface FlightCardProps {
   flight: Flight;
@@ -35,7 +37,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
 }) => {
   const { travelAgent } = useAppSelector(state => state.auth);
   const pos = travelAgent?.value?.pos
-
+  const dispatch = useDispatch()
   const [showFlightDetails, setShowFlightDetails] = useState(false);
   const isSelected = selectedFlightId === flight.transaction_id;
 
@@ -51,6 +53,8 @@ const FlightCard: React.FC<FlightCardProps> = ({
   const handleBookNow = () => {
     // First ensure this flight is selected
     onSelect(flight.transaction_id);
+    console.log('flight', flight);
+    dispatch(setSelectedFlight(flight))
 
     // If there's an onBook handler, call it to proceed with booking
     if (onBook) {
@@ -60,7 +64,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
 
   return (
     <div className={cn("transition-all duration-300 overflow-hidden border rounded-xl shadow-sm hover:shadow-md",
-      isSelected ? "border-violet-500 bg-violet-50/40" : "border-gray-200 hover:border-violet-300/50 hover:bg-slate-50")}>
+      isSelected ? "border-chamBlue bg-violet-50/40" : "border-gray-200 hover:border-chamBlue hover:bg-slate-50")}>
 
       {/* Flight header with price */}
       <div

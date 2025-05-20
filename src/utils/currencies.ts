@@ -1,5 +1,5 @@
 const curr7encies = [
-    { code: "ae", symbol: "د.إ" },
+    { code: "ae", symbol: "AED" },
     { code: "sy", symbol: "$" }
 ];
 export default curr7encies

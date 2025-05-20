@@ -27,7 +27,8 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFlightType } from '@/redux/slices/posSlice';
 
 export const bookingFormSchema = z.object({
   tripType: z.enum(['one-way', 'round-trip']),
@@ -89,17 +90,17 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
   const adults = useWatch({ control: form.control, name: "adults" });
   const children = useWatch({ control: form.control, name: "children" });
   const infants = useWatch({ control: form.control, name: "infants" });
-
+  const dispatch = useDispatch()
   const tripType = form.watch('tripType');
   const fromCity = form.watch('fromCity');
 
-  useEffect(() => {
-    if (tripType === 'round-trip') {
-      form.register('returnDate', { required: "Return date is required for round trips" });
-    } else {
-      form.setValue('returnDate', null);
-    }
-  }, [tripType, form]);
+  // useEffect(() => {
+  //   if (tripType === 'round-trip') {
+  //     form.register('returnDate', { required: "Return date is required for round trips" });
+  //   } else {
+  //     form.setValue('returnDate', null);
+  //   }
+  // }, [tripType, form]);
 
   useEffect(() => {
     if (initialValues) {
@@ -169,6 +170,8 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
     }
 
     onSearch(data);
+    const tripType = data.tripType === 'one-way' ? 'OneWay' : "Return"
+    dispatch(setFlightType(tripType))
   };
 
   return (

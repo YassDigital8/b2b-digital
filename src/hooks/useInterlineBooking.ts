@@ -9,12 +9,13 @@ import { useDispatch } from 'react-redux';
 import { getFlightsWithPriceService } from '@/redux/services/posService';
 import { useAppSelector } from '@/redux/useAppSelector';
 import { setSeachInfo } from '@/redux/slices/authSlice';
+import { Passenger } from '@/pages/InterlineBookingForm';
+import { setPassengersInfo } from '@/redux/slices/posSlice';
 
 export interface PassengerCounts {
   adults: number;
   children: number;
   infants: number;
-  total: number;
 }
 
 export const useInterlineBooking = () => {
@@ -34,10 +35,9 @@ export const useInterlineBooking = () => {
 
   // Passenger counts from search form
   const [passengers, setPassengers] = useState<PassengerCounts>({
-    adults: 1,
+    adults: 0,
     children: 0,
     infants: 0,
-    total: 1
   });
 
   useEffect(() => {
@@ -71,8 +71,32 @@ export const useInterlineBooking = () => {
     setSearchResults([]);
     setSelectedFlight(null);
     const { fromCity, toCity, tripType, departureDate, infants, children, adults, cabinClass, returnDate } = data
-    console.log('data From handleSearch', departureDate);
+    const createPassenger = (type: 'ADT' | 'CHD' | 'INF') => ({
+      PassengerTypeCode: type,
+      BirthDate: '',
+      GivenName: '',
+      Surname: '',
+      NameTitle: '',
+      CountryCode: '',
+      Telephone: {
+        AreaCityCode: "6",
+        CountryAccessCode: "91",
+        PhoneNumber: "9409867697",
+      },
+      Document: {
+        DocID: '',
+        ExpireDate: ''
+      }
+    });
 
+    const passengers: any[] = [
+      ...Array.from({ length: adults }, () => createPassenger('ADT')),
+      ...Array.from({ length: children }, () => createPassenger('CHD')),
+      ...Array.from({ length: infants }, () => createPassenger('INF'))
+    ];
+
+    dispatch(setPassengersInfo(passengers))
+    console.log('passengers from search', passengers);
 
     const token = localStorage.getItem("token")
 
@@ -87,24 +111,23 @@ export const useInterlineBooking = () => {
       flightclass: cabinClass,
       flighttype: tripType === 'one-way' ? 'OneWay' : 'Return',
       pos: travelAgent?.value?.pos,
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjNjY2ZhMGI4LTZjYjQtNDQxYS1iNTg5LTVlMTljMjA0M2Q2OSIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJtYW5hZ2VyQ29kZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3NDczMDg1NzIsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.Oqy9gF0c44-1HydBebmNzJ54mNPg5_AmYQ5usFq2Qgo'
+      token
     };
-    console.log('dataToSend', dataToSend);
-
-    dispatch(setSeachInfo(dataToSend))
     // const dataToSend = {
     //   origin: "DAM",
     //   destination: "SHJ",
-    //   date: "2025-05-30T00:00:00",
+    //   date: "2025-05-19T00:00:00",
     //   date_return: "2025-06-07T00:00:00",
     //   adults: 1,
     //   children: 0,
     //   infants: 0,
     //   flightclass: "Y", // economy = "Y", business = "C"
     //   flighttype: "Return",
-    //   pos: "UAE",
-    //   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImUyODVmMTRkLWMxNzItNDQ2Ni04NzFkLTk0ZTI1ODI0YjI4YSIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJtYW5hZ2VyQ29kZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3NDcyMzAzNDUsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.jaqbd9B496tuJ1YALYzyqD_q0XLCZMwCP_szXle6I28"
+    //   pos: "ae",
+    //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJMaW5hSGFtZGFuIiwianRpIjoiYTJjZDYzMWQtOTdjMy00OWNjLTg3MjAtMjU3MDkzZTVmNWViIiwiZW1haWwiOiJtaGRtYWpkc2FhdGlAZ21haWwuY29tIiwidXNlckNvZGUiOiJVc2VyLTZlMTgzYjk2ZjQ5MjQ5ZmNhYzdhNjBiYWJhZDJkZTJlIiwibWFuYWdlckNvZGUiOiIiLCJleHAiOjE3NDc2NDU2MTMsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.DfwtM2ar3Beivo5NoV0uPz32vseB0j5TAT7byvzG3g4'
     // };
+    dispatch(setSeachInfo(dataToSend))
+
 
     dispatch(getFlightsWithPriceService({ data: dataToSend })).then((action) => {
       if (getFlightsWithPriceService.fulfilled.match(action)) {

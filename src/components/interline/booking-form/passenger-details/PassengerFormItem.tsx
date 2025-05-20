@@ -1,12 +1,12 @@
 
-import { 
+import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -16,23 +16,26 @@ import {
 import DatePickerField from './DatePickerField';
 import NationalitySelect from './NationalitySelect';
 import { PassengerFormItemProps } from './types';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { updatePassenger } from '@/redux/slices/posSlice';
 
-const PassengerFormItem = ({ 
-  passenger, 
-  index, 
-  updatePassenger, 
+const PassengerFormItem = ({
+  passenger,
+  index,
   openAccordion,
   setOpenAccordion
 }: PassengerFormItemProps) => {
-  
-  const getPassengerTitle = () => {
-    const typeLabel = passenger.type === 'adult' ? 'Adult' : passenger.type === 'child' ? 'Child' : 'Infant';
-    const idx = parseInt(passenger.id.split('-')[1]);
-    return `${typeLabel} #${idx}`;
+  const dispatch = useDispatch<AppDispatch>();
+
+  const getPassengerTitle = (index) => {
+    const typeLabel = passenger.PassengerTypeCode === 'ADT' ? 'Adult' : passenger.PassengerTypeCode === 'CHD' ? 'Child' : 'Infant';
+    // const idx = parseInt(passenger.id.split('-')[1]);
+    return `${typeLabel} #${index}`;
   };
 
   return (
-    <AccordionItem 
+    <AccordionItem
       value={`passenger-${index}`}
       className="border rounded-xl overflow-hidden shadow-md mb-4 transition-all duration-300 hover:shadow-lg group"
     >
@@ -40,91 +43,110 @@ const PassengerFormItem = ({
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
             <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full mr-3 text-xs font-medium
-              ${passenger.type === 'adult' 
-                ? 'bg-chamBlue/15 text-chamBlue ring-1 ring-chamBlue/30' 
-                : passenger.type === 'child' 
-                  ? 'bg-green-100 text-green-700 ring-1 ring-green-300' 
+              ${passenger.PassengerTypeCode === 'ADT'
+                ? 'bg-chamBlue/15 text-chamBlue ring-1 ring-chamBlue/30'
+                : passenger.PassengerTypeCode === 'CHD'
+                  ? 'bg-green-100 text-green-700 ring-1 ring-green-300'
                   : 'bg-pink-100 text-pink-700 ring-1 ring-pink-300'
               }`}>
-              {passenger.type === 'adult' ? 'A' : passenger.type === 'child' ? 'C' : 'I'}
+              {passenger.PassengerTypeCode === 'ADT' ? 'A' : passenger.PassengerTypeCode === 'CHD' ? 'C' : 'I'}
             </span>
             <span className="font-medium text-gray-900 font-display">
-              {getPassengerTitle()}
+              {getPassengerTitle(index)}
             </span>
           </div>
           <span className="text-sm text-gray-500">
-            {passenger.firstName && passenger.lastName 
-              ? `${passenger.firstName} ${passenger.lastName}` 
+            {passenger.GivenName && passenger.Surname
+              ? `${passenger.GivenName} ${passenger.Surname}`
               : 'Not completed'}
           </span>
         </div>
       </AccordionTrigger>
-      
+
       <AccordionContent className="px-5 pt-5 pb-6 bg-gradient-to-br from-white to-blue-50/30">
         <div className="space-y-5">
           {/* Gender Selection */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <Label htmlFor={`${passenger.id}-gender`} className="text-sm font-medium text-gray-700">Gender</Label>
-              <Select 
-                value={passenger.gender}
-                onValueChange={(value) => updatePassenger(index, { 
-                  gender: value as 'male' | 'female' 
-                })}
+              <Label htmlFor={`${index + 1}-gender`} className="text-sm font-medium text-gray-700">Gender</Label>
+              <Select
+                value={passenger.NameTitle}
+                onValueChange={(value) =>
+                  dispatch(updatePassenger({
+                    index,
+                    data: { NameTitle: value as 'MSTR' | 'MISS' },
+                  }))
+                }
               >
-                <SelectTrigger id={`${passenger.id}-gender`} className="w-full mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm">
+                <SelectTrigger id={`${index + 1}-gender`} className="w-full mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm">
                   <SelectValue placeholder="Select Gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="MSTR">Male</SelectItem>
+                  <SelectItem value="MISS">Female</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
-          
+
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <Label htmlFor={`${passenger.id}-firstName`} className="text-sm font-medium text-gray-700">First Name</Label>
-              <Input 
-                id={`${passenger.id}-firstName`}
-                value={passenger.firstName}
-                onChange={(e) => updatePassenger(index, { firstName: e.target.value })}
-                className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
+              <Label htmlFor={`${index + 1}-GivenName`} className="text-sm font-medium text-gray-700">First Name</Label>
+              <Input
+                id={`${index + 1}-GivenName`}
+                value={passenger.GivenName}
+                onChange={(e) =>
+                  dispatch(updatePassenger({
+                    index,
+                    data: { GivenName: e.target.value },
+                  }))
+                } className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
                 placeholder="As in passport"
               />
             </div>
-            
+
             <div>
-              <Label htmlFor={`${passenger.id}-lastName`} className="text-sm font-medium text-gray-700">Last Name</Label>
-              <Input 
-                id={`${passenger.id}-lastName`}
-                value={passenger.lastName}
-                onChange={(e) => updatePassenger(index, { lastName: e.target.value })}
-                className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
+              <Label htmlFor={`${index + 1}-Surname`} className="text-sm font-medium text-gray-700">Last Name</Label>
+              <Input
+                id={`${index + 1}-Surname`}
+                value={passenger.Surname}
+                onChange={(e) =>
+                  dispatch(updatePassenger({
+                    index,
+                    data: { Surname: e.target.value },
+                  }))
+                } className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
                 placeholder="As in passport"
               />
             </div>
           </div>
-          
+
           {/* Date of Birth & Nationality */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <DatePickerField 
+            <DatePickerField
               label="Date of Birth"
-              id={`${passenger.id}-dob`}
-              date={passenger.dateOfBirth}
-              onSelect={(date) => updatePassenger(index, { dateOfBirth: date })}
-              disableFuture={true}
+              id={`${index + 1}-dob`}
+              date={passenger.BirthDate}
+              onSelect={(date) =>
+                dispatch(updatePassenger({
+                  index,
+                  data: { BirthDate: date },
+                }))
+              } disableFuture={true}
             />
-            
-            <NationalitySelect 
+
+            <NationalitySelect
               passengerId={passenger.id}
               value={passenger.nationality}
-              onChange={(value) => updatePassenger(index, { nationality: value })}
-            />
+              onChange={(value) =>
+                dispatch(updatePassenger({
+                  index,
+                  data: { nationality: value },
+                }))
+              } />
           </div>
-          
+
           {/* Passport Information */}
           <div className="mt-6 mb-2">
             <h3 className="text-md font-medium text-chamBlue font-display flex items-center">
@@ -132,26 +154,46 @@ const PassengerFormItem = ({
               Passport Information
             </h3>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <Label htmlFor={`${passenger.id}-passport`} className="text-sm font-medium text-gray-700">Passport Number</Label>
-              <Input 
-                id={`${passenger.id}-passport`}
-                value={passenger.passportNumber}
-                onChange={(e) => updatePassenger(index, { passportNumber: e.target.value })}
-                className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
+              <Label htmlFor={`${index + 1}-passport`} className="text-sm font-medium text-gray-700">Passport Number</Label>
+              <Input
+                id={`${index + 1}-passport`}
+                value={passenger?.Document?.DocID}
+                onChange={(e) =>
+                  dispatch(updatePassenger({
+                    index,
+                    data: {
+                      Document: {
+                        ...passenger.Document,
+                        DocID: e.target.value,
+                      },
+                    },
+                  }))
+                } className="mt-1.5 border-chamBlue/20 focus:border-chamBlue shadow-sm"
                 placeholder="Enter passport number"
               />
             </div>
-            
-            <DatePickerField 
+
+            <DatePickerField
               label="Expiry Date"
-              id={`${passenger.id}-expiry-date`}
-              date={passenger.passportExpiryDate}
-              onSelect={(date) => updatePassenger(index, { passportExpiryDate: date })}
+              id={`${index + 1}-expiry-date`}
+              date={passenger?.Document?.ExpireDate || null}
+              onSelect={(date) =>
+                dispatch(updatePassenger({
+                  index,
+                  data: {
+                    Document: {
+                      ...passenger.Document,
+                      ExpireDate: date,
+                    },
+                  },
+                }))
+              }
               disablePast={true}
             />
+
           </div>
         </div>
       </AccordionContent>
