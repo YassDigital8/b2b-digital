@@ -29,7 +29,7 @@ function Calendar({
         caption: "flex justify-center pt-1 relative items-center",
         caption_label: "text-sm font-medium hidden",
         caption_dropdowns: "flex justify-center gap-1",
-        dropdown: "bg-background border rounded-md px-1 py-0.5",
+        dropdown: "bg-background  rounded-md px-1 py-0.5",
         vhidden: "hidden",
         dropdown_month: "bg-background border rounded-md px-1 py-0.5",
         dropdown_year: "bg-background border rounded-md px-1 py-0.5",

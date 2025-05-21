@@ -147,32 +147,42 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isSearching, initialV
   };
 
   const handleSubmit = (data: BookingFormValues) => {
-    if (data.fromCity === data.toCity) {
+    const { fromCity, toCity, departureDate, returnDate, tripType, adults, children, infants } = data;
+
+    if (!fromCity || !toCity || !departureDate) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (fromCity === toCity) {
       toast.error('Departure and destination cities cannot be the same');
       return;
     }
 
-    if (data.tripType === 'round-trip' && data.returnDate && data.departureDate > data.returnDate) {
+    if (tripType === 'round-trip' && !returnDate) {
+      toast.error('Please fill return date');
+      return;
+    }
+
+    if (tripType === 'round-trip' && returnDate && departureDate > returnDate) {
       toast.error('Return date must be after departure date');
       return;
     }
 
-    // const totalPassengers = data.adults + data.children + data.infants;
-
-
-    if (data.infants > data.adults) {
+    if (infants > adults) {
       toast.error('Number of infants cannot exceed number of adults');
       return;
     }
-    if (data.adults < 1 && data.children < 1) {
+
+    if (adults < 1 && children < 1) {
       toast.error('At least one adult or one child must be selected');
       return;
     }
 
     onSearch(data);
-    const tripType = data.tripType === 'one-way' ? 'OneWay' : "Return"
-    dispatch(setFlightType(tripType))
+    dispatch(setFlightType(tripType === 'one-way' ? 'OneWay' : 'Return'));
   };
+
 
   return (
     <Form {...form}>

@@ -99,8 +99,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          {/* FAQ Section - Replacing Services Section */}
-          {/* <FAQSection /> */}
+          <FAQSection />
         </div>
       </main>
       
